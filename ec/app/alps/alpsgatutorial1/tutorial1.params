@@ -1,0 +1,80 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+# The parameters that were laid out in Tutorial 1 (see the documentation)
+
+breedthreads	= 1
+evalthreads	= 1
+seed.0		= 4357
+
+
+pop                     = ec.Population
+state                   = ec.alps.SimpleEvolutionState
+state                   = ec.alps.SimpleEvolutionState
+breed                   = ec.alps.SimpleBreeder
+stat                    = ec.alps.SimpleStatistics
+eval                    = ec.simple.SimpleEvaluator
+init                    = ec.simple.SimpleInitializer
+finish                  = ec.simple.SimpleFinisher
+exch                    = ec.simple.SimpleExchanger
+
+generations		        = 200
+quit-on-run-complete	= false
+checkpoint		        = false
+checkpoint-prefix	    = ec
+checkpoint-modulo	    = 1
+pop.subpops		        = 1
+pop.subpop.0		    = ec.Subpopulation
+breed.elite.0           = 3
+
+
+#================================ ALPS configuration ================================ 
+alps.age-gap                           = 20
+alps.number-of-layers                  = 6
+alps.number-of-evaluations             = 1000
+alps.selection-pressure                = 0.8
+alps.tournament.size                   = 4
+alps.aging-scheme                      = ec.alps.agingscheme.Linear
+alps.layer-replacement                 = ec.alps.replacement.sfs.ReverseTournamentWorst
+
+#when true, only individuals selected fro breeding from current layer have their age increased
+#else both both individuals coming from current and lower layer used as parents will have their age increased
+alps.age-only-current-layer            = false
+#==================================================================================== 
+
+
+pop.subpop.0.size 		             = 128
+pop.subpop.0.duplicate-retries 	     = 0
+pop.subpop.0.species 		         = ec.vector.BitVectorSpecies
+pop.subpop.0.species.fitness 	     = ec.simple.SimpleFitness
+pop.subpop.0.species.ind	         = ec.vector.BitVectorIndividual
+
+pop.subpop.0.species.genome-size	 = 500
+pop.subpop.0.species.crossover-type	 = one
+pop.subpop.0.species.mutation-type	 = flip
+pop.subpop.0.species.mutation-prob	 = 0.01
+#pop.subpop.0.species.crossover-prob  = 0.90
+#vector.species.crossover-prob       = 0.90
+
+
+pop.subpop.0.species.pipe			        = ec.alps.breed.vector.VectorMutation
+pop.subpop.0.species.pipe.source.0		    = ec.alps.breed.vector.VectorCrossover
+
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= same
+
+select.tournament.size		= 4
+eval.problem		        = ec.app.tutorial1.MaxOnes
+
+
+
+#stat.file		= output/ind.stats
+#Anthony
+#Specification of output statistics files
+
+stat.num-children           = 1
+stat.child.0                = ec.alps.SimpleShortStatistics
+stat.child.0.file           = output/out.stats
+stat.file                   = output/ind.stats
+

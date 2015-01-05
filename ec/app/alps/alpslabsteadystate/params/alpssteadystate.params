@@ -1,0 +1,119 @@
+# Copyright 2014 by Anthony Awuley and Brock University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0                = ../../../gp/koza/koza.params
+quit-on-run-complete    = false
+
+#jobs specifies the number of runs you would wish to perform
+
+init                    = ec.gp.GPInitializer
+state                   = ec.alps.SSEvolutionState
+breed                   = ec.steadystate.SteadyStateBreeder
+eval                    = ec.steadystate.SteadyStateEvaluator
+pop                     = ec.Population
+jobs                    = 1
+pop.subpops             = 1
+pop.subpop.0.size       = 10
+select.tournament.size  = 4
+breed.elite.0.1         = 1
+breedthreads            = 1
+evalthreads             = 1
+seed.0                  = 1
+quit-on-run-complete    = false
+generations             = 10
+
+#steady state parameters
+steady.deselector.0                    = ec.select.TournamentSelection
+steady.deselector.0.size               = 5
+steady.deselector.0.pick-worst         = true
+
+#ALPS configuration
+alps.age-gap                           = 5
+alps.number-of-layers                  = 5
+alps.number-of-evaluations             = 100
+alps.selection-pressure                = 0.8
+alps.tournament.size                   = 4
+alps.aging-scheme                      = ec.alps.agingscheme.Linear
+alps.layer-replacement                 = ec.alps.replacement.sfs.ReverseTournamentWorst
+
+
+pop.subpop.0.species.fitness                     = ec.gp.koza.KozaFitness
+pop.subpop.0.species.pipe                        = ec.breed.MultiBreedingPipeline
+pop.subpop.0.species.pipe.num-sources            = 2
+pop.subpop.0.species.pipe.source.0               = ec.alps.breed.CrossoverALPS
+pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1      = same
+pop.subpop.0.species.pipe.source.0.ns.0          = ec.gp.koza.KozaNodeSelector
+pop.subpop.0.species.pipe.source.0.ns.1          = same
+pop.subpop.0.species.pipe.source.0.maxdepth      = 17
+pop.subpop.0.species.pipe.source.0.tries         = 1
+pop.subpop.0.species.pipe.source.0.source.0.size = 7
+pop.subpop.0.species.pipe.source.0.source.1.size = 7
+pop.subpop.0.species.pipe.source.0.prob          = 0.90
+
+pop.subpop.0.species.pipe.source.1               = ec.alps.breed.MutationALPS
+pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.0.size = 7
+pop.subpop.0.species.pipe.source.1.prob          = 0.10
+
+#pop.subpop.0.species.pipe.source.1              = ec.alps.breed.ReproductionALPS
+#pop.subpop.0.species.crossover-prob             = 0.9
+#pop.subpop.0.species.mutation-prob              = 0.05
+
+
+# the next four items are already defined in koza.params, but we
+# put them here to be clear.
+
+gp.koza.mutate.source.0                           = ec.select.TournamentSelection
+
+#gp.koza.xover.source.0                           = ec.select.TournamentSelection
+#gp.koza.xover.source.1                           = same
+#gp.koza.xover.ns.0                               = ec.gp.koza.KozaNodeSelector
+#gp.koza.xover.ns.1                               = same
+#gp.koza.xover.maxdepth                           = 17
+#gp.koza.xover.tries                              = 1
+
+#Node Selectors
+gp.koza.ns.terminals                              = 0.1
+gp.koza.ns.nonterminals                           = 0.9
+gp.koza.ns.root                                   = 0.0
+
+
+
+# We have one function set, of class GPFunctionSet
+gp.fs.size              = 1
+gp.fs.0                 = ec.gp.GPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name            = f0
+
+# We have five functions in the function set.  They are:
+gp.fs.0.size            = 5
+gp.fs.0.func.0          = ec.app.alpslab.ts.X
+gp.fs.0.func.0.nc       = nc0
+gp.fs.0.func.1          = ec.app.alpslab.ts.Y
+gp.fs.0.func.1.nc       = nc0
+gp.fs.0.func.2          = ec.app.alpslab.fs.Add
+gp.fs.0.func.2.nc       = nc2
+gp.fs.0.func.3          = ec.app.alpslab.fs.Sub
+gp.fs.0.func.3.nc       = nc2
+gp.fs.0.func.4          = ec.app.alpslab.fs.Mul
+gp.fs.0.func.4.nc       = nc2
+
+eval.problem            = ec.app.alpslab.MultiValuedRegression
+eval.problem.data       = ec.app.alpslab.DoubleData
+
+#Specification of output statistics files
+#stat                    = ec.alps.SSShortStatistics
+#stat.file               = ../output/out.stats
+#stat.num-children       = 1
+#stat.child.0            = ec.alps.SimpleStatistics
+#stat.child.0.file       = ../output/ind.stats
+
+
+stat.num-children        = 2
+stat.child.0             = ec.alps.SSShortStatistics
+stat.child.0.file        = ../output/out.stats
+stat.child.1             = ec.alps.SimpleStatistics
+stat.child.1.silent.print= true
+stat.child.1.file        = ../output/ind.stats

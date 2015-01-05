@@ -1,0 +1,160 @@
+# Anthony Awuley
+# COSC5P71 - Genetic Programming
+# Testing ALPS - Pima Indians Diabetes - Parameter file
+
+parent.0                = ../../../gp/koza/koza.params
+generations             = 5
+quit-on-run-complete    = false
+
+#jobs specifies the number of runs you would wish to perform
+init                    = ec.gp.GPInitializer
+state                   = ec.alps.SSEvolutionState
+breed                   = ec.steadystate.SteadyStateBreeder
+eval                    = ec.steadystate.SteadyStateEvaluator
+pop                     = ec.Population
+jobs                    = 2
+pop.subpops             = 1
+pop.subpop.0.size       = 128
+select.tournament.size  = 4
+breed.elite.0           = 3
+breedthreads            = 1
+evalthreads             = 1
+seed.0                  = 1
+quit-on-run-complete    = false
+generations             = 100
+
+#steady state parameters
+steady.deselector.0                    = ec.select.TournamentSelection
+steady.deselector.0.size               = 5
+steady.deselector.0.pick-worst         = true
+
+#ALPS configuration
+alps.age-gap                           = 20
+alps.number-of-layers                  = 6
+alps.number-of-evaluations             = 1000
+alps.selection-pressure                = 0.8
+alps.tournament.size                   = 4
+alps.aging-scheme                      = ec.alps.agingscheme.Polynomial
+alps.layer-replacement                 = ec.alps.replacement.sfs.ReverseTournamentWorst
+
+#GP parameters
+pop.subpop.0.species.pipe                        = ec.breed.MultiBreedingPipeline
+pop.subpop.0.species.pipe.num-sources            = 2
+pop.subpop.0.species.pipe.source.0               = ec.alps.breed.CrossoverALPS
+#pop.subpop.0.species.pipe.source.0              = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1      = same
+pop.subpop.0.species.pipe.source.0.ns.0          = ec.gp.koza.KozaNodeSelector
+pop.subpop.0.species.pipe.source.0.ns.1          = same
+pop.subpop.0.species.pipe.source.0.maxdepth      = 17
+pop.subpop.0.species.pipe.source.0.tries         = 1
+pop.subpop.0.species.pipe.source.0.source.0.size = 4
+pop.subpop.0.species.pipe.source.0.source.1.size = 4
+pop.subpop.0.species.pipe.source.0.prob          = 0.90
+
+pop.subpop.0.species.pipe.source.1               = ec.alps.breed.MutationALPS
+#pop.subpop.0.species.pipe.source.1              = ec.gp.koza.MutationPipeline
+pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.0.size = 7
+pop.subpop.0.species.pipe.source.1.prob          = 0.10
+
+#pop.subpop.0.species.pipe.source.1              = ec.breed.ReproductionPipeline
+#pop.subpop.0.species.crossover-prob             = 0.9
+#pop.subpop.0.species.mutation-prob              = 0.05
+
+#Crossover
+#gp.koza.xover.source.0                           = ec.select.TournamentSelection
+#gp.koza.xover.source.1                           = same
+#gp.koza.xover.ns.0                               = ec.gp.koza.KozaNodeSelector
+#gp.koza.xover.ns.1                               = same
+#gp.koza.xover.maxdepth                           = 17
+#gp.koza.xover.tries                              = 1
+
+#Node Selectors
+gp.koza.ns.terminals                              = 0.1
+gp.koza.ns.nonterminals                           = 0.9
+gp.koza.ns.root                                   = 0.0
+
+
+
+#DEFINE NODE CONSTRAINTS
+gp.nc.size        = 3
+
+gp.nc.0           = ec.gp.GPNodeConstraints
+gp.nc.0.name      = nc0
+gp.nc.0.returns   = nil
+gp.nc.0.size      = 0
+
+gp.nc.1           = ec.gp.GPNodeConstraints
+gp.nc.1.name      = nc1
+gp.nc.1.returns   = nil
+gp.nc.1.size      = 1
+gp.nc.1.child.0   = nil
+
+gp.nc.2           = ec.gp.GPNodeConstraints
+gp.nc.2.name      = nc2
+gp.nc.2.returns   = nil
+gp.nc.2.size      = 2
+gp.nc.2.child.0   = nil
+gp.nc.2.child.1   = nil
+
+
+# Assign all function/terminal set to the GP primitive set.
+# NB: Added function set: Div, Max & Min
+gp.fs.size        = 1
+gp.fs.0           = ec.gp.GPFunctionSet
+gp.fs.0.name      = f0
+
+gp.fs.0.size      = 17
+gp.fs.0.func.0    = ec.app.alpspimasteadystate.ts.NumbTimesPreg
+gp.fs.0.func.0.nc = nc0
+gp.fs.0.func.1    = ec.app.alpspimasteadystate.ts.PlasmaGlucoseConc
+gp.fs.0.func.1.nc = nc0
+gp.fs.0.func.2    = ec.app.alpspimasteadystate.ts.DiastolicBP
+gp.fs.0.func.2.nc = nc0
+gp.fs.0.func.3    = ec.app.alpspimasteadystate.ts.TricepsSkinFoldThickness
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.4    = ec.app.alpspimasteadystate.ts.TwoHourSerumInsulin
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.5    = ec.app.alpspimasteadystate.ts.BMI
+gp.fs.0.func.5.nc = nc0
+gp.fs.0.func.6    = ec.app.alpspimasteadystate.ts.DiabetesPedigreeFunction
+gp.fs.0.func.6.nc = nc0
+gp.fs.0.func.7    = ec.app.alpspimasteadystate.ts.Age
+gp.fs.0.func.7.nc = nc0
+gp.fs.0.func.8    = ec.app.alpspimasteadystate.ts.RegERC
+gp.fs.0.func.8.nc = nc0
+gp.fs.0.func.9    = ec.app.alpspimasteadystate.fs.Add
+gp.fs.0.func.9.nc = nc2
+gp.fs.0.func.10   = ec.app.alpspimasteadystate.fs.Sub
+gp.fs.0.func.10.nc = nc2
+gp.fs.0.func.11    = ec.app.alpspimasteadystate.fs.Mul
+gp.fs.0.func.11.nc = nc2
+gp.fs.0.func.12    = ec.app.alpspimasteadystate.fs.Div
+gp.fs.0.func.12.nc = nc2
+gp.fs.0.func.13    = ec.app.alpspimasteadystate.fs.Max
+gp.fs.0.func.13.nc = nc2
+gp.fs.0.func.14    = ec.app.alpspimasteadystate.fs.Min
+gp.fs.0.func.14.nc = nc2
+gp.fs.0.func.15    = ec.app.alpspimasteadystate.fs.Ln
+gp.fs.0.func.15.nc = nc1
+gp.fs.0.func.16    = ec.app.alpspimasteadystate.fs.Log10
+gp.fs.0.func.16.nc = nc1
+
+eval.problem = ec.app.alpspimasteadystate.MultiValuedRegressionCoscA1B
+eval.problem.data = ec.app.alpspimasteadystate.DoubleData
+eval.problem.pima-indians-diabetes-data-raw        = ../Extensions/ecj22/ec/app/alpspimasteadystate/data/pima-indians-diabetes-data.txt
+eval.problem.pima-indians-diabetes-data-clean      = ../Extensions/ecj22/ec/app/alpspimasteadystate/data/pima-indians-diabetes-data-new.txt
+eval.problem.pima-indians-diabetes-data-train-data = ../Extensions/ecj22/ec/app/alpspimav/data/pima-indians-diabetes-train-data.txt
+eval.problem.pima-indians-diabetes-data-test-data  = ../Extensions/ecj22/ec/app/alpspimasteadystate/data/pima-indians-diabetes-test-data.txt
+
+eval.problem.total-number-of-points        = 168
+
+#Specification of output statistics files
+
+stat.num-children           = 2
+stat.child.0                = ec.alps.SSShortStatistics
+stat.child.0.file           = ../output/cmtrx.stats
+stat.child.1                = ec.alps.SimpleStatistics
+stat.child.1.silent.print   = true
+stat.child.1.file           = ../output/ss.stats

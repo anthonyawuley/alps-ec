@@ -1,0 +1,142 @@
+package ec.alps;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import ec.EvolutionState;
+import ec.alps.layers.ALPSLayers;
+import ec.alps.layers.Layer;
+import ec.alps.layers.Replacement;
+import ec.alps.util.Operations;
+import ec.alps.util.Roulette;
+import ec.util.Parameter;
+
+public class ALPSEvolutionState extends EvolutionState{
+
+	
+	/** */
+	public Replacement replacement;
+	/** */
+	public final static String P_REPLACEMENT = "layer-replacement";
+	/** */
+	public ALPSLayers alps;
+	/** */
+	public Map<String, Double>  nodeCountTerminalSet  = new LinkedHashMap<String, Double>();
+	/** */
+	public Map<String, Double>  nodeCountFunctionSet  = new LinkedHashMap<String, Double>();
+
+	
+	
+	public ALPSEvolutionState() 
+	{
+		super();
+	}
+	
+	
+	public int evolve(ALPSLayers alps)
+			throws InternalError { return R_NOTDONE; }
+	
+	/** setting up ALPS **/
+	public void startFresh(Layer l) {}
+	
+	
+	public void setup(final EvolutionState state, final Parameter base)
+	{
+		Parameter p;
+
+		super.setup(state, base);
+
+		/* replacement strategy */
+		p = Engine.base().push(P_REPLACEMENT);
+		replacement = (Replacement)
+				(parameters.getInstanceForParameter(p,null,Replacement.class));
+		replacement.setup(this,p);  
+
+	}
+	
+	
+	/** 
+	 * Starts the run. <i>condition</i> indicates whether or not the
+	 * run was restarted from a checkpoint (C_STARTED_FRESH vs
+	 * C_STARTED_FROM_CHECKPOINT).  At the point that run(...) has been
+	 * called, the parameter database has already been set up, as have
+	 * the random number generators, the number of threads, and the
+	 * Output facility.  This method should call this.setup(...) to
+	 * set up the EvolutionState object if condition equals C_STARTED_FRESH. 
+	 *
+	 * This was overloaded to run ALPS GP
+	 * @author anthony
+	 */
+	public void run(ALPSLayers alpsLayers, int condition)
+	{
+		/* all running instances of Evolution state have access to ALPS Layers */
+		this.alps = alpsLayers;
+		//int result = R_NOTDONE;
+
+		/* NOTE: Node count is performed for every generation in which there are individuals in the last layer
+		 * use largest layer node terminal count 
+		 * This is performed only when Engine.use_only_default_node_pr is FALSE and the generational frequency count flag
+		 * for the last layer is TRUE
+		 * */
+		if(!Engine.fsalps_use_only_default_node_pr && Engine.fsalps_last_layer_gen_freq_count && 
+				Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState)>0)
+			Engine.roulette = new Roulette( 
+					alps.layers.get(alps.layers.size()-1).evolutionState.nodeCountTerminalSet);
+
+
+		if(alps.layers.get(alps.index).getIsBottomLayer() && alps.layers.get(alps.index).initializerFlag)
+		{ 
+			/* NOTE: Node count is performed during inititalization of new individuals in layer 0
+			 * This condition is performed only if Engine.use_only_default_node_pr is Boolean.FALSE
+			 * and Engine.fsalps_last_layer_gen_freq_count is Boolean.FALSE :: This last check avoids multiple count process
+			 * in the even that that flag is Boolean.TRUE.
+			 * */
+			if(!Engine.fsalps_use_only_default_node_pr  && !Engine.fsalps_last_layer_gen_freq_count  && 
+					Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState)>0)
+				Engine.roulette = new Roulette( 
+						alps.layers.get(alps.layers.size()-1).evolutionState.nodeCountTerminalSet);
+
+			if ( (condition == C_STARTED_FRESH) )
+			{ 
+				startFresh();  
+				alps.layers.get(alps.index).result = evolve(alps); 
+				alps.layers.get(alps.index).initializerFlag = false;
+			}
+			else // condition == C_STARTED_FROM_CHECKPOINT
+			{
+				startFromCheckpoint();
+			}
+		}
+		else
+		{   
+			alps.layers.get(alps.index).result = evolve(alps);
+		}
+
+		/* Attempt inter-layer individual migration  */
+		//replacement = (ALPSReplacement)
+		//		(parameters.getInstanceForParameter(new Parameter(P_REPLACEMENT),null,ALPSReplacement.class));
+		replacement.layerMigrations(alps,alps.layers.get(alps.index).evolutionState.population);
+
+		/* count only when evolve is performed */
+		alpsLayers.layers.get(alpsLayers.index).layerGenerationalCount++;
+		
+		/*count evaluations in a layer */
+		alpsLayers.layers.get(alpsLayers.index).layerEvaluationCount += 
+				Operations.popSize(alps.layers.get(alps.index).evolutionState);
+
+		/* count evaluations */
+		Engine.globalEvaluations += Operations.popSize(alps.layers.get(alps.index).evolutionState);
+
+		/* perform describe(...) for last layer */
+		if( (alps.layers.get(alps.layers.size()-1).result != R_NOTDONE) && (alps.index==alps.layers.size()-1 ))
+			finish(alps.layers.get(alps.layers.size()-1).result);
+
+		/* DUMPING INDIVIDUAL AGE TO CONSOLE */
+		//alpsLayers.printAge(); 
+		//alpsLayers.printPopSize();
+	}
+
+	
+	
+
+}
