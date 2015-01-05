@@ -22,7 +22,6 @@ breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-quit-on-run-complete    = false
 generations             = 2000
 
 
@@ -42,7 +41,7 @@ alps.always-breed-maximum-population   = true
 
 #when true, only individuals selected from breeding from current layer have their age increased
 #else both both individuals coming from current and lower layer used as parents will have their age increased
-alps.age-only-current-layer            = false
+alps.age-only-current-layer            = true
 
 # when moving old individuals from bottom layer to next higher layer, use this flag to determine
 # replacement strategy in higher layer. if false lower layer individual only replace higher layer individual
