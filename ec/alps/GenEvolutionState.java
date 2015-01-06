@@ -189,9 +189,7 @@ public class GenEvolutionState extends EvolutionState
 
 		// SHOULD WE QUIT? -- 
 		if (Engine.globalEvaluations >= Engine.alpsEvaluations)
-		{
 			return R_FAILURE;
-		}
 	
 
 		// PRE-BREEDING EXCHANGING

@@ -128,9 +128,9 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		else state.output.warning("No statistics file specified, printing to stdout at end.", base.push(P_STATISTICS_FILE));
 	}
 
-	
-	
-	
+
+
+
 	public void postInitializationStatistics(final EvolutionState state)
 	{
 		super.postInitializationStatistics(state);
@@ -144,33 +144,36 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 	public void postEvaluationStatistics(final EvolutionState state)
 	{
 		super.postEvaluationStatistics(state);
-
+        boolean isALPSEA      = true;
 		// for now we just print the best fitness per subpopulation.
-		
+
 		/*
 		 * At the beginning of evolution, UNSET FREQUENCY count of all upper layers excluding layer 0
 		 * Layer 0 might begin with initial or default frequency settings specified in the parameter file
 		 * 
 		 * DONT care if Engine.use_only_default_node_pr is true
 		 */
-		if(state.alps.index==0 && Engine.completeGenerationalCount==0 && !Engine.fsalps_use_only_default_node_pr)
-		{ 
-			for(int l=1;l<state.alps.layers.size();l++)
-				state.alps.layers.get(l).evolutionState.nodeCountTerminalSet =
-				TreeAnalyzer.unsetNodeCount(
-						state.alps.layers.get(l).evolutionState,
-						state.alps.layers.get(l).evolutionState.nodeCountTerminalSet);
+		try
+		{ //this avoid NullPinterException error when using canonical EA, in which case Layers are not defined
+			if(state.alps.index==0 && Engine.completeGenerationalCount==0 && !Engine.fsalps_use_only_default_node_pr)
+				for(int l=1;l<state.alps.layers.size();l++)
+					state.alps.layers.get(l).evolutionState.nodeCountTerminalSet =
+					TreeAnalyzer.unsetNodeCount(
+							state.alps.layers.get(l).evolutionState,
+							state.alps.layers.get(l).evolutionState.nodeCountTerminalSet);
 		}
-		
-		
+		catch (NullPointerException e)
+		{isALPSEA = false;}
+
+
 		/* 
 		 * unset values of this.nodeCountTerminalSet at the beginning of every generation 
 		 * this is to ensure that a gnerational count is maintained without accumulating all counts
 		 * from all layers
 		 * if(!Engine.use_only_default_node_pr)
 		 */
-		 state.nodeCountTerminalSet = 
-			TreeAnalyzer.unsetNodeCount(state, state.nodeCountTerminalSet);
+		state.nodeCountTerminalSet = 
+				TreeAnalyzer.unsetNodeCount(state, state.nodeCountTerminalSet);
 
 		Individual[] best_i = new Individual[state.population.subpops.length];  // quiets compiler complaints
 		for(int x=0;x<state.population.subpops.length;x++)
@@ -186,9 +189,8 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 				 * gather statistics of node usage in entire population 
 				 * state.nodeCountTerminalSet is updated
 				 * */
-				state.population.subpops[x].individuals[y].
-				             gatherIndividualNodeStats(state,state.nodeCountTerminalSet);
-				
+				state.population.subpops[x].individuals[y].gatherIndividualNodeStats(state,state.nodeCountTerminalSet);
+
 				//find best individual
 				if (state.population.subpops[x].individuals[y].fitness.betterThan(best_i[x].fitness))
 					best_i[x] = state.population.subpops[x].individuals[y];
@@ -198,49 +200,44 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 			if (best_of_run[x]==null || best_i[x].fitness.betterThan(best_of_run[x].fitness))
 				best_of_run[x] = (Individual)(best_i[x].clone());
 		}
-		
+
 
 		// print the best-of-generation individual 
-		/**
-		 * @author anthony
-		 * ALPS Stats Modification
-		 */
-		//if (doGeneration) state.output.println("\nGeneration: " + state.generation,statisticslog);
+		
 		//if (doGeneration) state.output.print("" + Engine.completeGenerationalCount,statisticslog);
-		
-		if (doGeneration) state.output.print("" + Engine.globalEvaluations,statisticslog);
-		
-		
-		
+		if (doGeneration && isALPSEA) 
+			state.output.print("" + Engine.globalEvaluations,statisticslog);
+		else //when using canonical EA
+			state.output.print("" + state.generation,statisticslog);
+
+
 		//if (doGeneration) state.output.println("Best Individual:",statisticslog);
 		for(int x=0;x<state.population.subpops.length;x++)
 		{
 			//if (doGeneration) state.output.println("Subpopulation " + x + ":",statisticslog);
-			
+
 			/** use this to gather statistics of best individual in population */
 			//if (doGeneration) best_i[x].gatherIndividualNodeStats(state,statisticslog,false);
-			
-			
+
+
 			/** PRINT all nodes with related usage per layer */
 			for (Entry<String, Double> entry : state.nodeCountTerminalSet.entrySet()) 
 				state.output.print("\t"+entry.getValue(),statisticslog);
-				//state.output.println(entry.getKey() + ": "+entry.getValue(),statisticslog);
-				
-			
-			
+			//state.output.println(entry.getKey() + ": "+entry.getValue(),statisticslog);
+
 			/*
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of generation" + 
 					(best_i[x].evaluated ? " " : " (evaluated flag not set): ") +
 					best_i[x].fitness.fitnessToStringForHumans());
 
 			// describe the winner if there is a description
-			
+
 			if (doGeneration && doPerGenerationDescription) 
 			{
 				if (state.evaluator.p_problem instanceof SimpleProblemForm)
 					((SimpleProblemForm)(state.evaluator.p_problem.clone())).describe(state, best_i[x], x, 0, statisticslog);   
 			}
-			*/
+			 */
 		}
 		state.output.println(" ",statisticslog);
 	}

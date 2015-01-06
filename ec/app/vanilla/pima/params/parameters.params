@@ -68,7 +68,8 @@ gp.nc.2.child.1 = nil
 # Assign all function/terminal set to the GP primitive set.
 # NB: Added function set: Div, Max & Min
 gp.fs.size = 1
-gp.fs.0 = ec.gp.GPFunctionSet
+#gp.fs.0 = ec.gp.GPFunctionSet
+gp.fs.0           = ec.alps.fsalps.FSALPSGPFunctionSet
 gp.fs.0.name = f0
 
 gp.fs.0.size               = 17
@@ -118,8 +119,12 @@ eval.problem.total-number-of-points        = 168
 
 #Specification of output statistics files
 
-stat.num-children = 2
+stat.num-children = 3
 stat.child.0                = ec.simple.SimpleShortStatistics
 stat.child.0.file           = ../output/cmtrx.stats
 stat.child.1                = ec.simple.SimpleStatistics
+stat.child.1.silent.print   = true
 stat.child.1.file           = ../output/ss.stats
+stat.child.2                = ec.alps.statistics.NodeStatistics
+stat.child.2.silent.print   = true
+stat.child.2.file           = ../output/node.stats

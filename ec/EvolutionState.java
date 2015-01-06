@@ -422,12 +422,12 @@ public class EvolutionState implements Singleton
 
 		generation = 0;
 
-		/* replacement strategy */
+		/* replacement strategy 
 		p = Engine.base().push(P_REPLACEMENT);
 		replacement = (Replacement)
 				(parameters.getInstanceForParameter(p,null,Replacement.class));
 		replacement.setup(this,p);  
-
+        */
 	}
 
 

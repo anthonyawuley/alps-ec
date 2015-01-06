@@ -69,7 +69,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 		/**
 		 * EMPTY INITIAL POPULATION TO LEAVE SINGLE INDIVIDUAL - This is to prevent NullPointer Exception caused during initial inter-layer migrations
 		 **/
-		
+
 		population.subpops[0].individuals = 
 				Operations.emptyPop(population.subpops[0].individuals);
 
@@ -161,6 +161,11 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 		//population = exchanger.preBreedingExchangePopulation(this);
 		//statistics.postPreBreedingExchangeStatistics(this);
 
+		// SHOULD WE QUIT? -- 
+		if (Engine.globalEvaluations >= Engine.alpsEvaluations)
+			return R_FAILURE;
+
+
 		//perform steady state evolution for one layer population
 		for(int k=0;k<popSize;k++)
 			result = steadyEvolve(); 
@@ -174,7 +179,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 		/* AT REGULAR INTERVALS, CREATE INDIVIDUALS AND ASSIGN CURRENT EVALUATION COUNT */
 		if(alps.layers.get(alps.index).initializerFlag)
 			restartIndEvaluationCount(alps.layers.get(alps.index).evolutionState,Engine.completeEvaluationCount);
-		
+
 		/* Calculate age of individuals based on current evaluation count */
 		calculateAge(alps.layers.get(alps.index).evolutionState,Engine.completeEvaluationCount);
 
@@ -399,7 +404,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 			 * individuals in a layer -- this will determine if new breeding is needed*/
 			if(!state.alps.layers.get(state.alps.index).getIsBottomLayer())
 				individualCount[x] = state.population.subpops[x].individuals.length; 
-			
+
 			total +=state.population.subpops[x].individuals.length;
 		}
 		return total;
