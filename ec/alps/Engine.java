@@ -205,7 +205,7 @@ public class Engine extends Evolve {
 		}
 		
 		/* determine number of evaluations */
-		alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * (generationSize + 1);
+		alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * generationSize;
 		//alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * (Engine.generationSize + 1);
 
 		//print replacement strategy
