@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import ec.EvolutionState;
 import ec.Individual;
-import ec.alps.layers.ALPSLayers;
 import ec.alps.layers.Layer;
 import ec.alps.util.Operations;
 import ec.steadystate.SteadyStateBreeder;
@@ -95,10 +94,8 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 		 * NB: statistics collection can't keep file for layer 0 only works for first round age gap generations if this is
 		 *     skipped (no if condition)
 		 */
-		if(Engine.completeGenerationalCount==1) //was 1
-		{
+		if(Engine.completeGenerationalCount==0) //was 1
 			setup(this,null);  // a garbage Parameter
-		}
 
 		// POPULATION INITIALIZATION
 		//output.message("Initializing Generation 0 " + generation);
@@ -155,7 +152,13 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 	public int evolve()
 	{
 		int result = R_NOTDONE;
-		int popSize = popSizeLayer(alps.layers.get(alps.index).evolutionState);
+		
+		/* Previous implementation. replaced by Operations.expectedPopulation(...) and howManyToBreed(...)
+		 * int popSize = popSizeLayer(Engine.alps.layers.get(Engine.alps.index).evolutionState);
+		 */
+		
+		int popSize = Operations.expectedPopulation(Engine.alps.layers.get(Engine.alps.index).evolutionState);
+		howManyToBreed(Engine.alps.layers.get(Engine.alps.index).evolutionState);
 
 		//statistics.prePreBreedingExchangeStatistics(this);
 		//population = exchanger.preBreedingExchangePopulation(this);
@@ -177,11 +180,11 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 		statistics.postPostBreedingExchangeStatistics(this);
 
 		/* AT REGULAR INTERVALS, CREATE INDIVIDUALS AND ASSIGN CURRENT EVALUATION COUNT */
-		if(alps.layers.get(alps.index).initializerFlag)
-			restartIndEvaluationCount(alps.layers.get(alps.index).evolutionState,Engine.completeEvaluationCount);
+		if(Engine.alps.layers.get(Engine.alps.index).initializerFlag)
+			restartIndEvaluationCount(Engine.alps.layers.get(Engine.alps.index).evolutionState,Engine.completeEvaluationCount);
 
 		/* Calculate age of individuals based on current evaluation count */
-		calculateAge(alps.layers.get(alps.index).evolutionState,Engine.completeEvaluationCount);
+		calculateAge(Engine.alps.layers.get(Engine.alps.index).evolutionState,Engine.completeEvaluationCount);
 
 		return  result;
 	}
@@ -195,7 +198,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 		{ 
 			output.message("Generation " + generation+ "\t"
 					+ "Evaluations " + evaluations + "\t"
-					+ "Layer "+ alps.index + " "
+					+ "Layer "+ Engine.alps.index + " "
 					+ "Global Generation # " + Engine.completeGenerationalCount +"\t"
 					+ "Global Evaluation # " + Engine.completeEvaluationCount);
 			//output.message("Generation " + generation +"\tEvaluations " + evaluations);
@@ -392,6 +395,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 	 * Calculate population size of all sub-populations in a layer
 	 * @param state
 	 * @return
+	 * @deprecated check similar implementation in Operations.expectedPopulation(...)
 	 */
 	private int popSizeLayer(EvolutionState state)
 	{
@@ -402,12 +406,31 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 			/* Count population in each subpop
 			 * This is very important and must be called in evolve to keep count of
 			 * individuals in a layer -- this will determine if new breeding is needed*/
-			if(!state.alps.layers.get(state.alps.index).getIsBottomLayer())
+			if(!Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer())
 				individualCount[x] = state.population.subpops[x].individuals.length; 
 
 			total +=state.population.subpops[x].individuals.length;
 		}
 		return total;
+	}
+	
+	
+	/**
+	 * Calculate how many individuals are available per sub population after inter layer movements
+	 * This is used to determine how many extra individuals are to be added to fill up the full population for
+	 * each subpopulation
+	 * @param state
+	 * @return
+	 */
+	private void howManyToBreed(EvolutionState state)
+	{
+		for(int x=0;x<state.population.subpops.length;x++)
+			/* Count population in each subpop
+			 * This is very important and must be called in evolve to keep count of
+			 * individuals in a layer -- this will determine if new breeding is needed*/
+			if(!Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer())
+				individualCount[x] = state.population.subpops[x].individuals.length; 
+
 	}
 
 

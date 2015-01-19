@@ -1,0 +1,131 @@
+# Anthony Awuley
+# COSC5F90 - Thesis
+# Testing BREAST CANCER
+# https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)
+
+parent.0                            = ../../../../gp/koza/koza.params
+generations                         = 300
+quit-on-run-complete                = false
+
+#jobs specifies the number of runs you would wish to perform
+jobs                                = 20
+pop.subpops                         = 1
+pop.subpop.0.size                   = 1000
+breed.elite.0.1                     = 30
+breed                               = ec.simple.SimpleBreeder
+breedthreads                        = 1
+evalthreads                         = 1
+seed.0                              = 1
+
+#TOURNAMENT SELECTION
+select.tournament.size              = 7
+gp.koza.reproduce.source.0          = ec.select.TournamentSelection
+
+
+#DEFAULT KozaNodeSelector PARAMETERS
+gp.koza.ns.nonterminals             = 0.9
+gp.koza.ns.root                     = 0.0
+gp.koza.ns.terminals                = 0.1
+
+
+#CROSSOVER RESTRICTIONS
+gp.koza.xover.maxdepth             = 17
+gp.koza.xover.ns.0                 = ec.gp.koza.KozaNodeSelector
+gp.koza.xover.ns.1                 = same
+gp.koza.xover.source.0             = ec.select.TournamentSelection
+gp.koza.xover.source.1             = same
+gp.koza.xover.tries                = 1
+
+
+pop.subpop.0.species.crossover-type = one
+pop.subpop.0.species.crossover-prob = 0.90
+pop.subpop.0.species.mutation-prob  = 0.10
+pop.subpop.0.species.ind.numtrees   = 1
+pop.subpop.0.species.ind.tree.0     = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc  = tc0
+
+#DEFINE NODE CONSTRAINTS
+gp.nc.size = 3
+
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = nc0
+gp.nc.0.returns = nil
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = nc1
+gp.nc.1.returns = nil
+gp.nc.1.size = 1
+gp.nc.1.child.0 = nil
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = nc2
+gp.nc.2.returns = nil
+gp.nc.2.size = 2
+gp.nc.2.child.0 = nil
+gp.nc.2.child.1 = nil
+
+
+# Assign all function/terminal set to the GP primitive set.
+# NB: Added function set: Div, Max & Min
+gp.fs.size = 1
+#gp.fs.0 = ec.gp.GPFunctionSet
+gp.fs.0           = ec.alps.fsalps.FSALPSGPFunctionSet
+gp.fs.0.name = f0
+
+gp.fs.0.size               = 17
+gp.fs.0.func.0             = ec.app.canonical.pima.ts.NumbTimesPreg
+gp.fs.0.func.0.nc          = nc0
+gp.fs.0.func.1             = ec.app.canonical.pima.ts.PlasmaGlucoseConc
+gp.fs.0.func.1.nc          = nc0
+gp.fs.0.func.2             = ec.app.canonical.pima.ts.DiastolicBP
+gp.fs.0.func.2.nc          = nc0
+gp.fs.0.func.3             = ec.app.canonical.pima.ts.TricepsSkinFoldThickness
+gp.fs.0.func.3.nc          = nc0
+gp.fs.0.func.4             = ec.app.canonical.pima.ts.TwoHourSerumInsulin
+gp.fs.0.func.4.nc          = nc0
+gp.fs.0.func.5             = ec.app.canonical.pima.ts.BMI
+gp.fs.0.func.5.nc          = nc0
+gp.fs.0.func.6             = ec.app.canonical.pima.ts.DiabetesPedigreeFunction
+gp.fs.0.func.6.nc          = nc0     
+gp.fs.0.func.7             = ec.app.canonical.pima.ts.Age
+gp.fs.0.func.7.nc          = nc0
+gp.fs.0.func.8             = ec.app.canonical.pima.ts.RegERC
+gp.fs.0.func.8.nc          = nc0
+gp.fs.0.func.9             = ec.app.canonical.pima.fs.Add
+gp.fs.0.func.9.nc          = nc2
+gp.fs.0.func.10            = ec.app.canonical.pima.fs.Sub
+gp.fs.0.func.10.nc         = nc2
+gp.fs.0.func.11            = ec.app.canonical.pima.fs.Mul
+gp.fs.0.func.11.nc         = nc2
+gp.fs.0.func.12            = ec.app.canonical.pima.fs.Div
+gp.fs.0.func.12.nc         = nc2
+gp.fs.0.func.13            = ec.app.canonical.pima.fs.Max
+gp.fs.0.func.13.nc         = nc2
+gp.fs.0.func.14            = ec.app.canonical.pima.fs.Min
+gp.fs.0.func.14.nc         = nc2
+gp.fs.0.func.15            = ec.app.canonical.pima.fs.Ln
+gp.fs.0.func.15.nc         = nc1
+gp.fs.0.func.16            = ec.app.canonical.pima.fs.Log10
+gp.fs.0.func.16.nc         = nc1
+
+eval.problem = ec.app.canonical.pima.MultiValuedRegressionCoscA1B
+eval.problem.data = ec.app.canonical.pima.DoubleData
+eval.problem.pima-indians-diabetes-data-raw        = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-data.txt
+eval.problem.pima-indians-diabetes-data-clean      = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-data-new.txt
+eval.problem.pima-indians-diabetes-data-train-data = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-train-data.txt
+eval.problem.pima-indians-diabetes-data-test-data  = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-test-data.txt
+
+eval.problem.total-number-of-points        = 168
+
+#Specification of output statistics files
+
+stat.num-children = 3
+stat.child.0                = ec.simple.SimpleShortStatistics
+stat.child.0.file           = ../output/cmtrx.stats
+stat.child.1                = ec.simple.SimpleStatistics
+stat.child.1.silent.print   = true
+stat.child.1.file           = ../output/ss.stats
+stat.child.2                = ec.alps.statistics.NodeStatistics
+stat.child.2.silent.print   = true
+stat.child.2.file           = ../output/node.stats

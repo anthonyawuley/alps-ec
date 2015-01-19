@@ -70,6 +70,9 @@ alps.age-only-current-layer      = false
 #used to determine if frequency in last layer is used to generate probality selection on a generational basis
 alps.fsalps-last-layer-gen-freq-count = false
 
+# when enabled, nodes are counted in all layers and converted
+# to probability values used during mutation and tree initialization in bottom layer
+alps.fsalps-use-all-layers            = true
 
 
 #ec.gp.koza.koza.params

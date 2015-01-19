@@ -24,6 +24,9 @@ public class Engine extends Evolve {
 	/** Returns the default base. */
 	public static final Parameter base() { return new Parameter(ALPS); }
 
+	/** */
+	public static ALPSLayers alps;
+	
 	public  static int completeGenerationalCount = 0; //changed from 1
 	/** used in steady state evolution */
 	public  static int completeEvaluationCount   = 0;
@@ -62,13 +65,23 @@ public class Engine extends Evolve {
 	public static final String FSALPS_LAST_LAYER_GEN_FREQ_COUNT      = "fsalps-last-layer-gen-freq-count";
 	public static final String ALPS_AGE_ONLY_CURRENT_LAYER           = "age-only-current-layer";
 	public static final String ALPS_ALWAYS_BREED_MAXIMUM_POP         = "always-breed-maximum-population";
-    /** Used to keep node usage for terminal sets */
+	public static final String FSALPS_USE_ALL_LAYERS                 = "fsalps-use-all-layers";
+			
+    /** Used to keep node usage for terminal sets 
+     * stored default node settings for terminals */
 	public static Map<String, Double>  nodeCountTerminalSet = new LinkedHashMap<String, Double>();
-	/** Used to keep node usage for function sets */
+	/** Used to keep node usage for function sets 
+	 * stored default node settings for non-terminals */
 	public static Map<String, Double>  nodeCountFunctionSet = new LinkedHashMap<String, Double>();
 
 	/** Use strictly default node count specified in parameter file */
-	public static boolean fsalps_use_only_default_node_pr          = false;
+	public static boolean fsalps_use_only_default_node_pr   = false;
+	
+	/** When true, all layers node count is used in generating
+	 *  probability node selection
+	 *  Else only last layer node count (frequency) is converted to probabilities */
+	public static boolean fsalps_use_all_layers             = false;
+	
 	/** 
 	 * Use FSALPS generated frequency count during mutation 
 	 * @deprecated 
@@ -244,6 +257,9 @@ public class Engine extends Evolve {
 				parameters.getBoolean(base().push(FSALPS_USE_MUTATION_PARAM),null,true);
 		fsalps_last_layer_gen_freq_count =  
 				parameters.getBoolean(base().push(FSALPS_LAST_LAYER_GEN_FREQ_COUNT),null,false);
+		fsalps_use_all_layers            =  
+				parameters.getBoolean(base().push(FSALPS_USE_ALL_LAYERS),null,false);
+		
 	}
 
 
@@ -394,7 +410,8 @@ public class Engine extends Evolve {
 
 			new Engine(args,job,pd);
 
-			ALPSLayers alps = new ALPSLayers(alpsLayers,0);
+			/* all running instances of Evolution state have access to ALPS Layers */
+			alps = new ALPSLayers(alpsLayers,0);
 
 			/* this must be called after new Engine(args,job,pd) to setup the parameters */
 			//alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * (Engine.generationSize + 1);

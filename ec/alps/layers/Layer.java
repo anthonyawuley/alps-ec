@@ -46,6 +46,7 @@ public class Layer implements LayerInterface {
 	 * used to count the number of individuals added to a higher layer
 	 * mostly useful for steady state evaluation when evolution first starts in a higher
 	 * layer
+	 * @deprecated NO LONGER USED
 	 */
 	public int individualCount = 0;
 	public int evaluation;

@@ -43,9 +43,9 @@ public class Mutation extends MutationPipeline {
 		int n;
 		
 
-		if(state.alps.layers.get(state.alps.index).getIsBottomLayer() || 
+		if(Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer() || 
 				state.random[0].nextDouble()<=selectionPressure || 
-						state.alps.layers.get(state.alps.index-1).evolutionState.population.subpops[subpopulation].individuals.length==0)
+						Engine.alps.layers.get(Engine.alps.index-1).evolutionState.population.subpops[subpopulation].individuals.length==0)
 		{
 			// grab individuals from our source and stick 'em right into inds.
 			// we'll modify them from there
@@ -60,12 +60,12 @@ public class Mutation extends MutationPipeline {
 			// grab individuals from our source and stick 'em right into inds.
 			// we'll modify them from there
 			n = sources[0].produce(min,max,start,subpopulation,inds,
-					state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+					Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 
 			// should we bother?
 			if (!state.random[thread].nextBoolean(likelihood))
 				return reproduce(n, start, subpopulation, inds, 
-						state.alps.layers.get(state.alps.index-1).evolutionState, thread, false);  // DON'T produce children from source -- we already did
+						Engine.alps.layers.get(Engine.alps.index-1).evolutionState, thread, false);  // DON'T produce children from source -- we already did
 			
 			/* When this flag is enabled, prevent increasing age for idividuals selected from lower layer for breeding  */
 			if(Engine.alps_age_only_current_layer)

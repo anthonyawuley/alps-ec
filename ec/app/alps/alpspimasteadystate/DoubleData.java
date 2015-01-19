@@ -13,5 +13,5 @@ public class DoubleData extends GPData
     public double x;    // return value
 
     public void copyTo(final GPData gpd)   // copy my stuff to another DoubleData
-        { ((ec.app.alps.alpspima.DoubleData)gpd).x = x; }
+        { ((ec.app.alps.pima.DoubleData)gpd).x = x; }
     }

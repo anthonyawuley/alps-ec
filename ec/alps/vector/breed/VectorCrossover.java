@@ -10,6 +10,7 @@ package ec.alps.vector.breed;
 import ec.vector.*;
 import ec.vector.breed.VectorCrossoverPipeline;
 import ec.*;
+import ec.alps.Engine;
 import ec.gp.GPIndividual;
 import ec.util.*;
 
@@ -84,7 +85,7 @@ public class VectorCrossover extends VectorCrossoverPipeline
 			// grab two individuals from our sources
 			if (sources[0]==sources[1])  // grab from the same source
 			{ 
-				if(state.alps.layers.get(state.alps.index).getIsBottomLayer())
+				if(Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer())
 				{
 					sources[0].produce(2,2,0,subpopulation,parents,state,thread);
 				}
@@ -101,14 +102,14 @@ public class VectorCrossover extends VectorCrossoverPipeline
 
 						//perform selection from current population if previous population is empty
 						if((state.random[0].nextDouble()<=selctionPressure) || 
-								state.alps.layers.get(state.alps.index-1).evolutionState.population.subpops[0].individuals.length==0)
+								Engine.alps.layers.get(Engine.alps.index-1).evolutionState.population.subpops[0].individuals.length==0)
 						{ 
 							sources[0].produce(2,2,0,subpopulation,parents,state,thread);
 						}
 						else
 						{ 
 							sources[0].produce(2,2,0,subpopulation,parents,
-									state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+									Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 						}
 					}
 
@@ -138,7 +139,7 @@ public class VectorCrossover extends VectorCrossoverPipeline
 				{
 					alpsParents = parents.clone(); //stores parents of first selection on second loop
 
-					if(state.alps.layers.get(state.alps.index).getIsBottomLayer())
+					if(Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer())
 					{
 						sources[0].produce(1,1,0,subpopulation,parents,state,thread);
 						sources[1].produce(1,1,1,subpopulation,parents,state,thread);
@@ -146,7 +147,7 @@ public class VectorCrossover extends VectorCrossoverPipeline
 					else
 					{
 						if((state.random[0].nextDouble()<=selctionPressure) || 
-								state.alps.layers.get(state.alps.index-1).evolutionState.population.subpops[0].individuals.length<=0)
+								Engine.alps.layers.get(Engine.alps.index-1).evolutionState.population.subpops[0].individuals.length<=0)
 						{
 							sources[0].produce(1,1,0,subpopulation,parents,state,thread);
 							sources[1].produce(1,1,1,subpopulation,parents,state,thread);
@@ -154,9 +155,9 @@ public class VectorCrossover extends VectorCrossoverPipeline
 						else
 						{
 							sources[0].produce(1,1,0,subpopulation,parents,
-									state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+									Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 							sources[1].produce(1,1,1,subpopulation,parents,
-									state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+									Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 						}
 					}
 				}

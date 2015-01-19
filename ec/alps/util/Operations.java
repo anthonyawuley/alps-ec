@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import ec.EvolutionState;
 import ec.Individual;
+import ec.Initializer;
+import ec.Population;
+import ec.util.Parameter;
 
 public class Operations {
-
-	public Operations() {
-		// TODO Auto-generated constructor stub
-	}
-
+       
+	public static final String POP_SIZE               = "size";
 
     /**
      * Empties the individuals specifield individuals in a subpopulation
@@ -76,11 +76,14 @@ public class Operations {
 	
 	
 	/**
-	 * Calculate population size of all sub-populations in a layer
+	 * Calculate population size of all sub-populations in a layer.
+	 * This only represents current evolving population. Which means if there is inter layer individual movement
+	 * without filling, a subpopulation might have lower than expected full population size as specified in
+	 * parameter file
 	 * @param state
-	 * @return
+	 * @return current population size of evolving population
 	 */
-	public static int popSize(EvolutionState state)
+	public static int activePopulaton(EvolutionState state)
 	{
 		int total = 0;
 		for(int x=0;x<state.population.subpops.length;x++)
@@ -89,6 +92,22 @@ public class Operations {
 		return total;
 	}
 	
+	/**
+	 * calculates from parameter file the total expected population for all subpopulations
+	 * This is mostly useful when performing steadyStateEvolution
+	 * @param state
+	 * @return total parameter population size for all subpopulations
+	 */
+	public static int expectedPopulation(EvolutionState state)
+	{
+		int total = 0;
+		for(int sub=0;sub<state.population.subpops.length;sub++)
+			total +=state.parameters.getInt(new Parameter(Initializer.P_POP).
+					push(Population.P_SUBPOP).push(sub+"").push(POP_SIZE),null);
+		
+		return total;
+
+	}
 	
 	
 

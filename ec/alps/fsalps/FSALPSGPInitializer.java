@@ -18,6 +18,7 @@ import ec.gp.GPNodeConstraints;
 import ec.gp.GPSetType;
 import ec.gp.GPTreeConstraints;
 import ec.gp.GPType;
+import ec.simple.SimpleInitializer;
 import ec.util.Parameter;
 
 /* 
@@ -59,13 +60,14 @@ public class FSALPSGPInitializer extends GPInitializer
 	/** probability of using a node */
 	public final static String P_NODEPROBABILITY = "pr";
 
+
 	public void setup(final EvolutionState state, final Parameter base)
 	{
 		super.setup(state,base);
 
 		/**
 		 * TODO Move setup methods to the corresponding GP type.
-		 */
+		
 		// This is a good place to set up the types.  We use our own base off the
 		// default GP base.  This MUST be done before loading constraints.
 		setupTypes(state,GPDefaults.base().push(P_TYPE));
@@ -79,8 +81,8 @@ public class FSALPSGPInitializer extends GPInitializer
 				state,GPDefaults.base().push(P_FUNCTIONSETS));
 		setupTreeConstraints(
 				state,GPDefaults.base().push(P_TREECONSTRAINTS));
-
-
+        */
+		
 		if (!state.parameters.exists(Engine.base().push(Engine.FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM), null))
 			state.output.warning("default value of \"false\" will be assumed for parameter \"alps."+Engine.FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM+"\" ");
 		if (!state.parameters.exists(Engine.base().push(Engine.FSALPS_USE_MUTATION_PARAM), null))
@@ -89,6 +91,7 @@ public class FSALPSGPInitializer extends GPInitializer
 			state.output.warning("default value of \"true\" will be assumed for parameter  " + "\"alps."+Engine.FSALPS_LAST_LAYER_GEN_FREQ_COUNT+ " ");
 
 	}
+
 
 
 

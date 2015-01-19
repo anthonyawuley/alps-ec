@@ -172,7 +172,7 @@ public class EvolutionState implements Singleton
 	/** */
 	public final static String P_REPLACEMENT = "layer-replacement";
 	/** */
-	public ALPSLayers alps;
+	//public ALPSLayers alps;
 	/** */
 	public Map<String, Double>  nodeCountTerminalSet  = new LinkedHashMap<String, Double>();
 	/** */
@@ -422,12 +422,12 @@ public class EvolutionState implements Singleton
 
 		generation = 0;
 
-		/* replacement strategy 
+		/* replacement strategy  */
 		p = Engine.base().push(P_REPLACEMENT);
 		replacement = (Replacement)
 				(parameters.getInstanceForParameter(p,null,Replacement.class));
-		replacement.setup(this,p);  
-        */
+		replacement.setup(this,p); 
+
 	}
 
 
@@ -497,21 +497,24 @@ public class EvolutionState implements Singleton
 	 * This was overloaded to run ALPS GP
 	 * @author anthony
 	 */
-	public void run(ALPSLayers alpsLayers, int condition)
+	public void run(ALPSLayers alps, int condition)
 	{
 		/* all running instances of Evolution state have access to ALPS Layers */
-		this.alps = alpsLayers;
+		//this.alps = alpsLayers;
 		//int result = R_NOTDONE;
 
 		/* NOTE: Node count is performed for every generation in which there are individuals in the last layer
 		 * use largest layer node terminal count 
 		 * This is performed only when Engine.use_only_default_node_pr is FALSE and the generational frequency count flag
 		 * for the last layer is TRUE
+		 * 
+		 * NB: A layer can be active when no statistics data [NodeStatistics has not been called] has been generated for the first time
+		 * in such cases, the frequency data is the same as what is already been used. 
 		 * */
 		if(!Engine.fsalps_use_only_default_node_pr && Engine.fsalps_last_layer_gen_freq_count && 
-				Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState)>0)
-			Engine.roulette = new Roulette( 
-					alps.layers.get(alps.layers.size()-1).evolutionState.nodeCountTerminalSet);
+				alps.layers.get(alps.layers.size()-1).getIsActive()
+				/*(Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState) == Engine.generationSize)*/ )
+			Engine.roulette = new Roulette(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
 
 
 		if(alps.layers.get(alps.index).getIsBottomLayer() && alps.layers.get(alps.index).initializerFlag)
@@ -520,11 +523,15 @@ public class EvolutionState implements Singleton
 			 * This condition is performed only if Engine.use_only_default_node_pr is Boolean.FALSE
 			 * and Engine.fsalps_last_layer_gen_freq_count is Boolean.FALSE :: This last check avoids multiple count process
 			 * in the even that that flag is Boolean.TRUE.
+			 *  
+		     * NB: A layer can be active when no statistics data [NodeStatistics has not been called] has been generated for the first time
+		     * in such cases, the frequency data is the same as what is already been used. 
 			 * */
 			if(!Engine.fsalps_use_only_default_node_pr  && !Engine.fsalps_last_layer_gen_freq_count  && 
-					Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState)>0)
+					alps.layers.get(alps.layers.size()-1).getIsActive()
+					/*(Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState) == Engine.generationSize)*/  )
 				Engine.roulette = new Roulette( 
-						alps.layers.get(alps.layers.size()-1).evolutionState.nodeCountTerminalSet);
+						alps,alps.layers.get(alps.layers.size()-1).evolutionState);
 
 			if ( (condition == C_STARTED_FRESH) )
 			{ 
@@ -548,14 +555,14 @@ public class EvolutionState implements Singleton
 		replacement.layerMigrations(alps,alps.layers.get(alps.index).evolutionState.population);
 
 		/* count only when evolve is performed */
-		alpsLayers.layers.get(alpsLayers.index).layerGenerationalCount++;
+		alps.layers.get(alps.index).layerGenerationalCount++;
 		
 		/*count evaluations in a layer */
-		alpsLayers.layers.get(alpsLayers.index).layerEvaluationCount += 
-				Operations.popSize(alps.layers.get(alps.index).evolutionState);
+		alps.layers.get(alps.index).layerEvaluationCount += 
+				Operations.activePopulaton(alps.layers.get(alps.index).evolutionState);
 
 		/* count evaluations */
-		Engine.globalEvaluations += Operations.popSize(alps.layers.get(alps.index).evolutionState);
+		Engine.globalEvaluations += Operations.activePopulaton(alps.layers.get(alps.index).evolutionState);
 
 		/* perform describe(...) for last layer */
 		if( (alps.layers.get(alps.layers.size()-1).result != R_NOTDONE) && (alps.index==alps.layers.size()-1 ))
@@ -565,8 +572,6 @@ public class EvolutionState implements Singleton
 		//alpsLayers.printAge(); 
 		//alpsLayers.printPopSize();
 	}
-
-
 
 
 

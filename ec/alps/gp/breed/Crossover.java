@@ -58,7 +58,7 @@ public class Crossover extends CrossoverPipeline{
 			// grab two individuals from our sources
 			if (sources[0]==sources[1])  // grab from the same source
 			{
-				if(state.alps.layers.get(state.alps.index).getIsBottomLayer())
+				if(Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer())
 				{
 					sources[0].produce(2,2,0,subpopulation,parents,state,thread);
 				}
@@ -75,14 +75,14 @@ public class Crossover extends CrossoverPipeline{
 
 						//perform selection from current population if previous population is empty
 						if((state.random[0].nextDouble()<=selectionPressure) || 
-								state.alps.layers.get(state.alps.index-1).evolutionState.population.subpops[subpopulation].individuals.length==0)
+								Engine.alps.layers.get(Engine.alps.index-1).evolutionState.population.subpops[subpopulation].individuals.length==0)
 						{
 							sources[0].produce(2,2,0,subpopulation,parents,state,thread);
 						}
 						else //selecting from lower layer
 						{
 							sources[0].produce(2,2,0,subpopulation,parents,
-									state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+									Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 							/* When this flag is enabled, prevent increasing age for idividuals selected from lower layer for breeding  */
 							if(Engine.alps_age_only_current_layer)
 								for(Individual id : parents)
@@ -101,7 +101,7 @@ public class Crossover extends CrossoverPipeline{
 			}
 			else // grab from different sources
 			{
-				if(state.alps.layers.get(state.alps.index).getIsBottomLayer())
+				if(Engine.alps.layers.get(Engine.alps.index).getIsBottomLayer())
 				{
 					sources[0].produce(1,1,0,subpopulation,parents,state,thread);
 					sources[1].produce(1,1,1,subpopulation,parents,state,thread);
@@ -113,7 +113,7 @@ public class Crossover extends CrossoverPipeline{
 						alpsParents = parents.clone(); //stores parents of first selection on second loop
 
 						if((state.random[0].nextDouble()<=selectionPressure) || 
-								state.alps.layers.get(state.alps.index-1).evolutionState.population.subpops[subpopulation].individuals.length<=0)
+								Engine.alps.layers.get(Engine.alps.index-1).evolutionState.population.subpops[subpopulation].individuals.length<=0)
 						{
 							sources[0].produce(1,1,0,subpopulation,parents,state,thread);
 							sources[1].produce(1,1,1,subpopulation,parents,state,thread);
@@ -121,9 +121,9 @@ public class Crossover extends CrossoverPipeline{
 						else //selecting from lower layer
 						{
 							sources[0].produce(1,1,0,subpopulation,parents,
-									state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+									Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 							sources[1].produce(1,1,1,subpopulation,parents,
-									state.alps.layers.get(state.alps.index-1).evolutionState,thread);
+									Engine.alps.layers.get(Engine.alps.index-1).evolutionState,thread);
 							/* When this flag is enabled, prevent increasing age for idividuals selected from lower layer for breeding  */
 							if(Engine.alps_age_only_current_layer)
 								for(Individual id : parents)

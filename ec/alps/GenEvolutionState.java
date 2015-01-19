@@ -124,7 +124,7 @@ public class GenEvolutionState extends EvolutionState
 	 */
 	public void startFresh() 
 	{
-		output.message("\n\nSetting up layer " + alps.index + 
+		output.message("\n\nSetting up layer " + Engine.alps.index + 
 				" Global Generation # " + Engine.completeGenerationalCount);
 
 		/*
@@ -163,7 +163,7 @@ public class GenEvolutionState extends EvolutionState
 	{
 		if (generation > 0) 
 			output.message("Generation " + generation + " "
-					+ "Layer "+ alps.index + " "
+					+ "Layer "+ Engine.alps.index + " "
 					+ "Global Generation # " + Engine.completeGenerationalCount);
 
 		//population.subpops[0].individuals[0]

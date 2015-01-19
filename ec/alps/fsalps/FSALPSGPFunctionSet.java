@@ -68,6 +68,7 @@ public class FSALPSGPFunctionSet extends GPFunctionSet
 
 	/**
 	 * @author anthony
+	 * individual node probability
 	 */
 	public final static String P_PROB    = "pr";
 
@@ -201,33 +202,38 @@ public class FSALPSGPFunctionSet extends GPFunctionSet
 			gpfi.setup(state,pp);
 
 
-			/**
+			/*
 			 * FSALPS
-			 * @author anthony
 			 * (....,null,1) assigns 0 to terminal sets and (....,null,0) assigns -1 to terminal sets
+			 * @author anthony
 			 */
 			gpfi.nodeFrequency  =  state.parameters.getInt(pp.push(P_PROB),null,1);
-			//boolean use_only_default_node_pr  =  state.parameters.getBoolean(new Parameter(USE_ONLY_DEFAULT_NODE_PR),null,false);
-
+			
 			/** build a map of node to frequency count: initial assignment is based on default settings */
 			if(gpfi.children.length ==0 /*gpfi.expectedChildren()==0*/)
-			{  
 				/*
 				 * Engine.nodeCountTerminalSet.put(gpfi.toString(), state.parameters.getInt(pp.push(P_PROB),null,1));
 				 * Not using gpfi.toString() in the event that multiple nodes have the same gpfi.toString() name
 				 * The class name however, is guaranteed to always be the same.
 				 */
-				if(Engine.fsalps_use_only_default_node_pr)
+				if(Engine.fsalps_use_only_default_node_pr || Engine.completeGenerationalCount==0 )
 				{
+					/* This is done during setup,
+					 * Engine.nodeCountTerminalSet holds terminals with the default frequency settings
+					 * NB: This is never modified if Engine.fsalps_use_only_default_node_pr is true */
 					Engine.nodeCountTerminalSet.put(gpfi.getClass().getName(), (double) state.parameters.getInt(pp.push(P_PROB),null,1));
-					state.nodeCountTerminalSet.put(gpfi.getClass().getName(), 0.0);
+					/* This is used to setup available nodes and their default frequencies
+					 * Values are modified in NodeStatitics when every EvolutionState counts terminal usage
+					 * in its trees*/
+					state.nodeCountTerminalSet.put(gpfi.getClass().getName(), (double) state.parameters.getInt(pp.push(P_PROB),null,1));
 				}
+				/*
 				else if (Engine.completeGenerationalCount==0) //perform assigment only at generation 0
 				{   
 					state.nodeCountTerminalSet.put(gpfi.getClass().getName(), (double) state.parameters.getInt(pp.push(P_PROB),null,1));
 					Engine.nodeCountTerminalSet.put(gpfi.getClass().getName(), (double) state.parameters.getInt(pp.push(P_PROB),null,1));
-				}
-			}
+				}*/
+		    
 			
 			// add to my collection
 			tmp.addElement(gpfi);

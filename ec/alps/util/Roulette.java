@@ -4,17 +4,53 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import ec.EvolutionState;
+import ec.alps.Engine;
+import ec.alps.layers.ALPSLayers;
+
 
 public class Roulette {
 
 	//private int node  =  -1; //set value to index selected in roulette
-	private Map<String, Double> map;      //loads default node probability settings
-	
+	private  Map<String, Double> map;      //loads default node probability settings
+
 	private ArrayList<ArrayList<Double>> roulette;
 
-	public Roulette(Map<String, Double> m) 
+	/**
+	 * state 
+	 *      EvolutionState
+	 * @param state
+	 */
+	public Roulette(ALPSLayers alps,EvolutionState state) 
 	{
-		this.map = m;
+
+		try
+		{   //Avoid Engine.alps.layers exception when alps.layers have not been set up
+			if (Engine.fsalps_use_all_layers)
+			{   /* Obtain initial node, value pairs from last layer */
+				map = alps.layers.get(0).evolutionState.nodeCountTerminalSet;
+				/* loop through remaining layers and add respective node frequency counts */
+				for(int i=1;i< Engine.alps.layers.size();i++)
+					for (Entry<String, Double> node : Engine.alps.layers.get(i).evolutionState.nodeCountTerminalSet.entrySet())
+						map.put(node.getKey(), node.getValue() + map.get(node.getKey()));
+						//System.out.println("ENGINE "+i + " "+ node.getKey() + ": "+ node.getValue()+" TOTAL:"+ map.get(node.getKey()));
+			}
+			else /*use last layer */
+				map = alps.layers.get(alps.layers.size()-1).evolutionState.nodeCountTerminalSet; 
+				//map = state.nodeCountTerminalSet; will also work if last layer evolutionState is parsed
+		}
+		catch(NullPointerException e) 
+		{   //this occurs during initialization, when ALPS is setting up
+			map = state.nodeCountTerminalSet;
+		}
+		
+		/* When Engine.fsalps_use_only_default_node_pr is "true", only default node probabilities are used
+		 * note that values set for each node are converted to probabilities
+		 * this assignment overrites all operations performed in the try{..} catch(...){...} above  */
+		if(Engine.fsalps_use_only_default_node_pr)
+			map = Engine.nodeCountTerminalSet;
+		
+        
 		convertFreqToProb();
 	}
 
@@ -46,6 +82,7 @@ public class Roulette {
 	{
 		roulette =  new ArrayList<>();
 		double total = totalFrequency(map);
+		
 		int c = 0;
 		for (Entry<String, Double> entry : map.entrySet()) 
 		{ 
@@ -54,42 +91,46 @@ public class Roulette {
 				nodeEntry.add(1.0 / (double) map.size());
 			else
 				nodeEntry.add((double) entry.getValue()/(double) total);
-				
+			
 			if(c==0)
 				nodeEntry.add((double) (nodeEntry.get(0))); //set upper bound for first node
 			else //set upper bound for other nodes by adding current frequency to total  
 				nodeEntry.add((double) (roulette.get(c-1).get(1) + (double) nodeEntry.get(0)));
-			
 			c++; 
-			//System.out.println("::::"+ entry.getKey() + " VAL: "+ entry.getValue() + "--" + nodeEntry.get(1)); 
-			
+			System.out.println("::::"+ entry.getKey() + " VAL: "+ entry.getValue() + "--" + nodeEntry.get(1)); 
+
 			roulette.add(nodeEntry);
 		}
 		return roulette;
 	}
-	
-	
+
+
 
 	/**
 	 * @param map
 	 * @return
 	 */
-	public int totalFrequency(Map<String, Double> map)
+	public static int totalFrequency(Map<String, Double> map)
 	{
 		int total = 0;
 		for (Entry<String, Double> entry : map.entrySet()) 
 			total += entry.getValue(); //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
-		
+
 		return total;
 	}
 
 
 	/**
+	 * Uses random probability (prob) to select from the roulette frequency mappings
+	 * generated in convertFreqToProb()
+	 * 
 	 * @param prob generated probability used in selection
 	 * @return int that represents a selected index for a node
+	 * @author anthony
 	 */
 	public int spin(double prob) 
-	{
+	{ //System.out.println("PRINTING PROBABILITY::::"+ prob);
+		
 		for(int i=0;i<roulette.size();i++ )
 		{
 			if(i==0)

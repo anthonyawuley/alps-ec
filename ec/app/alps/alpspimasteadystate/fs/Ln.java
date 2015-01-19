@@ -7,7 +7,7 @@
 package ec.app.alps.alpspimasteadystate.fs;
 
 import ec.*;
-import ec.app.alps.alpspima.DoubleData;
+import ec.app.alps.pima.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

@@ -1,0 +1,108 @@
+# Copyright 2014 by Anthony Awuley - Brock University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0                            = ../../../../gp/koza/koza.params
+generations                         = 300
+quit-on-run-complete                = false
+
+#jobs specifies the number of runs you would wish to perform
+jobs                                = 20
+pop.subpops                         = 1
+pop.subpop.0.size                   = 1000
+breed.elite.0.1                     = 30
+breed                               = ec.simple.SimpleBreeder
+breedthreads                        = 1
+evalthreads                         = 1
+seed.0                              = 1
+
+#TOURNAMENT SELECTION
+select.tournament.size              = 4
+gp.koza.reproduce.source.0          = ec.select.TournamentSelection
+
+
+#DEFAULT KozaNodeSelector PARAMETERS
+gp.koza.ns.nonterminals             = 0.9
+gp.koza.ns.root                     = 0.0
+gp.koza.ns.terminals                = 0.1
+
+
+#CROSSOVER RESTRICTIONS
+gp.koza.xover.maxdepth             = 17
+gp.koza.xover.ns.0                 = ec.gp.koza.KozaNodeSelector
+gp.koza.xover.ns.1                 = same
+gp.koza.xover.source.0             = ec.select.TournamentSelection
+gp.koza.xover.source.1             = same
+gp.koza.xover.tries                = 1
+
+
+pop.subpop.0.species.crossover-type = one
+pop.subpop.0.species.crossover-prob = 0.90
+pop.subpop.0.species.mutation-prob  = 0.10
+pop.subpop.0.species.ind.numtrees   = 1
+pop.subpop.0.species.ind.tree.0     = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc  = tc0
+
+# the next four items are already defined in koza.params, but we
+# put them here to be clear.
+
+gp.koza.mutate.source.0 = ec.select.TournamentSelection
+
+# We have one function set, of class GPFunctionSet
+gp.fs.size              = 1
+gp.fs.0                 = ec.alps.fsalps.FSALPSGPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name            = f0
+
+# We have five functions in the function set.  They are:
+gp.fs.0.size            = 13
+gp.fs.0.func.0          = ec.app.fsalps.lab10.ts.Q
+gp.fs.0.func.0.nc       = nc0
+gp.fs.0.func.0.pr       = 0
+gp.fs.0.func.1          = ec.app.fsalps.lab10.ts.R
+gp.fs.0.func.1.nc       = nc0
+gp.fs.0.func.1.pr       = 0
+gp.fs.0.func.2          = ec.app.fsalps.lab10.ts.S
+gp.fs.0.func.2.nc       = nc0
+gp.fs.0.func.2.pr       = 0
+gp.fs.0.func.3          = ec.app.fsalps.lab10.ts.T
+gp.fs.0.func.3.nc       = nc0
+gp.fs.0.func.3.pr       = 0
+gp.fs.0.func.4          = ec.app.fsalps.lab10.ts.U
+gp.fs.0.func.4.nc       = nc0
+gp.fs.0.func.4.pr       = 0
+gp.fs.0.func.5          = ec.app.fsalps.lab10.ts.V
+gp.fs.0.func.5.nc       = nc0
+gp.fs.0.func.5.pr       = 0
+gp.fs.0.func.6          = ec.app.fsalps.lab10.ts.W
+gp.fs.0.func.6.nc       = nc0
+gp.fs.0.func.6.pr       = 0
+gp.fs.0.func.7          = ec.app.fsalps.lab10.ts.X
+gp.fs.0.func.7.nc       = nc0
+gp.fs.0.func.7.pr       = 0
+gp.fs.0.func.8          = ec.app.fsalps.lab10.ts.Y
+gp.fs.0.func.8.nc       = nc0
+gp.fs.0.func.8.pr       = 0
+gp.fs.0.func.9          = ec.app.fsalps.lab10.ts.Z
+gp.fs.0.func.9.nc       = nc0
+gp.fs.0.func.9.pr       = 0
+gp.fs.0.func.10         = ec.app.fsalps.lab10.fs.Add
+gp.fs.0.func.10.nc      = nc2
+gp.fs.0.func.11         = ec.app.fsalps.lab10.fs.Sub
+gp.fs.0.func.11.nc      = nc2
+gp.fs.0.func.12         = ec.app.fsalps.lab10.fs.Mul
+gp.fs.0.func.12.nc      = nc2
+
+eval.problem            = ec.app.fsalps.lab10.MultiValuedRegression
+eval.problem.data       = ec.app.fsalps.lab10.DoubleData
+
+#Specification of output statistics files
+stat.num-children           = 3
+stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.file           = ../output/cmtrx.stats
+stat.child.1                = ec.alps.statistics.ALPSStatistics
+stat.child.1.silent.print   = true
+stat.child.1.file           = ../output/ss.stats
+stat.child.2                = ec.alps.statistics.NodeStatistics
+stat.child.2.silent.print   = true
+stat.child.2.file           = ../output/node.stats

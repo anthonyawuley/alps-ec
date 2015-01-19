@@ -34,12 +34,14 @@ public class TreeAnalyzer {
 	}
 	
 	/**
-	 * Unset node count to zero
-	 * @param state Evolution state object
+	 * Unset node count for each <b>map</b> key to zero<br>
+	 * map is modified
+	 * @param state Evolution state
 	 * @param map specifies a node type state.nodeCountTerminalSet or state.nodeCountFunctionSet
+	 * @author anthony
 	 */
 	public static Map<String, Double> unsetNodeCount(EvolutionState state,Map<String, Double> map)
-	{   //System.out.println("unsetNodeCount"); System.exit(0);
+	{  
 		for (Entry<String, Double> entry : map.entrySet()) 
 			map.put(entry.getKey(), 0.0);
 		

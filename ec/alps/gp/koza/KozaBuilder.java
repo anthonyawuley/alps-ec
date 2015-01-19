@@ -8,7 +8,6 @@
 package ec.alps.gp.koza;
 import ec.*;
 import ec.alps.Engine;
-import ec.alps.util.Operations;
 import ec.alps.util.Roulette;
 import ec.gp.*;
 import ec.util.*;
@@ -43,6 +42,11 @@ import ec.util.*;
 
 public abstract class KozaBuilder extends GPNodeBuilder
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1;
+	
 	public static final String P_MAXDEPTH = "max-depth";
 	public static final String P_MINDEPTH = "min-depth";
 
@@ -58,7 +62,7 @@ public abstract class KozaBuilder extends GPNodeBuilder
 	public void setup(final EvolutionState state, final Parameter base)
 	{
 		super.setup(state,base);
-
+        
 		Parameter def = defaultBase();
 
 		// load maxdepth and mindepth, check that maxdepth>0, mindepth>0, maxdepth>=mindepth
@@ -76,18 +80,25 @@ public abstract class KozaBuilder extends GPNodeBuilder
 			state.output.fatal("Max Depth must be >= Min Depth for a KozaBuilder",
 					base.push(P_MAXDEPTH),def.push(P_MAXDEPTH));
 
-		/**
+		/*
 		 * FSALPS 
+		 * Setting up roulette selection
+		 * NOTE: The initialization heare is performed once and modified subseuently in EvolutionState if
+		 * the parameter Engine.fsalps_use_only_default_node_pr is false.
+		 * Else the roulette probability distribution performed at Engine.completeGenerationalCount==0 is used
+		 * throughout the entire generation
+		 * 
+		 * ***when Engine.fsalps_use_all_layers is true, the entire population is analyzed and used to generate 
+		 * ***probablity data anytime a restart is initiated
+		 * 
+		 * Engine.completeGenerationalCount==0 || Engine.fsalps_use_all_layers is used, it could interferre with evolution
+		 * especialy when some nodes are eliminated in layer 0 and layer 1 during early stages of evolution.
+		 * Otherwise, uniform probability is used untill individuals are present in last layer -- MOST PREFERED
 		 * 
 		 * @author anthony
-		 * Setting up roulette selection
-		 * NOTE: This initialization is only to prevent NullPointerException during population initialization
-		 * Its no longer used during evolution
 		 */
-		if(Engine.fsalps_use_only_default_node_pr)
-			Engine.roulette = new Roulette(Engine.nodeCountTerminalSet);
-		else if(Engine.completeGenerationalCount==0)
-			Engine.roulette = new Roulette(state.nodeCountTerminalSet);
+		if(Engine.completeGenerationalCount==0 /*|| Engine.fsalps_use_all_layers*/)
+			Engine.roulette = new Roulette(Engine.alps,state);
 
 	}
 
@@ -108,7 +119,7 @@ public abstract class KozaBuilder extends GPNodeBuilder
 		// resulting in running out of memory or some such.  But there are cases where we'd want to let
 		// this work itself out.
 		boolean triedTerminals = false;   // did we try -- and fail -- to fetch a terminal?
-
+		
 		int t = type.type;
 		GPNode[] terminals = set.terminals[t];
 		GPNode[] nonterminals = set.nonterminals[t];
@@ -124,8 +135,6 @@ public abstract class KozaBuilder extends GPNodeBuilder
 				(triedTerminals = true) &&                                                  // [first set triedTerminals]
 				terminals.length != 0)                                                      // AND if there are available terminals
 		{
-
-
 			/*
 			 * @author anthony
 			 * use roulette to pick a terminal
@@ -133,8 +142,6 @@ public abstract class KozaBuilder extends GPNodeBuilder
 			 * GPNode n = (GPNode)(terminals[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone()); //FSALPS 
 			 */
 			GPNode n = selectNodeFSALPSInit(state, terminals, thread);
-
-			//System.out.println("SELECTED::: "+roulette.spin(state.random[thread].nextInt(terminals.length)) + " node :"+roulette.getNode());
 
 			n.resetNode(state,thread);  // give ERCs a chance to randomize
 			n.argposition = (byte)argposition;
@@ -153,7 +160,7 @@ public abstract class KozaBuilder extends GPNodeBuilder
 				nodesToPick = set.terminals[type.type];                                 // this can only happen with the warning about nonterminals above
 
 			GPNode n = (GPNode)(nodesToPick[state.random[thread].nextInt(nodesToPick.length)].lightClone());
-			//System.out.println("tony "+n.getClass().toString());
+			
 			n.resetNode(state,thread);  // give ERCs a chance to randomize
 			n.argposition = (byte)argposition;
 			n.parent = parent;
@@ -207,12 +214,11 @@ public abstract class KozaBuilder extends GPNodeBuilder
 			 * GPNode n = (GPNode)(terminals[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone()); //FSALPS
 			 */
 			GPNode n = selectNodeFSALPSInit(state, terminals, thread);
-			//System.out.println("SELECTED::: "+roulette.spin(state.random[thread].nextInt(terminals.length)) + " node :"+roulette.getNode());
-
+			
 			n.resetNode(state,thread);  // give ERCs a chance to randomize
 			n.argposition = (byte)argposition;
 			n.parent = parent;
-			//System.out.println(n.getClass() + "::::"+ n.nodeFrequency); 
+			
 			return n;
 		}
 
@@ -231,16 +237,12 @@ public abstract class KozaBuilder extends GPNodeBuilder
 			 * correct probability settings
 			 */
 			if(n.children.length == 0 /*n.expectedChildren()==0*/)
-			{  
-				//n = (GPNode)(nodes[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone()); 
-				n = selectNodeFSALPSInit(state, terminals, thread);
-			}
+			   n = selectNodeFSALPSInit(state, terminals, thread);
+			 //n = (GPNode)(nodes[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone());
 
 			n.resetNode(state,thread);  // give ERCs a chance to randomize
 			n.argposition = (byte)argposition;
 			n.parent = parent;
-			// n.nodeFrequency +=n.expectedChildren()==0?1:0;
-			// System.out.println(n.getClass() + "::::"+ n.nodeFrequency); 
 			// Populate the node...
 			GPType[] childtypes = n.constraints(((GPInitializer)state.initializer)).childtypes; 
 			for(int x=0;x<childtypes.length;x++)
@@ -276,14 +278,12 @@ public abstract class KozaBuilder extends GPNodeBuilder
 		
 		/* If this is true, normal FSALPS node selection is applied during mutation and at initialiazation of individuals in a population */
 		if(Engine.fsalps_use_mutation)
-		{
 			n = (GPNode)(terminals[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone());
-		}
 		else
 		{
 			try 
 			{        /* Re initialization of population in layer 0 */
-				if ( state.alps.index == 0 && state.alps.layers.get(state.alps.index).initializerFlag ) 
+				if ( Engine.alps.index == 0 && Engine.alps.layers.get(Engine.alps.index).initializerFlag ) 
 					n = (GPNode) (terminals[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone());
 				else /* Randomly choose nodes for mutation without FSALPS frequenccy genrated probablity */
 					n = (GPNode) (terminals[state.random[thread].nextInt(terminals.length)].lightClone());
@@ -316,7 +316,8 @@ public abstract class KozaBuilder extends GPNodeBuilder
 	 */
 	private GPNode selectNodeFSALPSInit(EvolutionState state, GPNode[] terminals, int thread)
 	{
-		return (GPNode) (terminals[Engine.roulette.spin(state.random[thread].nextDouble())].lightClone());
+		return (GPNode) (terminals[Engine.roulette.spin
+		                           (state.random[thread].nextDouble())].lightClone());
 	}
 
 

@@ -38,33 +38,34 @@ public class ReverseTournamentNearest extends Replacement{
 	 * @return
 	 */
 
-	public void layerMigrations(ALPSLayers alpsLayers,Population current)
+	public void layerMigrations(ALPSLayers alps,Population current)
 	{
 		Population higherPop = null;
 		ArrayList<Individual> deleteList = new ArrayList<>();
 
 
-		if (alpsLayers.index < (alpsLayers.layers.size() - 1)) 
+		if (alps.index < (alps.layers.size() - 1)) 
 		{
-			for(int subpopulation=0;subpopulation<alpsLayers.layers.get(alpsLayers.index).evolutionState.population.subpops.length;subpopulation++)
+			for(int subpopulation=0;subpopulation<alps.layers.get(alps.index).evolutionState.population.subpops.length;subpopulation++)
 			{
 				/* try fetching pop size of subpopulation from parameter file
 				 * if this fails use population size of subpopulation 0
 
-				int size =  alpsLayers.layers.get(alpsLayers.index).parameterDatabase.
+				int size =  alps.layers.get(alps.index).parameterDatabase.
 						getIntWithDefault(new Parameter("pop.subpop."+subpopulation+".size"), null, 
-								alpsLayers.layers.get(alpsLayers.index).parameterDatabase.
+								alps.layers.get(alps.index).parameterDatabase.
 								getInt(new Parameter("pop.subpop.0.size"), null));
 				 */
 				/** total number of populations expected */
-				int size = alpsLayers.layers.get(alpsLayers.index).evolutionState.
+				int size = alps.layers.get(alps.index).evolutionState.
 						parameters.getInt(new Parameter(Initializer.P_POP).push(Population.P_SUBPOP).push(subpopulation+"").push(POP_SIZE),null);
 
 				/* initialize number of individuals added  */
-				alpsLayers.layers.get(alpsLayers.index+1).individualCount=0;
+				alps.layers.get(alps.index+1).individualCount=0;
 				//get population of next higher layer
-				higherPop = (Population) alpsLayers.layers.get(alpsLayers.index + 1).evolutionState.population;
+				higherPop = (Population) alps.layers.get(alps.index + 1).evolutionState.population;
 
+				
 				for (int i = 0; i < current.subpops[subpopulation].individuals.length; i++) 
 				{ 
 
@@ -75,19 +76,22 @@ public class ReverseTournamentNearest extends Replacement{
 					 * Layer 1 : 5-9
 					 * Layer 2 : 10-19
 					 * etc.. 
-					 * Max for a layer = (alpsLayers.layers.get(alpsLayers.index).getMaxAge()-1)
+					 * Max for a layer = (alps.layers.get(alps.index).getMaxAge()-1)
 					 */
-					if (current.subpops[subpopulation].individuals[i].age >= (alpsLayers.layers.get(alpsLayers.index).getMaxAge())) 
+					if (current.subpops[subpopulation].individuals[i].age >= (alps.layers.get(alps.index).getMaxAge())) 
 					{   //fill higher layer with individuals that fall within its age limit
 						//parameters.getIntWithDefault(new Parameter("jobs"), null, 1);
 						if (higherPop.subpops[subpopulation].individuals.length < size) 
 						{
-							alpsLayers.layers.get(alpsLayers.index + 1).evolutionState.population.subpops[subpopulation].
+							/* activate layer if its open to accept individuals */
+							alps.layers.get(alps.index + 1).setIsActive(true);
+							
+							alps.layers.get(alps.index + 1).evolutionState.population.subpops[subpopulation].
 							add((Individual) current.subpops[subpopulation].individuals[i].clone());
 							deleteList.add(current.subpops[subpopulation].individuals[i]); // now added--remove if problematic
 
 							/* count individuals added */
-							alpsLayers.layers.get(alpsLayers.index+1).individualCount++;
+							alps.layers.get(alps.index+1).individualCount++;
 						} 
 						else if (higherPop.subpops[subpopulation].individuals.length > 0 ) //once higher layer is filled, do selective replacement based on new individuals that have higher age than in the individual in the  higher layer
 						{
@@ -96,24 +100,24 @@ public class ReverseTournamentNearest extends Replacement{
 							 * modify to dynamically include  thread
 							 */
 							nearestIndividual = nearestTournamentIndividualFitness(
-									subpopulation,alpsLayers.layers.get(alpsLayers.index + 1).evolutionState, 
+									subpopulation,alps.layers.get(alps.index + 1).evolutionState, 
 									0,(Individual) current.subpops[subpopulation].individuals[i]);
 
 							if(replaceWeakest)  /* always replace weakest tournament individual with new individual */
-								alpsLayers.layers.get(alpsLayers.index + 1).evolutionState.population.subpops[subpopulation].individuals[nearestIndividual] = 
+								alps.layers.get(alps.index + 1).evolutionState.population.subpops[subpopulation].individuals[nearestIndividual] = 
 								(Individual) current.subpops[subpopulation].individuals[i].clone();
 							else /* only replace weakest tournament individual if its fitness is lower than new individual from lower layer*/
 								if(current.subpops[subpopulation].individuals[i].fitness.betterThan(
-										alpsLayers.layers.get(alpsLayers.index + 1).evolutionState.population.subpops[subpopulation].individuals[nearestIndividual].fitness))
-									alpsLayers.layers.get(alpsLayers.index + 1).evolutionState.population.subpops[subpopulation].individuals[nearestIndividual] = 
+										alps.layers.get(alps.index + 1).evolutionState.population.subpops[subpopulation].individuals[nearestIndividual].fitness))
+									alps.layers.get(alps.index + 1).evolutionState.population.subpops[subpopulation].individuals[nearestIndividual] = 
 									(Individual) current.subpops[subpopulation].individuals[i].clone();
 
-							//alpsLayers.layers.get(alpsLayers.index + 1).getEvolution().getCurrentPopulation().
+							//alps.layers.get(alps.index + 1).getEvolution().getCurrentPopulation().
 							//        set(this.worseIndividual, current.get(i));
 							deleteList.add(current.subpops[subpopulation].individuals[i]);
 
 							/* count individuals added */
-							alpsLayers.layers.get(alpsLayers.index+1).individualCount++;
+							alps.layers.get(alps.index+1).individualCount++;
 						}
 					}
 				}
@@ -121,10 +125,10 @@ public class ReverseTournamentNearest extends Replacement{
 				current.subpops[subpopulation].individuals = Operations.emptyPop(current.subpops[subpopulation].individuals,deleteList);
 
 				/*
-	        System.out.println("DeleteList "+ deleteList.size()+ "  Current "+alpsLayers.index +": "+current.subpops[subpopulation].individuals.length+
-	             " NextLayer "+(alpsLayers.index+1)+" :"+alpsLayers.layers.get(alpsLayers.index+1).evolutionState.population.subpops[subpopulation].individuals.length+
-	             " Generation: "+ alpsLayers.layers.get(alpsLayers.index).evolutionState.generation+
-	             " Max age layer: "+alpsLayers.layers.get(alpsLayers.index).getMaxAge()+""); //System.exit(0);
+	        System.out.println("DeleteList "+ deleteList.size()+ "  Current "+alps.index +": "+current.subpops[subpopulation].individuals.length+
+	             " NextLayer "+(alps.index+1)+" :"+alps.layers.get(alps.index+1).evolutionState.population.subpops[subpopulation].individuals.length+
+	             " Generation: "+ alps.layers.get(alps.index).evolutionState.generation+
+	             " Max age layer: "+alps.layers.get(alps.index).getMaxAge()+""); //System.exit(0);
 				 */
 				deleteList.clear();
 
@@ -134,7 +138,7 @@ public class ReverseTournamentNearest extends Replacement{
 					fillPopTournament(current.subpops[subpopulation].individuals.length,
 							size,
 							subpopulation,
-							alpsLayers.layers.get(alpsLayers.index).evolutionState,
+							alps.layers.get(alps.index).evolutionState,
 							0);
 			}//subpops
 

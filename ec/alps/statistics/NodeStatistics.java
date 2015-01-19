@@ -155,12 +155,12 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		 */
 		try
 		{ //this avoid NullPinterException error when using canonical EA, in which case Layers are not defined
-			if(state.alps.index==0 && Engine.completeGenerationalCount==0 && !Engine.fsalps_use_only_default_node_pr)
-				for(int l=1;l<state.alps.layers.size();l++)
-					state.alps.layers.get(l).evolutionState.nodeCountTerminalSet =
+			if(Engine.alps.index==0 && Engine.completeGenerationalCount==0 && !Engine.fsalps_use_only_default_node_pr)
+				for(int l=1;l<Engine.alps.layers.size();l++)
+					//Engine.alps.layers.get(l).evolutionState.nodeCountTerminalSet =
 					TreeAnalyzer.unsetNodeCount(
-							state.alps.layers.get(l).evolutionState,
-							state.alps.layers.get(l).evolutionState.nodeCountTerminalSet);
+							Engine.alps.layers.get(l).evolutionState,
+							Engine.alps.layers.get(l).evolutionState.nodeCountTerminalSet);
 		}
 		catch (NullPointerException e)
 		{isALPSEA = false;}
@@ -172,8 +172,8 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		 * from all layers
 		 * if(!Engine.use_only_default_node_pr)
 		 */
-		state.nodeCountTerminalSet = 
-				TreeAnalyzer.unsetNodeCount(state, state.nodeCountTerminalSet);
+		 //state.nodeCountTerminalSet = 
+		 TreeAnalyzer.unsetNodeCount(state, state.nodeCountTerminalSet);
 
 		Individual[] best_i = new Individual[state.population.subpops.length];  // quiets compiler complaints
 		for(int x=0;x<state.population.subpops.length;x++)
@@ -206,7 +206,7 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		
 		//if (doGeneration) state.output.print("" + Engine.completeGenerationalCount,statisticslog);
 		if (doGeneration && isALPSEA) 
-			state.output.print("" + Engine.globalEvaluations,statisticslog);
+			state.output.print("" + Engine.completeGenerationalCount,statisticslog);
 		else //when using canonical EA
 			state.output.print("" + state.generation,statisticslog);
 
