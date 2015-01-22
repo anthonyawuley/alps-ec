@@ -10,6 +10,9 @@ package ec.app.canonical.pima;
 import ec.simple.SimpleProblemForm;
 import ec.util.*;
 import ec.*;
+import ec.app.utils.datahouse.DataCruncher;
+import ec.app.utils.datahouse.Out;
+import ec.app.utils.datahouse.Reader;
 import ec.gp.*;
 import ec.gp.koza.*;
 
@@ -95,11 +98,11 @@ public class MultiValuedRegressionCoscA1B extends GPProblem implements SimplePro
         
         
         POPULATION_DATA = DataCruncher.shuffleData(
-                                 DataCruncher.readFile(
-                                       DataCruncher.cleanFile(regex,dataRaw,dataClean),","));
+                Reader.readFile(
+                		 DataCruncher.cleanFile(regex,dataRaw,dataClean),","),false);
         
-         /** Split formated data and write to training and test file */
-         DataCruncher.writeDataToFile(POPULATION_DATA,trainFile,testFile);
+        /** Split formated data and write to training and test file */
+        Out.writeDataToFile(POPULATION_DATA,trainFile,testFile);
         
        
         }
@@ -113,8 +116,9 @@ public class MultiValuedRegressionCoscA1B extends GPProblem implements SimplePro
         {
           
          /**TRAINING FILE */
-         POPULATION_DATA = DataCruncher.shuffleData(DataCruncher.readFile(trainFile,"\\s"));
-        
+    	if(!DataCruncher.IS_SHUFFLED)
+            POPULATION_DATA = DataCruncher.shuffleData(Reader.readFile(trainFile,"\\s"),true);
+    	
         if (!ind.evaluated)  // don't bother reevaluating
             {
             int hits = 0;
@@ -171,11 +175,13 @@ public class MultiValuedRegressionCoscA1B extends GPProblem implements SimplePro
         final int subpopulation,
         final int threadnum,
         final int log){
-        
-       
+      
         /**TRAINING FILE */
-        POPULATION_DATA = DataCruncher.shuffleData(DataCruncher.readFile(testFile,"\\s"));
+    	DataCruncher.IS_SHUFFLED = false;
+    	if(!DataCruncher.IS_SHUFFLED)
+            POPULATION_DATA = DataCruncher.shuffleData(Reader.readFile(testFile,"\\s"),true);
         
+    	
         int [][] confusionMatrix = new int[2][2];
        
         
@@ -220,10 +226,11 @@ public class MultiValuedRegressionCoscA1B extends GPProblem implements SimplePro
             }
             
            /** CONFUSION MATRIX + DIABETIC CANDIDATE STATUS IN TEST FILE */ 
-           state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\t"
-                              + "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[1][1]
-                              + "\nTOTAL DIABETIC: "     +DataCruncher.dataCount[1]
-                              + "\tTOTAL NON-DIABETIC: " +DataCruncher.dataCount[0],2);
+            /** CONFUSION MATRIX + DIABETIC CANDIDATE STATUS IN TEST FILE */ 
+            state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\t"
+                               + "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[1][1]
+                               + "\nTOTAL DIABETIC: "     +Reader.dataCount[1]
+                               + "\tTOTAL NON-DIABETIC: " +Reader.dataCount[0],log);
           
         }
      

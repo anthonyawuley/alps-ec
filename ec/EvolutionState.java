@@ -171,8 +171,7 @@ public class EvolutionState implements Singleton
 	public Replacement replacement;
 	/** */
 	public final static String P_REPLACEMENT = "layer-replacement";
-	/** */
-	//public ALPSLayers alps;
+	
 	/** */
 	public Map<String, Double>  nodeCountTerminalSet  = new LinkedHashMap<String, Double>();
 	/** */
@@ -422,12 +421,12 @@ public class EvolutionState implements Singleton
 
 		generation = 0;
 
-		/* replacement strategy  */
+		/* replacement strategy  
 		p = Engine.base().push(P_REPLACEMENT);
 		replacement = (Replacement)
 				(parameters.getInstanceForParameter(p,null,Replacement.class));
 		replacement.setup(this,p); 
-
+        */
 	}
 
 

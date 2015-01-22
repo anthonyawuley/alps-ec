@@ -5,12 +5,14 @@ import java.util.HashMap;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.alps.layers.Layer;
+import ec.alps.layers.Replacement;
 import ec.alps.util.Operations;
 import ec.steadystate.SteadyStateBreeder;
 import ec.steadystate.SteadyStateEvaluator;
 import ec.steadystate.SteadyStateEvolutionState;
 import ec.steadystate.SteadyStateStatisticsForm;
 import ec.util.Checkpoint;
+import ec.util.Parameter;
 
 public class SStateEvolutionState extends SteadyStateEvolutionState{
 
@@ -27,7 +29,20 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 	 */
 	public void startFresh(Layer l) 
 	{
-		l.evolutionState.output.message("\n\nSetting up layer :" + l.getId() + " Global Generation # " + Engine.completeGenerationalCount);
+		
+		/*
+		 * consider putting this in a better location
+		 * transfered here because whilst in EvolutionState, canonical GP
+		 * always flags an erroor because replacement parameters are not set in
+		 * the parameter file
+		 */
+		Parameter p = Engine.base().push(P_REPLACEMENT);
+		replacement = (Replacement)
+				(parameters.getInstanceForParameter(p,null,Replacement.class));
+		replacement.setup(this,p);
+		
+		l.evolutionState.output.message("\n\nSetting up layer :" + l.getId() + 
+				                        " Global Generation # " + Engine.completeGenerationalCount);
 		l.evolutionState.output.message("Maximum Age: "+l.getMaxAge());
 		l.evolutionState.output.message("Maximum Generation: "+l.getGenerations());
 

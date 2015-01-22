@@ -18,13 +18,13 @@ import java.text.DecimalFormat;
 public class DataCruncher  {
     
 	static ArrayList<ArrayList> population = new ArrayList<>();
-        static Pattern[] pattern = new Pattern[2];
+    static Pattern[] pattern = new Pattern[2];
 	static Matcher[] matcher = new Matcher[2];
-        public static int [] dataCount = new int [2];
+    public static int [] dataCount = new int [2];
         
 	protected static String cleanFile(String [] regex,String rawFile, String cleanFile){
 		
-                String line;
+        String line;
 		pattern[0] = Pattern.compile(regex[0]);
 		pattern[1] = Pattern.compile(regex[1]);
                 
@@ -200,12 +200,14 @@ public class DataCruncher  {
                   printTest.flush();printTest.close();
                   
               }
-               catch (IOException e) {
-                 System.out.println("File could not be created"); System.exit(1);
+               catch (IOException e) 
+               {
+                 System.out.println("File could not be created " + e.getMessage()); 
+                 e.printStackTrace();
+                 System.exit(1);
             } 
             
-           }
-            
+           }  
      }
        
    

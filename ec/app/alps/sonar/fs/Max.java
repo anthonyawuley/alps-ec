@@ -8,7 +8,7 @@
 package ec.app.alps.sonar.fs;
 
 import ec.*;
-import ec.app.alps.pima.DoubleData;
+import ec.app.alps.sonar.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

@@ -8,7 +8,9 @@
 package ec.alps;
 import ec.*;
 import ec.alps.layers.Layer;
+import ec.alps.layers.Replacement;
 import ec.util.Checkpoint;
+import ec.util.Parameter;
 
 /* 
  * SimpleEvolutionState.java
@@ -46,6 +48,10 @@ public class GenEvolutionState extends EvolutionState
 	 * 
 	 */
 	private static final long serialVersionUID = 1;
+	
+	
+	
+	
 
 	//public ALPSReplacement replacement;
 	//public final static String P_REPLACEMENT = "alps.layer-replacement";
@@ -55,6 +61,17 @@ public class GenEvolutionState extends EvolutionState
 	 */
 	public void startFresh(Layer l) 
 	{
+		/*
+		 * consider putting this in a better location
+		 * transfered here because whilst in EvolutionState, canonical GP
+		 * always flags an erroor because replacement parameters are not set in
+		 * the parameter file
+		 */
+		Parameter p = Engine.base().push(P_REPLACEMENT);
+		replacement = (Replacement)
+				(parameters.getInstanceForParameter(p,null,Replacement.class));
+		replacement.setup(this,p);
+		
 		l.evolutionState.output.message("\n\nSetting up layer :" + l.getId()/* + " Global Generation # " + Engine.completeGenerationalCount*/);
 		l.evolutionState.output.message("Maximum Age: "+l.getMaxAge());
 		l.evolutionState.output.message("Maximum Generation: "+l.getGenerations());
