@@ -1,7 +1,6 @@
 package ec.app.alps.sonar.ts;
 import ec.*;
-import ec.app.alps.pima.DoubleData;
-import ec.app.alps.pima.MultiValuedRegressionCoscA1B;
+import ec.app.alps.sonar.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

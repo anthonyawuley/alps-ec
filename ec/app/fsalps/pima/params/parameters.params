@@ -27,7 +27,7 @@ generations             = 2000
 
 #Begin ALPS configuration ==============================================================
 alps.age-gap                           = 5
-alps.number-of-layers                  = 10
+alps.number-of-layers                  = 5
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
 alps.tournament-size                   = 7
@@ -69,7 +69,9 @@ alps.fsalps-last-layer-gen-freq-count = false
 # to probability values used during mutation and tree initialization in bottom layer
 alps.fsalps-use-all-layers            = false
 
-
+# Determine which frequency selection criteria is used for generating probability
+alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency
+        
 
 #ec.gp.koza.koza.params
 
@@ -212,10 +214,10 @@ gp.fs.0.func.16.nc = nc1
 eval.problem = ec.app.fsalps.pima.MultiValuedRegressionCoscA1B
 eval.problem.data = ec.app.fsalps.pima.DoubleData
 
-eval.problem.pima-indians-diabetes-data-raw        = ../Extensions/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-data.txt
-eval.problem.pima-indians-diabetes-data-clean      = ../Extensions/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-data-new.txt
-eval.problem.pima-indians-diabetes-data-train-data = ../Extensions/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-train-data.txt
-eval.problem.pima-indians-diabetes-data-test-data  = ../Extensions/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-test-data.txt
+eval.problem.pima-indians-diabetes-data-raw        = /Users/anthony/git/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-data.txt
+eval.problem.pima-indians-diabetes-data-clean      = /Users/anthony/git/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-data-new.txt
+eval.problem.pima-indians-diabetes-data-train-data = /Users/anthony/git/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-train-data.txt
+eval.problem.pima-indians-diabetes-data-test-data  = /Users/anthony/git/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-test-data.txt
 
 eval.problem.total-number-of-points        = 168
 

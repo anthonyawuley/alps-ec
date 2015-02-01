@@ -206,7 +206,7 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		
 		//if (doGeneration) state.output.print("" + Engine.completeGenerationalCount,statisticslog);
 		if (doGeneration && isALPSEA) 
-			state.output.print("" + Engine.completeGenerationalCount,statisticslog);
+			state.output.print("" + Engine.globalEvaluations,statisticslog);
 		else //when using canonical EA
 			state.output.print("" + state.generation,statisticslog);
 

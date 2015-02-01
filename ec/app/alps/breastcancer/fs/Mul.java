@@ -9,7 +9,7 @@
 package ec.app.alps.breastcancer.fs;
 
 import ec.*;
-import ec.app.alps.pima.DoubleData;
+import ec.app.alps.breastcancer.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

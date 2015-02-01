@@ -3,7 +3,7 @@
 
 package ec.app.fsalps.sonar.ts;
 import ec.*;
-import ec.app.canonical.pima.DoubleData;
+import ec.app.fsalps.sonar.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

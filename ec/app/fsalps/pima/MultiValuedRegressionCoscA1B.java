@@ -49,6 +49,7 @@ public class MultiValuedRegressionCoscA1B extends GPProblem implements SimplePro
     private       String trainFile,testFile;
     public  static int ctcmtrx = 0;
     private ArrayList<ArrayList> POPULATION_DATA;
+    
  
     public DoubleData input;
 
@@ -109,7 +110,7 @@ public class MultiValuedRegressionCoscA1B extends GPProblem implements SimplePro
         final int threadnum)
         {
           
-         /**TRAINING FILE */
+         /** TRAINING FILE */
          POPULATION_DATA = DataCruncher.shuffleData(DataCruncher.readFile(trainFile,"\\s"));
         
         if (!ind.evaluated)  // don't bother reevaluating

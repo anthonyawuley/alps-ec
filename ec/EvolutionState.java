@@ -7,11 +7,11 @@
 
 package ec;
 import ec.alps.Engine;
+import ec.alps.fsalps.Roulette;
 import ec.alps.layers.ALPSLayers;
 import ec.alps.layers.Layer;
 import ec.alps.layers.Replacement;
 import ec.alps.util.Operations;
-import ec.alps.util.Roulette;
 import ec.alps.util.TreeAnalyzer;
 import ec.util.*;
 
@@ -290,6 +290,15 @@ public class EvolutionState implements Singleton
 	public final static String P_CHECKPOINTDIRECTORY = "checkpoint-directory";
 	public final static String P_CHECKPOINT = "checkpoint";
 	final static String P_CHECKPOINTPREFIX_OLD = "prefix";
+	
+	
+
+	/** number of chunks available when using k-fold cross validation */
+	public  int kFoldCrossValidationSize                    = 1; 
+	/** */
+	public static final String K_FOLD_CROSS_VALIDATION_CHUNCK   = "cross-validation-size";
+	/** */
+	public boolean isKFoldCrossValidation                   = false;
 
 	/** This will be called to create your evolution state; immediately
         after the constructor is called,
@@ -387,6 +396,29 @@ public class EvolutionState implements Singleton
 		p=new Parameter(P_QUITONRUNCOMPLETE);
 		quitOnRunComplete = parameters.getBoolean(p,null,false);
 
+		
+		/*
+		 * @anthony
+		 */
+		p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
+		if (parameters.exists(p, null))
+		{
+		    /** number of chunks available when using k-fold cross validation */
+		    kFoldCrossValidationSize  = parameters.getInt(p, null, 1); 
+		    int numJobs = parameters.getIntWithDefault(new Parameter("jobs"), null, 1);
+		    
+		    if (kFoldCrossValidationSize > numJobs)
+				output.fatal(K_FOLD_CROSS_VALIDATION_CHUNCK+" "+ "cannot be greater than the number of jobs", p, null);
+		    if (kFoldCrossValidationSize < 2)
+				output.fatal("T"+K_FOLD_CROSS_VALIDATION_CHUNCK+" "+ "cannot be less 2", p, null);
+		    if (kFoldCrossValidationSize < numJobs)
+				output.warning(""+K_FOLD_CROSS_VALIDATION_CHUNCK+" is less than number of jobs \n"
+						+ " when a cross validation cycle is exhausted, a new one is started untill all runs are exhausted \n"
+						+ "its best when number of runs is a multiple of k-fold-cross-validation size ", p, null);
+		    //deactivate cross validation if the size is less than  to 2
+		    isKFoldCrossValidation=(kFoldCrossValidationSize>=2)?true:false;
+		}
+		
 
 		/* Set up the singletons */
 		p=new Parameter(P_INITIALIZER);
@@ -511,9 +543,11 @@ public class EvolutionState implements Singleton
 		 * in such cases, the frequency data is the same as what is already been used. 
 		 * */
 		if(!Engine.fsalps_use_only_default_node_pr && Engine.fsalps_last_layer_gen_freq_count && 
-				alps.layers.get(alps.layers.size()-1).getIsActive()
+				alps.layers.get(alps.layers.size()-1).getIsActive() &&
+				Engine.fsalps_active
 				/*(Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState) == Engine.generationSize)*/ )
-			Engine.roulette = new Roulette(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
+			Engine.roulette.calculateNodeProbabilities(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
+			//Engine.roulette = new Roulette(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
 
 
 		if(alps.layers.get(alps.index).getIsBottomLayer() && alps.layers.get(alps.index).initializerFlag)
@@ -527,10 +561,11 @@ public class EvolutionState implements Singleton
 		     * in such cases, the frequency data is the same as what is already been used. 
 			 * */
 			if(!Engine.fsalps_use_only_default_node_pr  && !Engine.fsalps_last_layer_gen_freq_count  && 
-					alps.layers.get(alps.layers.size()-1).getIsActive()
+					alps.layers.get(alps.layers.size()-1).getIsActive() &&
+					Engine.fsalps_active
 					/*(Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState) == Engine.generationSize)*/  )
-				Engine.roulette = new Roulette( 
-						alps,alps.layers.get(alps.layers.size()-1).evolutionState);
+				Engine.roulette.calculateNodeProbabilities(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
+				//Engine.roulette = new Roulette( alps,alps.layers.get(alps.layers.size()-1).evolutionState);
 
 			if ( (condition == C_STARTED_FRESH) )
 			{ 

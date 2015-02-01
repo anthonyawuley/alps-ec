@@ -19,6 +19,8 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 
+import ec.EvolutionState;
+
 
 public class DataCruncher  {
 
@@ -27,9 +29,13 @@ public class DataCruncher  {
 	static Pattern[] pattern = new Pattern[2];
 	static Matcher[] matcher = new Matcher[2];
 	
-	
+	//public static ArrayList<ArrayList> POPULATION_DATA;
+
+
 	public static boolean IS_SHUFFLED = false;
 	
+	public static boolean KFOLD_LOCK_DOWN_SHUFFLE = false;
+
 	/** when true, auto numbering will be attached to the newly generated file */
 	static final boolean AUTO_NUMBERING = true;
 	/**
@@ -72,15 +78,16 @@ public class DataCruncher  {
 		return rgb;
 
 	}
-	
-	
-	
+
+
+
 
 	/**
-	 * 
-	 * @param regex
-	 * @param rawFile
-	 * @param cleanFile
+	 * Cleans file using the provided regex
+	 * file is not cleaned if a cleanedFile already exits
+	 * @param regex regular expression for cleaning a file
+	 * @param rawFile orginal file
+	 * @param cleanFile write to file
 	 * @return
 	 */
 	public static String cleanFile(String [] regex,String rawFile, String cleanFile)
@@ -90,26 +97,29 @@ public class DataCruncher  {
 		Reader rd = new Reader();
 		pattern[0] = Pattern.compile(regex[0]);
 		pattern[1] = Pattern.compile(regex[1]);
+		
 
-		try (PrintWriter printwrite = new PrintWriter(cleanFile,"UTF-8")) 
-		{
-
-			BufferedReader f = rd.readText(rawFile);
-			int i=0;
-			while((line = f.readLine()) != null)
-			{
-				i=i+1;
-				matcher[0] = pattern[0].matcher(line);
-				matcher[1] = pattern[1].matcher(line);
-				if(!matcher[0].matches() && !matcher[1].matches())
-					printwrite.println(line);
-			}
-		} 
-		catch (IOException e) 
+		if(!(new File(cleanFile).isFile()))
 		{ 
-			System.out.println("File not found " + e.getMessage()); 
-			e.printStackTrace(); 
-		} 
+			try (PrintWriter printwrite = new PrintWriter(cleanFile,"UTF-8")) 
+			{
+				BufferedReader f = rd.readText(rawFile);
+				int i=0;
+				while((line = f.readLine()) != null)
+				{
+					i=i+1;
+					matcher[0] = pattern[0].matcher(line);
+					matcher[1] = pattern[1].matcher(line);
+					if(!matcher[0].matches() && !matcher[1].matches())
+						printwrite.println(line);
+				}
+			} 
+			catch (IOException e) 
+			{ 
+				System.out.println("File not found " + e.getMessage()); 
+				e.printStackTrace(); 
+			} 
+		}
 		return cleanFile;
 	}
 
@@ -288,7 +298,7 @@ public class DataCruncher  {
 					else
 					{
 						for(int i=0;i<files.size();i++)
-						try
+							try
 						{ 
 								sum += Double.parseDouble((String)files.get(i).get(j).get(k));
 								rowsAdded++;
@@ -388,27 +398,85 @@ public class DataCruncher  {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static ArrayList<ArrayList> shuffleData(ArrayList<ArrayList> dataSet, boolean shuffled)
+	public static ArrayList<ArrayList> shuffleData
+	(EvolutionState state, ArrayList<ArrayList> dataSet, boolean shuffled)
 	{
 		//this is to avoid continious shuffling for every individual
 		//if(IS_SHUFFLED) return population;
-		
+        
 		for (int i=0;i<dataSet.size();i++)
 		{
 			//ignore possible max count for ArrayList to ensure capacity constraint
 			int rand = (int)(Math.random() * dataSet.size());
+			//int rand = (int)state.random[0].nextDouble() * dataSet.size();
 			//swap both values randomly
 			ArrayList swap = dataSet.get(i);
 			dataSet.set(i,dataSet.get(rand));
 			dataSet.set(rand,swap);
 		}
 		IS_SHUFFLED = shuffled;
-		//population = dataSet;
 		
+		KFOLD_LOCK_DOWN_SHUFFLE = true;
+
 		return dataSet;
-		
+
 	}
 
+	/**
+	 * 
+	 * @param dataSet
+	 * @param chunksize
+	 * @param start
+	 * @return chunk block
+	 */
+	public static  ArrayList<ArrayList> 
+	selectTestingChunk(ArrayList<ArrayList> dataSet, int chunkSize, int chunckNumber )
+	{
+		int start = chunckNumber * chunkSize;
+
+		ArrayList<ArrayList> chunck = new ArrayList<>();
+		/* extract chunk size if its larger than available block 
+		if(chunkSize >(dataSet.size()-start))
+			for(int i=start;i<dataSet.size();i++)
+				chunck.add(dataSet.get(i));
+		 */
+		/*
+		 * When splitting data, always add the last few that doesnt make up the total chunk to 
+		 * the last chnuk sample. This way, the chunkNumber is maintained. Otherwise unevn dataSet size
+		 * will always result in chunckNumber + 1
+		 */
+		if(chunkSize >(dataSet.size()-(start+chunkSize)))
+			chunkSize += (dataSet.size()-(start+chunkSize));
+
+		for(int i=start;i<start+chunkSize;i++)
+			chunck.add(dataSet.get(i));
+
+		return chunck;
+	}
+
+
+	/**
+	 * 
+	 * @param dataSet
+	 * @param chunksize
+	 * @param start
+	 * @return dataSet without the chunck block
+	 */
+	public static  ArrayList<ArrayList> 
+	selectTrainingChunk(ArrayList<ArrayList> dataSet, int chunkSize, int chunckNumber )
+	{   
+		int start = chunckNumber * chunkSize;
+		ArrayList<ArrayList> chunck = new ArrayList<>();
+
+		if(chunkSize >(dataSet.size()-(start+chunkSize)))
+			chunkSize += (dataSet.size()-(start+chunkSize));
+
+		for(int i=0;i<dataSet.size();i++)
+			if(i<start || i>(start+chunkSize-1) )
+				chunck.add(dataSet.get(i));
+
+		return chunck;
+	}
 
 
 	/**

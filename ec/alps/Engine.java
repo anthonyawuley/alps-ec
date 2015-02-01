@@ -6,10 +6,11 @@ import java.util.Map;
 
 import ec.EvolutionState;
 import ec.Evolve;
+import ec.alps.fsalps.FSALPS;
+import ec.alps.fsalps.Roulette;
 import ec.alps.layers.agingscheme.AgingScheme;
 import ec.alps.layers.ALPSLayers;
 import ec.alps.layers.Layer;
-import ec.alps.util.Roulette;
 import ec.util.MersenneTwisterFast;
 import ec.util.Output;
 import ec.util.Parameter;
@@ -59,6 +60,11 @@ public class Engine extends Evolve {
 	public final static String AGING_SCHEME         = "aging-scheme";
 	//public final static String ALPS_EVALUATIONS     = "alps.number-of-evaluations";
 	
+	/** number of chunks available when using k-fold cross validation */
+	public  static int kFoldCrossValidationSize                      = 1; 
+	/** */
+	public static final String K_FOLD_CROSS_VALIDATION_CHUNCK        = "k-fold-cross-validation-size";
+	
 	/** FSALPS */
 	public static final String FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM = "use-only-default-node-pr";
 	public static final String FSALPS_USE_MUTATION_PARAM             = "fsalps-in-mutation";
@@ -66,6 +72,7 @@ public class Engine extends Evolve {
 	public static final String ALPS_AGE_ONLY_CURRENT_LAYER           = "age-only-current-layer";
 	public static final String ALPS_ALWAYS_BREED_MAXIMUM_POP         = "always-breed-maximum-population";
 	public static final String FSALPS_USE_ALL_LAYERS                 = "fsalps-use-all-layers";
+	public static final String FSALPS_ROULETTE                       = "probability-selection";
 			
     /** Used to keep node usage for terminal sets 
      * stored default node settings for terminals */
@@ -82,13 +89,14 @@ public class Engine extends Evolve {
 	 *  Else only last layer node count (frequency) is converted to probabilities */
 	public static boolean fsalps_use_all_layers             = false;
 	
-	/** 
-	 * Use FSALPS generated frequency count during mutation 
-	 * @deprecated 
-	 */
+	/** FSALPS is active */
+	public static boolean fsalps_active                     = false;
+	/** Use FSALPS generated frequency count during mutation 
+	 * @deprecated */
 	public static boolean fsalps_use_mutation               = true;
 	/** Should frequency count be performed for every generation in the highest ALPS layer? */
 	public static boolean fsalps_last_layer_gen_freq_count  = false;
+	
 	/**
 	 * when true, only individuals selected from breeding from current layer have their age increased
 	 * else both both individuals coming from current and lower layer used as parents will have their age increased
@@ -234,8 +242,17 @@ public class Engine extends Evolve {
         /* setup parameter for ageScheme e.g linear, polynomial, exponential etc */
 		ageScheme       = (AgingScheme)
 				(parameters.getInstanceForParameter(base().push(AGING_SCHEME),null,AgingScheme.class));
-		
 		ageScheme.setup(parameters);
+		
+		try
+		{
+		roulette = (Roulette)
+						(parameters.getInstanceForParameter(FSALPS.defaultBase().push(FSALPS_ROULETTE),null,Roulette.class));
+		fsalps_active = true;
+		}
+		catch(ec.util.ParamClassLoadException e)
+		{fsalps_active = false;} //when using normal ALPS, deactivate fsalps
+		
 		
 		numGenerations  = parameters.getInt(new Parameter(EvolutionState.P_GENERATIONS), null);
 
@@ -259,6 +276,10 @@ public class Engine extends Evolve {
 				parameters.getBoolean(base().push(FSALPS_LAST_LAYER_GEN_FREQ_COUNT),null,false);
 		fsalps_use_all_layers            =  
 				parameters.getBoolean(base().push(FSALPS_USE_ALL_LAYERS),null,false);
+		
+		//p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
+		/** number of chunks available when using k-fold cross validation */
+		//kFoldCrossValidationSize  = parameters.getInt(p, null, 1); 
 		
 	}
 

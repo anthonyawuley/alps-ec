@@ -1,7 +1,6 @@
 package ec.app.alps.breastcancer.ts;
 import ec.*;
-import ec.app.alps.pima.DoubleData;
-import ec.app.alps.pima.MultiValuedRegressionCoscA1B;
+import ec.app.alps.breastcancer.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

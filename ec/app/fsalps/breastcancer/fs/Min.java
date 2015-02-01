@@ -8,7 +8,7 @@
 package ec.app.fsalps.breastcancer.fs;
 
 import ec.*;
-import ec.app.fsalps.pima.DoubleData;
+import ec.app.fsalps.breastcancer.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

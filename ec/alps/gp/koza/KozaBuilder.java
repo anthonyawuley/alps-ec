@@ -8,7 +8,8 @@
 package ec.alps.gp.koza;
 import ec.*;
 import ec.alps.Engine;
-import ec.alps.util.Roulette;
+import ec.alps.fsalps.FSALPS;
+import ec.alps.fsalps.Roulette;
 import ec.gp.*;
 import ec.util.*;
 
@@ -49,6 +50,7 @@ public abstract class KozaBuilder extends GPNodeBuilder
 	
 	public static final String P_MAXDEPTH = "max-depth";
 	public static final String P_MINDEPTH = "min-depth";
+	//public static final String P_ROULETTE = "probability-selection";
 
 	/** The largest maximum tree depth RAMPED HALF-AND-HALF can specify. */
 	public int maxDepth;
@@ -62,6 +64,7 @@ public abstract class KozaBuilder extends GPNodeBuilder
 	public void setup(final EvolutionState state, final Parameter base)
 	{
 		super.setup(state,base);
+		
         
 		Parameter def = defaultBase();
 
@@ -79,6 +82,11 @@ public abstract class KozaBuilder extends GPNodeBuilder
 		if (maxDepth<minDepth)
 			state.output.fatal("Max Depth must be >= Min Depth for a KozaBuilder",
 					base.push(P_MAXDEPTH),def.push(P_MAXDEPTH));
+		
+		//p=new Parameter(P_ROULETTE);
+		//Engine.roulette = (Roulette)
+				//(base.getInstanceForParameter(FSALPS.defaultBase().push(P_ROULETTE),null,Roulette.class));
+		//Engine.roulette.setup(state,FSALPS.defaultBase().push(P_ROULETTE));
 
 		/*
 		 * FSALPS 
@@ -98,7 +106,11 @@ public abstract class KozaBuilder extends GPNodeBuilder
 		 * @author anthony
 		 */
 		if(Engine.completeGenerationalCount==0 /*|| Engine.fsalps_use_all_layers*/)
-			Engine.roulette = new Roulette(Engine.alps,state);
+			Engine.roulette.calculateNodeProbabilities(Engine.alps,state);
+			//Engine.roulette = new Roulette(Engine.alps,state);
+		
+		
+		
 
 	}
 

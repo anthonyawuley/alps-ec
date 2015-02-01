@@ -143,13 +143,12 @@ public class Reader {
 			while((line = f.readLine() ) != null)
 			{
 				ArrayList<Float> dataPoint = new ArrayList<>(); 
-				for(int i=0;i < line.toString().split(regex).length;i++)
-				{
+				int max = line.toString().split(regex).length;
+				for(int i=0;i < max;i++)
 					dataPoint.add(Float.parseFloat(line.toString().split(regex)[i]));
-				} 
-				/** count records of number of entries for diabetic & non-diabetic */   
-				switch (line.toString().split(regex)
-						[line.toString().split(regex).length-1].toString()) 
+			
+				/* count records of number of entries for diabetic & non-diabetic */   
+				switch (line.toString().split(regex)[max-1].toString()) 
 				{
 				case "0.0":
 					dataCount[0]++;

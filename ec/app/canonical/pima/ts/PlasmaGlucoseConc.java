@@ -9,7 +9,7 @@
 package ec.app.canonical.pima.ts;
 import ec.*;
 import ec.app.canonical.pima.DoubleData;
-import ec.app.canonical.pima.MultiValuedRegressionCoscA1B;
+import ec.app.canonical.pima.Pima;
 import ec.gp.*;
 import ec.util.*;
 
@@ -40,7 +40,7 @@ public class PlasmaGlucoseConc extends GPNode
         final Problem problem)
         {
           DoubleData rd = ((DoubleData)(input));
-          rd.x = ((MultiValuedRegressionCoscA1B)problem).plasmaGlucoseConc;
+          rd.x = ((Pima)problem).plasmaGlucoseConc;
         }
     }
 

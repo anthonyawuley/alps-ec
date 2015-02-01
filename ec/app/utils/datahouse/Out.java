@@ -38,12 +38,63 @@ public class Out {
 
 	}
 
-    /**
-     * 
-     * @param dataSet
-     * @param trainFile
-     * @param testFile
-     */
+
+	/**
+	 * 
+	 * @param dataSet
+	 * @param dataFile
+	 * @param forceRewrite used to force a write operation
+	 *        even if the file already exists
+	 */
+	public static void writeDataToFile(ArrayList<ArrayList> dataSet,String dataFile, boolean foreceRewrite){
+
+		if (foreceRewrite) //file will be overwritten
+			writeDataToFile(dataSet,dataFile);
+		else if(!(new File(dataFile).isFile())) //perform write only when file already exists
+			writeDataToFile(dataSet,dataFile);
+		  
+	}
+
+
+
+	/**
+	 * 
+	 * @param dataSet
+	 * @param dataFile
+	 */
+	public static void writeDataToFile(ArrayList<ArrayList> dataSet,String dataFile)
+	{
+
+		try 
+		{
+			PrintWriter printData = new PrintWriter(dataFile,"UTF-8");
+
+			for (int i=0;i<dataSet.size();i++)
+			{
+				String ct = "";
+				for(int j=0;j<dataSet.get(i).size();j++)
+					ct += dataSet.get(i).get(j)+" ";
+				printData.println(ct);
+			}
+			printData.flush();
+			printData.close();
+		}
+		catch (IOException e) 
+		{
+			System.out.println("File could not be created " +e.getMessage()); 
+			e.printStackTrace();
+		} 
+
+	}
+
+
+
+	/**
+	 * 
+	 * @param dataSet
+	 * @param trainFile
+	 * @param testFile
+	 */
 	public static void writeDataToFile(ArrayList<ArrayList> dataSet,String trainFile,String testFile){
 		PrintWriter file;
 
@@ -75,11 +126,11 @@ public class Out {
 		}  
 	}
 
-    /**
-     * print output to a file
-     * @param dataSet
-     * @param output
-     */
+	/**
+	 * print output to a file
+	 * @param dataSet
+	 * @param output
+	 */
 	protected static void writeDataToFileSimple(ArrayList<String> dataSet,String dir, String output,String extension){
 		PrintWriter file;
 

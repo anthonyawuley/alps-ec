@@ -7,7 +7,7 @@
 package ec.app.fsalps.sonar.fs;
 
 import ec.*;
-import ec.app.fsalps.pima.DoubleData;
+import ec.app.fsalps.sonar.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

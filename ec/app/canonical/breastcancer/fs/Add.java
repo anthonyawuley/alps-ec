@@ -8,7 +8,7 @@
 package ec.app.canonical.breastcancer.fs;
 
 import ec.*;
-import ec.app.canonical.pima.DoubleData;
+import ec.app.canonical.breastcancer.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

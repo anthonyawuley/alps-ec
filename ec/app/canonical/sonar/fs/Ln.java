@@ -7,7 +7,7 @@
 package ec.app.canonical.sonar.fs;
 
 import ec.*;
-import ec.app.canonical.pima.DoubleData;
+import ec.app.canonical.sonar.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 
