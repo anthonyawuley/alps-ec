@@ -28,12 +28,13 @@ public class DataCruncher  {
 	static Float[][] SUMPOPULATION;
 	static Pattern[] pattern = new Pattern[2];
 	static Matcher[] matcher = new Matcher[2];
-	
+	static ArrayList<Integer> blockSizes = new ArrayList<>();
+
 	//public static ArrayList<ArrayList> POPULATION_DATA;
 
 
 	public static boolean IS_SHUFFLED = false;
-	
+
 	public static boolean KFOLD_LOCK_DOWN_SHUFFLE = false;
 
 	/** when true, auto numbering will be attached to the newly generated file */
@@ -97,7 +98,7 @@ public class DataCruncher  {
 		Reader rd = new Reader();
 		pattern[0] = Pattern.compile(regex[0]);
 		pattern[1] = Pattern.compile(regex[1]);
-		
+
 
 		if(!(new File(cleanFile).isFile()))
 		{ 
@@ -403,52 +404,104 @@ public class DataCruncher  {
 	{
 		//this is to avoid continious shuffling for every individual
 		//if(IS_SHUFFLED) return population;
-        
+
 		for (int i=0;i<dataSet.size();i++)
 		{
 			//ignore possible max count for ArrayList to ensure capacity constraint
-			int rand = (int)(Math.random() * dataSet.size());
-			//int rand = (int)state.random[0].nextDouble() * dataSet.size();
+			//int rand = (int)(Math.random() * dataSet.size());
+			int rand = (int)state.random[0].nextDouble() * dataSet.size();
 			//swap both values randomly
 			ArrayList swap = dataSet.get(i);
 			dataSet.set(i,dataSet.get(rand));
 			dataSet.set(rand,swap);
 		}
 		IS_SHUFFLED = shuffled;
-		
+
 		KFOLD_LOCK_DOWN_SHUFFLE = true;
 
 		return dataSet;
 
 	}
 
+
+
+	/**
+	 * e.g given dataSet.size() = 336 and kFold 0f 19
+	 * [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 17, 17, 17, 17, 17]
+	 * <br>
+	 * @param dataSet
+	 * @param kFold
+	 * @return
+	 * 
+	 */
+	private static ArrayList<Integer> splitChunk(ArrayList<ArrayList> dataSet,int kFold)
+	{
+		ArrayList<Integer> chunk = new ArrayList<>();
+		int chunkSize = (int)dataSet.size()/ kFold;
+		double floor = Math.floor((double)dataSet.size()/kFold );
+		double diff = ((double)dataSet.size()/kFold) - floor;
+		int total = 0;
+
+		//System.out.println(diff);
+		for(int i=0;i<kFold;i++)
+		{
+			if( ((diff * chunkSize)>1) && i==0)
+				chunk.add(chunkSize+1);
+			else if(((diff * chunkSize)>1))
+			{
+				if((dataSet.size()-total)%(kFold-i) == 0)
+					chunk.add(chunkSize);
+				else
+					chunk.add(chunkSize+1);
+			}
+			else
+				chunk.add(chunkSize);
+			total+=chunk.get(i);
+		}
+
+		//System.out.println(chunk);
+		return chunk;
+	}
+
+
+	/**
+	 * 
+	 * @param blockSizes
+	 * @param chunkNumber
+	 * @return um ofblockSizes from  index 0-(chunkNumber-1)
+	 */
+	private static int calcStartPoint(ArrayList<Integer> blockSizes, int chunkNumber)
+	{
+		int total=0;
+		for(int i=0;i<chunkNumber;i++)
+			total+=blockSizes.get(i);
+		return total;
+	}
+
 	/**
 	 * 
 	 * @param dataSet
-	 * @param chunksize
-	 * @param start
-	 * @return chunk block
+	 * @param chunkSize
+	 * @param chunckNumber
+	 * @return
 	 */
 	public static  ArrayList<ArrayList> 
-	selectTestingChunk(ArrayList<ArrayList> dataSet, int chunkSize, int chunckNumber )
+	selectTestingChunk(ArrayList<ArrayList> dataSet, int kFold, int chunkNumber )
 	{
-		int start = chunckNumber * chunkSize;
+		int chunkSize = (int)(dataSet.size()/kFold);
+		//int start = chunkNumber * chunkSize;
+		if(blockSizes.isEmpty()) //avoid multiple splitChunk operations
+			blockSizes = splitChunk(dataSet,kFold);
 
+		int start = calcStartPoint(blockSizes,chunkNumber);
 		ArrayList<ArrayList> chunck = new ArrayList<>();
-		/* extract chunk size if its larger than available block 
-		if(chunkSize >(dataSet.size()-start))
-			for(int i=start;i<dataSet.size();i++)
-				chunck.add(dataSet.get(i));
-		 */
+		
 		/*
 		 * When splitting data, always add the last few that doesnt make up the total chunk to 
 		 * the last chnuk sample. This way, the chunkNumber is maintained. Otherwise unevn dataSet size
 		 * will always result in chunckNumber + 1
 		 */
-		if(chunkSize >(dataSet.size()-(start+chunkSize)))
-			chunkSize += (dataSet.size()-(start+chunkSize));
-
-		for(int i=start;i<start+chunkSize;i++)
+		for(int i=start;i<start+blockSizes.get(chunkNumber);i++)
 			chunck.add(dataSet.get(i));
 
 		return chunck;
@@ -458,21 +511,28 @@ public class DataCruncher  {
 	/**
 	 * 
 	 * @param dataSet
-	 * @param chunksize
-	 * @param start
-	 * @return dataSet without the chunck block
+	 * @param chunkSize
+	 * @param chunckNumber
+	 * @return
 	 */
 	public static  ArrayList<ArrayList> 
-	selectTrainingChunk(ArrayList<ArrayList> dataSet, int chunkSize, int chunckNumber )
+	selectTrainingChunk(ArrayList<ArrayList> dataSet, int kFold, int chunkNumber )
 	{   
-		int start = chunckNumber * chunkSize;
+		if(blockSizes.isEmpty()) //avoid multiple splitChunk operations
+			blockSizes = splitChunk(dataSet,kFold);
+
+		int start = calcStartPoint(blockSizes,chunkNumber);
+
+		//int chunkSize = dataSet.size()/kFold;
+		//int start = chunkNumber * chunkSize;
+
 		ArrayList<ArrayList> chunck = new ArrayList<>();
-
-		if(chunkSize >(dataSet.size()-(start+chunkSize)))
-			chunkSize += (dataSet.size()-(start+chunkSize));
-
+		/*
+		 * if(chunkSize >(dataSet.size()-(start+chunkSize)))
+		 *  	chunkSize += (dataSet.size()-(start+chunkSize));
+		 */
 		for(int i=0;i<dataSet.size();i++)
-			if(i<start || i>(start+chunkSize-1) )
+			if(i<start || i>(start+blockSizes.get(chunkNumber)-1) )
 				chunck.add(dataSet.get(i));
 
 		return chunck;

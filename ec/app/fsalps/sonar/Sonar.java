@@ -99,7 +99,7 @@ public class Sonar extends GPProblem implements SimpleProblemForm
 		trainFile = state.parameters.getString(base.push(TRAIN_DATA), null);
 		testFile = state.parameters.getString(base.push(TEST_DATA), null);
 		
-		boolean kfoldCycleDataShuffle = state.parameters.
+		boolean kFoldCycleDataShuffle = state.parameters.
 				getBoolean(base.push(KFOLD_CYCLE_SHUFFLE),null,false);
 		
 		String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
@@ -128,7 +128,7 @@ public class Sonar extends GPProblem implements SimpleProblemForm
 			 * with a newly shuffled data set
 			 */
 			else if(((int)state.job[0]%state.kFoldCrossValidationSize)==0 && 
-					((int)state.job[0]>0) && kfoldCycleDataShuffle)
+					((int)state.job[0]>0) && kFoldCycleDataShuffle)
 			{   /* read cleaned data */
 				POPULATION_DATA = Reader.readFile(
 						DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
@@ -142,14 +142,14 @@ public class Sonar extends GPProblem implements SimpleProblemForm
 			{  
 				POPULATION_DATA = Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
 			}
-            /* fetch training chunk */
+			/* fetch training chunk */
 			TRAINING_DATA = DataCruncher.selectTrainingChunk(POPULATION_DATA,
-					(int) (POPULATION_DATA.size()/state.kFoldCrossValidationSize), 
-					(int) state.job[0]%state.kFoldCrossValidationSize);
+					state.kFoldCrossValidationSize, 
+					(int) state.job[0] % state.kFoldCrossValidationSize);
 			/* fetch testing chunk */
-			TESTING_DATA = DataCruncher.selectTestingChunk
-					(POPULATION_DATA, (int) (POPULATION_DATA.size()/state.kFoldCrossValidationSize), 
-							(int) state.job[0]%state.kFoldCrossValidationSize);
+			TESTING_DATA = DataCruncher.selectTestingChunk(POPULATION_DATA,
+					state.kFoldCrossValidationSize, 
+					(int) state.job[0] % state.kFoldCrossValidationSize);
 		}
 		else
 		{
@@ -251,7 +251,7 @@ public class Sonar extends GPProblem implements SimpleProblemForm
 						state,threadnum,input,stack,((GPIndividual)ind),this);
 
 
-				if ((input.x >= 199.2 && expectedResult == 1.0) | (input.x < 199.2 && expectedResult == 0.0))
+				if ((input.x >= 199.2 && expectedResult == 1.0) || (input.x < 199.2 && expectedResult == 0.0))
 					hits++;
 			}
 

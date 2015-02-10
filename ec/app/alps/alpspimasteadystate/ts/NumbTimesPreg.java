@@ -8,7 +8,7 @@
 package ec.app.alps.alpspimasteadystate.ts;
 import ec.*;
 import ec.app.alps.pima.DoubleData;
-import ec.app.alps.pima.MultiValuedRegressionCoscA1B;
+import ec.app.alps.pima.Pima;
 import ec.gp.*;
 import ec.util.*;
 
@@ -36,7 +36,7 @@ public class NumbTimesPreg extends GPNode
         final Problem problem)
         {
         DoubleData rd = ((DoubleData)(input));
-        rd.x = ((MultiValuedRegressionCoscA1B)problem).numbPreg;
+        rd.x = ((Pima)problem).numbPreg;
         }
     }
 

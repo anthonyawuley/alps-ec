@@ -21,13 +21,13 @@ public class Engine extends Evolve {
 
 	/** base(parent) alps parameter */
 	public final static String ALPS = "alps";
-	
+
 	/** Returns the default base. */
 	public static final Parameter base() { return new Parameter(ALPS); }
 
 	/** */
 	public static ALPSLayers alps;
-	
+
 	public  static int completeGenerationalCount = 0; //changed from 1
 	/** used in steady state evolution */
 	public  static int completeEvaluationCount   = 0;
@@ -36,8 +36,8 @@ public class Engine extends Evolve {
 
 	/** Should we muzzle stdout and stderr? 
 	 * @deprecated */
-    static final String P_MUZZLE = "muzzle";
-	
+	static final String P_MUZZLE = "muzzle";
+
 	/**
 	 * This is the same as the number of expected population in a layer 
 	 * this is modified during startFresh() in steady state 
@@ -59,12 +59,12 @@ public class Engine extends Evolve {
 
 	public final static String AGING_SCHEME         = "aging-scheme";
 	//public final static String ALPS_EVALUATIONS     = "alps.number-of-evaluations";
-	
+
 	/** number of chunks available when using k-fold cross validation */
 	public  static int kFoldCrossValidationSize                      = 1; 
 	/** */
 	public static final String K_FOLD_CROSS_VALIDATION_CHUNCK        = "k-fold-cross-validation-size";
-	
+
 	/** FSALPS */
 	public static final String FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM = "use-only-default-node-pr";
 	public static final String FSALPS_USE_MUTATION_PARAM             = "fsalps-in-mutation";
@@ -73,9 +73,9 @@ public class Engine extends Evolve {
 	public static final String ALPS_ALWAYS_BREED_MAXIMUM_POP         = "always-breed-maximum-population";
 	public static final String FSALPS_USE_ALL_LAYERS                 = "fsalps-use-all-layers";
 	public static final String FSALPS_ROULETTE                       = "probability-selection";
-			
-    /** Used to keep node usage for terminal sets 
-     * stored default node settings for terminals */
+
+	/** Used to keep node usage for terminal sets 
+	 * stored default node settings for terminals */
 	public static Map<String, Double>  nodeCountTerminalSet = new LinkedHashMap<String, Double>();
 	/** Used to keep node usage for function sets 
 	 * stored default node settings for non-terminals */
@@ -83,12 +83,12 @@ public class Engine extends Evolve {
 
 	/** Use strictly default node count specified in parameter file */
 	public static boolean fsalps_use_only_default_node_pr   = false;
-	
+
 	/** When true, all layers node count is used in generating
 	 *  probability node selection
 	 *  Else only last layer node count (frequency) is converted to probabilities */
 	public static boolean fsalps_use_all_layers             = false;
-	
+
 	/** FSALPS is active */
 	public static boolean fsalps_active                     = false;
 	/** Use FSALPS generated frequency count during mutation 
@@ -96,7 +96,7 @@ public class Engine extends Evolve {
 	public static boolean fsalps_use_mutation               = true;
 	/** Should frequency count be performed for every generation in the highest ALPS layer? */
 	public static boolean fsalps_last_layer_gen_freq_count  = false;
-	
+
 	/**
 	 * when true, only individuals selected from breeding from current layer have their age increased
 	 * else both both individuals coming from current and lower layer used as parents will have their age increased
@@ -104,8 +104,8 @@ public class Engine extends Evolve {
 	public static boolean alps_age_only_current_layer       = false;
 	/**
 	 * when using selection pressure, individual aging isn't uniform especially when parents are selected from lower
-     * layer. When some individuals are aged faster than others, a population will contain less than expected required number
-     * ECJ by default breeds a maximum of the number of populations contained in a population.
+	 * layer. When some individuals are aged faster than others, a population will contain less than expected required number
+	 * ECJ by default breeds a maximum of the number of populations contained in a population.
 	 */
 	public static boolean always_breed_maximum_pop          = true;
 
@@ -224,7 +224,7 @@ public class Engine extends Evolve {
 			l.evolutionState.generation = alpsEvaluations;
 			l.evolutionState.startFresh(l);
 		}
-		
+
 		/* determine number of evaluations */
 		alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * generationSize;
 		//alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * (Engine.generationSize + 1);
@@ -239,27 +239,27 @@ public class Engine extends Evolve {
 
 		//output was already created for us. 
 		buildOutput().systemMessage(Version.message());
-        /* setup parameter for ageScheme e.g linear, polynomial, exponential etc */
+		/* setup parameter for ageScheme e.g linear, polynomial, exponential etc */
 		ageScheme       = (AgingScheme)
 				(parameters.getInstanceForParameter(base().push(AGING_SCHEME),null,AgingScheme.class));
 		ageScheme.setup(parameters);
-		
+
 		try
 		{
-		roulette = (Roulette)
-						(parameters.getInstanceForParameter(FSALPS.defaultBase().push(FSALPS_ROULETTE),null,Roulette.class));
-		fsalps_active = true;
+			roulette = (Roulette)
+					(parameters.getInstanceForParameter(FSALPS.defaultBase().push(FSALPS_ROULETTE),null,Roulette.class));
+			fsalps_active = true;
 		}
 		catch(ec.util.ParamClassLoadException e)
 		{fsalps_active = false;} //when using normal ALPS, deactivate fsalps
-		
-		
+
+
 		numGenerations  = parameters.getInt(new Parameter(EvolutionState.P_GENERATIONS), null);
 
 		if (!parameters.exists(base().push(ALPS_AGE_ONLY_CURRENT_LAYER), null))
 			System.out.println("default value for  "
 					+ "\"alps."+ALPS_AGE_ONLY_CURRENT_LAYER+ "\" of \""+alps_age_only_current_layer+"\" will be used \n");
-		
+
 		if (!parameters.exists(base().push(ALPS_ALWAYS_BREED_MAXIMUM_POP), null))
 			System.out.println("default value for  "
 					+ "\"alps."+ALPS_ALWAYS_BREED_MAXIMUM_POP+ "\" of \""+always_breed_maximum_pop+"\" will be used \n");
@@ -276,11 +276,11 @@ public class Engine extends Evolve {
 				parameters.getBoolean(base().push(FSALPS_LAST_LAYER_GEN_FREQ_COUNT),null,false);
 		fsalps_use_all_layers            =  
 				parameters.getBoolean(base().push(FSALPS_USE_ALL_LAYERS),null,false);
-		
+
 		//p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
 		/** number of chunks available when using k-fold cross validation */
 		//kFoldCrossValidationSize  = parameters.getInt(p, null, 1); 
-		
+
 	}
 
 
@@ -366,7 +366,7 @@ public class Engine extends Evolve {
 		state = (EvolutionState)
 				parameters.getInstanceForParameter(new Parameter("state"),null,
 						EvolutionState.class);
-		
+
 		state.parameters = parameters;
 		state.random = random;
 		state.output = output;
@@ -414,7 +414,7 @@ public class Engine extends Evolve {
 	{
 
 		ParameterDatabase pd      =  loadParameterDatabase(args) ;
-	
+
 		// Now we know how many jobs remain.  Let's loop for that many jobs.  Each time we'll
 		// load the parameter database scratch (except the first time where we reuse the one we
 		// just loaded a second ago).  The reason we reload from scratch each time is that the

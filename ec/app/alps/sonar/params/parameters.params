@@ -23,7 +23,7 @@ breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 500
+generations             = 1000
 cross-validation-size   = 20
 
 

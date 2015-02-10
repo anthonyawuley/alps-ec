@@ -9,7 +9,7 @@
 package ec.app.fsalps.pima.ts;
 import ec.*;
 import ec.app.fsalps.pima.DoubleData;
-import ec.app.fsalps.pima.MultiValuedRegressionCoscA1B;
+import ec.app.fsalps.pima.Pima;
 import ec.gp.*;
 import ec.util.*;
 
@@ -39,7 +39,7 @@ public class BMI extends GPNode
         final Problem problem)
         {
           DoubleData rd = ((DoubleData)(input));
-          rd.x = ((MultiValuedRegressionCoscA1B)problem).bodyMassId;
+          rd.x = ((Pima)problem).bodyMassId;
         }
     }
 

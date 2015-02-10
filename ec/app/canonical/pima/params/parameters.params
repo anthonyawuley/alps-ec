@@ -3,23 +3,21 @@
 # Assignment 1 - Pima Indians Diabetes - Parameter file
 
 parent.0                            = ../../../../gp/koza/koza.params
-generations                         = 10
+generations                         = 100
 quit-on-run-complete                = false
 
 #jobs specifies the number of runs you would wish to perform
 jobs                                = 20
 pop.subpops                         = 1
-pop.subpop.0.size                   = 1000
-breed.elite.0.1                     = 30
+pop.subpop.0.size                   = 250
+breed.elite.0.1                     = 0
 breed                               = ec.simple.SimpleBreeder
 breedthreads                        = 1
+select.tournament.size              = 3
+gp.koza.reproduce.source.0          = ec.select.TournamentSelection
 evalthreads                         = 1
 seed.0                              = 1
-
-#TOURNAMENT SELECTION
-select.tournament.size              = 7
-gp.koza.reproduce.source.0          = ec.select.TournamentSelection
-
+cross-validation-size               = 20
 
 #DEFAULT KozaNodeSelector PARAMETERS
 gp.koza.ns.nonterminals             = 0.9
@@ -108,8 +106,13 @@ gp.fs.0.func.15.nc         = nc1
 gp.fs.0.func.16            = ec.app.canonical.pima.fs.Log10
 gp.fs.0.func.16.nc         = nc1
 
-eval.problem = ec.app.canonical.pima.MultiValuedRegressionCoscA1B
+eval.problem = ec.app.canonical.pima.Pima
 eval.problem.data = ec.app.canonical.pima.DoubleData
+# shuffle data when a cycle of kfold cross validation is completed
+# when not shuffled, this will be like testing the same data sample
+# n times. where n = jobs/cross-validation-size
+eval.problem.kfold-cycle-data-shuffle = true
+
 
 eval.problem.pima-indians-diabetes-data-raw        = /Users/anthony/git/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-data.txt
 eval.problem.pima-indians-diabetes-data-clean      = /Users/anthony/git/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-data-new.txt

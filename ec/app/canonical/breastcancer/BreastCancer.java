@@ -10,6 +10,7 @@ package ec.app.canonical.breastcancer;
 import ec.simple.SimpleProblemForm;
 import ec.util.*;
 import ec.*;
+import ec.app.canonical.pima.DoubleData;
 import ec.app.utils.datahouse.DataCruncher;
 import ec.app.utils.datahouse.Out;
 import ec.app.utils.datahouse.Reader;
@@ -47,15 +48,28 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
                   wdbc22,	wdbc23,	wdbc24,	wdbc25,	wdbc26,	wdbc27,	wdbc28,	wdbc29,	wdbc30,	wdbc31,	wdbc32,	
                   wdbc33;
     
-    private final String DATA_RAW   = "wdbc-all";
-    private final String DATA_CLEAN = "wdbc-clean";
-    private final String TRAIN_DATA = "wdbc-train-data";
-    private final String TEST_DATA  = "wdbc-test-data";
-    //private final String NUMB_DATA_POINTS = "total-number-of-points";
-    
-    private String trainFile,testFile;
-    //public  static int ctcmtrx = 0;
-    private ArrayList<ArrayList> POPULATION_DATA;
+	/** directory to raw unprocessed file */
+	private final String DATA_RAW   = "wdbc-all";
+	/** directory to savel cleaned file */
+	private final String DATA_CLEAN = "wdbc-clean";
+	/** directory to save training file */
+	private final String TRAIN_DATA = "wdbc-train-data";
+	/** directory to save test file */
+	private final String TEST_DATA  = "wdbc-test-data";
+	/** @deprecated */
+	private final String NUMB_DATA_POINTS = "total-number-of-points";
+	/**
+	 * shuffle data when a cycle of kfold cross validation is completed
+	 * when not shuffled, this will be like testing the same data sample
+	 * n times. where n = jobs/cross-validation-size
+	 */
+	private final String KFOLD_CYCLE_SHUFFLE = "kfold-cycle-data-shuffle";
+
+	private       String trainFile, testFile;
+	public  static int ctcmtrx = 0;
+	private ArrayList<ArrayList> POPULATION_DATA;
+	private ArrayList<ArrayList> TRAINING_DATA;
+	private ArrayList<ArrayList> TESTING_DATA;
  
     public DoubleData input;
 
@@ -69,42 +83,85 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
     public void setup(final EvolutionState state,
         final Parameter base)
         {
-        // very important, remember this
-        super.setup(state,base);
+    	// very important, remember this
+		super.setup(state,base);
 
-        // set up our input -- don't want to use the default base, it's unsafe here
-        input = (DoubleData) state.parameters.getInstanceForParameterEq(
-            base.push(P_DATA), null, DoubleData.class);
-        input.setup(state,base.push(P_DATA));
-        
-          
-        String dataRaw = state.parameters.getString(base.push(DATA_RAW), null);
-        
-        String dataClean = state.parameters.getString(base.push(DATA_CLEAN), null);
-        //state.parameters.getInt(base.push(NUMB_DATA_POINTS), null);
-        trainFile = state.parameters.getString(base.push(TRAIN_DATA), null);
-        testFile = state.parameters.getString(base.push(TEST_DATA), null);
-       
-        String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
-        
-       /** 
-         * 1. Reads raw pima_indians_diabetes_data
-         * 2. Filters content using regex above and passes output to dataClean
-         * 3. Shuffles content from (2) above
-         * 4. Split content into two [trainFile and testFile]
-         * 5. Perform shuffle on either files based on experiment (training or testing)
-         * NB:Files don't change once they have been created, cleaned and separated.
-         *    This is done by checking existence of files at program call. however,
-         *    Files are always shuffled at start of program
-         */
-        
-        
-        POPULATION_DATA = DataCruncher.shuffleData(state,Reader.readFile(
-                		 DataCruncher.cleanFile(regex,dataRaw,dataClean),","),false);
-        
-        /** Split formated data and write to training and test file */
-        Out.writeDataToFile(POPULATION_DATA,trainFile,testFile);
-        
+		// set up our input -- don't want to use the default base, it's unsafe here
+		input = (DoubleData) state.parameters.getInstanceForParameterEq(
+				base.push(P_DATA), null, DoubleData.class);
+		input.setup(state,base.push(P_DATA));
+
+		String dataRaw = state.parameters.getString(base.push(DATA_RAW), null);
+		String dataClean = state.parameters.getString(base.push(DATA_CLEAN), null);
+		//state.parameters.getInt(base.push(NUMB_DATA_POINTS), null);
+		trainFile = state.parameters.getString(base.push(TRAIN_DATA), null);
+		testFile = state.parameters.getString(base.push(TEST_DATA), null);
+
+		boolean kFoldCycleDataShuffle = state.parameters.
+				getBoolean(base.push(KFOLD_CYCLE_SHUFFLE),null,false);
+
+		String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+
+		/** 
+		 * 1. Reads raw data
+		 * 2. Filters content using regex above and passes output to dataClean
+		 * 3. Shuffles content from (2) above
+		 * 4. Split content into two [trainFile and testFile]
+		 * 5. Perform shuffle on either files based on experiment (training or testing)
+		 * NB:Files don't change once they have been created, cleaned and separated.
+		 *    This is done by checking existence of files at program call. however,
+		 *    Files are always shuffled at start of program
+		 */
+		if(state.isKFoldCrossValidation)
+		{ 
+			if(!DataCruncher.KFOLD_LOCK_DOWN_SHUFFLE) 
+			{ 
+				POPULATION_DATA = DataCruncher.shuffleData(state,
+						Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean+".clean"),","),false);
+				Out.writeDataToFile(POPULATION_DATA,dataClean,false); //write if file does not exist
+			}
+			/*
+			 * when one k-fold cross validation cycle is exhausted, force data shuffle and force
+			 * write operation to dataClean. This begins a new k-fold cross validation process
+			 * with a newly shuffled data set
+			 */
+			else if(((int)state.job[0]%state.kFoldCrossValidationSize)==0 && 
+					((int)state.job[0]>0) && kFoldCycleDataShuffle)
+			{   /* read cleaned data */
+				POPULATION_DATA = Reader.readFile(
+						DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
+				/* turn off shuffle lock  and force shuffle */
+				DataCruncher.KFOLD_LOCK_DOWN_SHUFFLE = false; 
+				POPULATION_DATA = DataCruncher.shuffleData(state,POPULATION_DATA,false);
+				/* forced rewrite of cleaned data) */
+				Out.writeDataToFile(POPULATION_DATA,dataClean,true); 
+			}
+			else //read from file
+			{  
+				POPULATION_DATA = Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
+			}
+			/* fetch training chunk */
+			TRAINING_DATA = DataCruncher.selectTrainingChunk(POPULATION_DATA,
+					state.kFoldCrossValidationSize, 
+					(int) state.job[0] % state.kFoldCrossValidationSize);
+			/* fetch testing chunk */
+			TESTING_DATA = DataCruncher.selectTestingChunk(POPULATION_DATA,
+					state.kFoldCrossValidationSize, 
+					(int) state.job[0] % state.kFoldCrossValidationSize);
+		}
+		else
+		{
+			POPULATION_DATA = DataCruncher.shuffleData(state,Reader.readFile(
+					DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"),false);
+			/* Split formated data and write to training and test file */
+			Out.writeDataToFile(POPULATION_DATA,trainFile,testFile);
+		}
+
+		/* TRAINING FILE */
+		if(!DataCruncher.IS_SHUFFLED && state.isKFoldCrossValidation )
+			TRAINING_DATA = DataCruncher.shuffleData(state,TRAINING_DATA,true);
+		else if(!DataCruncher.IS_SHUFFLED) //reading from training file
+			TRAINING_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile,","),true);
        
         }
 
@@ -116,10 +173,7 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
         final int threadnum)
         {
           
-    	/**TRAINING FILE */
-    	if(!DataCruncher.IS_SHUFFLED)
-            POPULATION_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile,","),true);
-        
+    	
         if (!ind.evaluated)  // don't bother reevaluating
             {
             int hits = 0;
@@ -166,12 +220,7 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
                   
                 ((GPIndividual)ind).trees[0].child.eval(
                         state,threadnum,input,stack,((GPIndividual)ind),this);
-                 /*
-                   //hits=input.x >= 0 && expectedResult == 1?hits++:hits;
-                   //hits=input.x <  0 && expectedResult == 0?hits++:hits;
-                   //varied 0,5,10, 20, 55,56,59:140  60,600:141 65:141  70:139 200:144
-                   //199.2:145 : just run ok in run 1
-                 */
+           
                  
                   if ((input.x >= 199.2 && expectedResult == 1) | (input.x < 199.2 && expectedResult == 0))
                          hits++;
@@ -182,11 +231,7 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
             f.setStandardizedFitness(state,1 - (float)hits/POPULATION_DATA.size());
             f.hits = hits;
             ind.evaluated = true;
-            
-            /*
-             * state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\n"
-                                  + "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[0][1],2);
-             */
+         
             }
         
         }
@@ -200,11 +245,13 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
         final int log){
         
        
-    	 /**TRAINING FILE */
-    	DataCruncher.IS_SHUFFLED = false;
-    	if(!DataCruncher.IS_SHUFFLED)
-            POPULATION_DATA = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
-        
+    	/* READ TEST FILE */
+		DataCruncher.IS_SHUFFLED = false;
+		if(!DataCruncher.IS_SHUFFLED && state.isKFoldCrossValidation )
+			TESTING_DATA = DataCruncher.shuffleData(state,TESTING_DATA,true);
+		else if(!DataCruncher.IS_SHUFFLED )
+			TESTING_DATA = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
+
         int [][] confusionMatrix = new int[2][2];
        
         
@@ -254,13 +301,7 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
                 ((GPIndividual)ind).trees[0].child.eval(
                         state,threadnum,input,stack,((GPIndividual)ind),this);
 
-                 /**
-                    if ((input.x >= 199.2 && expectedResult == 1) | (input.x < 199.2 && expectedResult == 0))
-                    hits++;
-                    * 
-                    * Hit&/Confusion matrix conditions
-                   */
-                
+              
                  if(input.x >= 199.2 && expectedResult == 1)
                       {confusionMatrix[0][0]++;hits++;}
                  if(input.x <  199.2 && expectedResult == 1)
@@ -279,10 +320,10 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
             }
             
             /** CONFUSION MATRIX + DIABETIC CANDIDATE STATUS IN TEST FILE */ 
-            state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\t"
-                               + "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[1][1]
-                               + "\nTOTAL DIABETIC: "     +Reader.dataCount[1]
-                               + "\tTOTAL NON-DIABETIC: " +Reader.dataCount[0],log);
+    		state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\t"
+    				+ "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[1][1]
+    						+ "\nTOTAL CASEA: "     +Reader.dataCount[1]
+    						+ "\tTOTAL CASEB: " +Reader.dataCount[0],log);
           
         }
      

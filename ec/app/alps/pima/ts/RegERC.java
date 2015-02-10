@@ -1,6 +1,6 @@
 package ec.app.alps.pima.ts;
 import ec.*;
-import ec.app.alps.sonar.DoubleData;
+import ec.app.alps.pima.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

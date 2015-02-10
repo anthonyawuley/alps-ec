@@ -1,7 +1,7 @@
 package ec.app.alps.ionosphere.ts;
 import ec.*;
 import ec.app.alps.pima.DoubleData;
-import ec.app.alps.pima.MultiValuedRegressionCoscA1B;
+import ec.app.alps.pima.Pima;
 import ec.gp.*;
 import ec.util.*;
 

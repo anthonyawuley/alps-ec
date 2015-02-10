@@ -46,7 +46,7 @@ public class UniformFrequency extends Roulette{
 			else //set upper bound for other nodes by adding current frequency to total  
 				nodeEntry.add((double) (roulette.get(c-1).get(1) + (double) nodeEntry.get(0)));
 			c++; 
-			System.out.println("::::"+ entry.getKey() + " VAL: "+ entry.getValue() + "--" + nodeEntry.get(1)); 
+			//System.out.println("::::"+ entry.getKey() + " VAL: "+ entry.getValue() + "--" + nodeEntry.get(1)); 
 
 			roulette.add(nodeEntry);
 		}

@@ -9,7 +9,7 @@
 package ec.app.alps.pima.ts;
 import ec.*;
 import ec.app.alps.pima.DoubleData;
-import ec.app.alps.pima.MultiValuedRegressionCoscA1B;
+import ec.app.alps.pima.Pima;
 import ec.gp.*;
 import ec.util.*;
 
@@ -37,7 +37,7 @@ public class TwoHourSerumInsulin extends GPNode
         final Problem problem)
         {
           DoubleData rd = ((DoubleData)(input));
-          rd.x = ((MultiValuedRegressionCoscA1B)problem).twoHrSerIns;
+          rd.x = ((Pima)problem).twoHrSerIns;
         }
     }
 

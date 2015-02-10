@@ -14,23 +14,24 @@ eval                    = ec.alps.ALPSEvaluator
 stat                    = ec.alps.statistics.ALPSStatistics
 init                    = ec.alps.fsalps.FSALPSGPInitializer
 pop                     = ec.Population
-jobs                    = 1
+jobs                    = 20
 pop.subpops             = 1
 pop.subpop.0.size       = 50
-select.tournament.size  = 7
-breed.elite.0           = 2
+select.tournament.size  = 3
+breed.elite.0           = 0
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 2000
+generations             = 1000
+cross-validation-size   = 20
 
 
 #Begin ALPS configuration ==============================================================
 alps.age-gap                           = 5
-alps.number-of-layers                  = 5
+alps.number-of-layers                  = 10
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
-alps.tournament-size                   = 7
+alps.tournament-size                   = 3
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
 
@@ -211,8 +212,12 @@ gp.fs.0.func.16    = ec.app.fsalps.pima.fs.Log10
 gp.fs.0.func.16.nc = nc1
 #END=================================================================================
 
-eval.problem = ec.app.fsalps.pima.MultiValuedRegressionCoscA1B
+eval.problem = ec.app.fsalps.pima.Pima
 eval.problem.data = ec.app.fsalps.pima.DoubleData
+# shuffle data when a cycle of kfold cross validation is completed
+# when not shuffled, this will be like testing the same data sample
+# n times. where n = jobs/cross-validation-size
+eval.problem.kfold-cycle-data-shuffle = true
 
 eval.problem.pima-indians-diabetes-data-raw        = /Users/anthony/git/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-data.txt
 eval.problem.pima-indians-diabetes-data-clean      = /Users/anthony/git/ecj22/ec/app/fsalps/pima/data/pima-indians-diabetes-data-new.txt
