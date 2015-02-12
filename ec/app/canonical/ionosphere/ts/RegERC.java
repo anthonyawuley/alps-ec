@@ -1,7 +1,6 @@
-package ec.app.alps.ionosphere.ts;
+package ec.app.canonical.ionosphere.ts;
 import ec.*;
-import ec.app.alps.pima.DoubleData;
-import ec.app.alps.pima.Pima;
+import ec.app.canonical.ionosphere.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

@@ -8,7 +8,7 @@
 package ec.app.alps.ionosphere.fs;
 
 import ec.*;
-import ec.app.alps.pima.DoubleData;
+import ec.app.alps.ionosphere.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

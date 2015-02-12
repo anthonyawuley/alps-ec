@@ -1,29 +1,24 @@
 # Anthony Awuley
 # COSC5F90 - Thesis
-# Testing IONOSPHERE
-# https://archive.ics.uci.edu/ml/datasets/Ionosphere
-
-
-
+# Testing SONAR
+# https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)
 
 parent.0                            = ../../../../gp/koza/koza.params
-generations                         = 300
+generations                         = 100
 quit-on-run-complete                = false
 
 #jobs specifies the number of runs you would wish to perform
 jobs                                = 20
 pop.subpops                         = 1
-pop.subpop.0.size                   = 1000
-breed.elite.0.1                     = 30
+pop.subpop.0.size                   = 250
+breed.elite.0.1                     = 2
 breed                               = ec.simple.SimpleBreeder
 breedthreads                        = 1
+select.tournament.size              = 4
+gp.koza.reproduce.source.0          = ec.select.TournamentSelection
 evalthreads                         = 1
 seed.0                              = 1
-
-#TOURNAMENT SELECTION
-select.tournament.size              = 7
-gp.koza.reproduce.source.0          = ec.select.TournamentSelection
-
+cross-validation-size               = 20
 
 #DEFAULT KozaNodeSelector PARAMETERS
 gp.koza.ns.nonterminals             = 0.9
@@ -76,50 +71,106 @@ gp.fs.size = 1
 gp.fs.0           = ec.alps.fsalps.FSALPSGPFunctionSet
 gp.fs.0.name = f0
 
-gp.fs.0.size               = 17
-gp.fs.0.func.0             = ec.app.canonical.pima.ts.NumbTimesPreg
-gp.fs.0.func.0.nc          = nc0
-gp.fs.0.func.1             = ec.app.canonical.pima.ts.PlasmaGlucoseConc
-gp.fs.0.func.1.nc          = nc0
-gp.fs.0.func.2             = ec.app.canonical.pima.ts.DiastolicBP
-gp.fs.0.func.2.nc          = nc0
-gp.fs.0.func.3             = ec.app.canonical.pima.ts.TricepsSkinFoldThickness
-gp.fs.0.func.3.nc          = nc0
-gp.fs.0.func.4             = ec.app.canonical.pima.ts.TwoHourSerumInsulin
-gp.fs.0.func.4.nc          = nc0
-gp.fs.0.func.5             = ec.app.canonical.pima.ts.BMI
-gp.fs.0.func.5.nc          = nc0
-gp.fs.0.func.6             = ec.app.canonical.pima.ts.DiabetesPedigreeFunction
-gp.fs.0.func.6.nc          = nc0     
-gp.fs.0.func.7             = ec.app.canonical.pima.ts.Age
-gp.fs.0.func.7.nc          = nc0
-gp.fs.0.func.8             = ec.app.canonical.pima.ts.RegERC
-gp.fs.0.func.8.nc          = nc0
-gp.fs.0.func.9             = ec.app.canonical.pima.fs.Add
-gp.fs.0.func.9.nc          = nc2
-gp.fs.0.func.10            = ec.app.canonical.pima.fs.Sub
-gp.fs.0.func.10.nc         = nc2
-gp.fs.0.func.11            = ec.app.canonical.pima.fs.Mul
-gp.fs.0.func.11.nc         = nc2
-gp.fs.0.func.12            = ec.app.canonical.pima.fs.Div
-gp.fs.0.func.12.nc         = nc2
-gp.fs.0.func.13            = ec.app.canonical.pima.fs.Max
-gp.fs.0.func.13.nc         = nc2
-gp.fs.0.func.14            = ec.app.canonical.pima.fs.Min
-gp.fs.0.func.14.nc         = nc2
-gp.fs.0.func.15            = ec.app.canonical.pima.fs.Ln
-gp.fs.0.func.15.nc         = nc1
-gp.fs.0.func.16            = ec.app.canonical.pima.fs.Log10
-gp.fs.0.func.16.nc         = nc1
+gp.fs.0.size      = 41
+gp.fs.0.func.0		=	ec.app.canonical.ionosphere.ts.Ion1
+gp.fs.0.func.0.nc	=	nc0		
+gp.fs.0.func.1		=	ec.app.canonical.ionosphere.ts.Ion2
+gp.fs.0.func.1.nc	=	nc0		
+gp.fs.0.func.2		=	ec.app.canonical.ionosphere.ts.Ion3
+gp.fs.0.func.2.nc	=	nc0		
+gp.fs.0.func.3		=	ec.app.canonical.ionosphere.ts.Ion4
+gp.fs.0.func.3.nc	=	nc0		
+gp.fs.0.func.4		=	ec.app.canonical.ionosphere.ts.Ion5
+gp.fs.0.func.4.nc	=	nc0		
+gp.fs.0.func.5		=	ec.app.canonical.ionosphere.ts.Ion6
+gp.fs.0.func.5.nc	=	nc0		
+gp.fs.0.func.6		=	ec.app.canonical.ionosphere.ts.Ion7
+gp.fs.0.func.6.nc	=	nc0		
+gp.fs.0.func.7		=	ec.app.canonical.ionosphere.ts.Ion8
+gp.fs.0.func.7.nc	=	nc0		
+gp.fs.0.func.8		=	ec.app.canonical.ionosphere.ts.Ion9
+gp.fs.0.func.8.nc	=	nc0		
+gp.fs.0.func.9		=	ec.app.canonical.ionosphere.ts.Ion10
+gp.fs.0.func.9.nc	=	nc0		
+gp.fs.0.func.10		=	ec.app.canonical.ionosphere.ts.Ion11
+gp.fs.0.func.10.nc	=	nc0		
+gp.fs.0.func.11		=	ec.app.canonical.ionosphere.ts.Ion12
+gp.fs.0.func.11.nc	=	nc0		
+gp.fs.0.func.12		=	ec.app.canonical.ionosphere.ts.Ion13
+gp.fs.0.func.12.nc	=	nc0		
+gp.fs.0.func.13		=	ec.app.canonical.ionosphere.ts.Ion14
+gp.fs.0.func.13.nc	=	nc0		
+gp.fs.0.func.14		=	ec.app.canonical.ionosphere.ts.Ion15
+gp.fs.0.func.14.nc	=	nc0		
+gp.fs.0.func.15		=	ec.app.canonical.ionosphere.ts.Ion16
+gp.fs.0.func.15.nc	=	nc0		
+gp.fs.0.func.16		=	ec.app.canonical.ionosphere.ts.Ion17
+gp.fs.0.func.16.nc	=	nc0		
+gp.fs.0.func.17		=	ec.app.canonical.ionosphere.ts.Ion18
+gp.fs.0.func.17.nc	=	nc0		
+gp.fs.0.func.18		=	ec.app.canonical.ionosphere.ts.Ion19
+gp.fs.0.func.18.nc	=	nc0		
+gp.fs.0.func.19		=	ec.app.canonical.ionosphere.ts.Ion20
+gp.fs.0.func.19.nc	=	nc0		
+gp.fs.0.func.20		=	ec.app.canonical.ionosphere.ts.Ion21
+gp.fs.0.func.20.nc	=	nc0		
+gp.fs.0.func.21		=	ec.app.canonical.ionosphere.ts.Ion22
+gp.fs.0.func.21.nc	=	nc0		
+gp.fs.0.func.22		=	ec.app.canonical.ionosphere.ts.Ion23
+gp.fs.0.func.22.nc	=	nc0		
+gp.fs.0.func.23		=	ec.app.canonical.ionosphere.ts.Ion24
+gp.fs.0.func.23.nc	=	nc0		
+gp.fs.0.func.24		=	ec.app.canonical.ionosphere.ts.Ion25
+gp.fs.0.func.24.nc	=	nc0		
+gp.fs.0.func.25		=	ec.app.canonical.ionosphere.ts.Ion26
+gp.fs.0.func.25.nc	=	nc0		
+gp.fs.0.func.26		=	ec.app.canonical.ionosphere.ts.Ion27
+gp.fs.0.func.26.nc	=	nc0		
+gp.fs.0.func.27		=	ec.app.canonical.ionosphere.ts.Ion28
+gp.fs.0.func.27.nc	=	nc0		
+gp.fs.0.func.28		=	ec.app.canonical.ionosphere.ts.Ion29
+gp.fs.0.func.28.nc	=	nc0		
+gp.fs.0.func.29		=	ec.app.canonical.ionosphere.ts.Ion30
+gp.fs.0.func.29.nc	=	nc0		
+gp.fs.0.func.30		=	ec.app.canonical.ionosphere.ts.Ion31
+gp.fs.0.func.30.nc	=	nc0		
+gp.fs.0.func.31		=	ec.app.canonical.ionosphere.ts.Ion32
+gp.fs.0.func.31.nc	=	nc0		
+gp.fs.0.func.32		=	ec.app.canonical.ionosphere.ts.Ion33
+gp.fs.0.func.32.nc	=	nc0		
 
-eval.problem = ec.app.canonical.pima.MultiValuedRegressionCoscA1B
-eval.problem.data = ec.app.canonical.pima.DoubleData
-eval.problem.pima-indians-diabetes-data-raw        = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-data.txt
-eval.problem.pima-indians-diabetes-data-clean      = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-data-new.txt
-eval.problem.pima-indians-diabetes-data-train-data = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-train-data.txt
-eval.problem.pima-indians-diabetes-data-test-data  = ../Extensions/ecj22/ec/app/canonical/pima/data/pima-indians-diabetes-test-data.txt
+gp.fs.0.func.33    = ec.app.canonical.ionosphere.fs.Add
+gp.fs.0.func.33.nc = nc2
+gp.fs.0.func.34   = ec.app.canonical.ionosphere.fs.Sub
+gp.fs.0.func.34.nc = nc2
+gp.fs.0.func.35    = ec.app.canonical.ionosphere.fs.Mul
+gp.fs.0.func.35.nc = nc2
+gp.fs.0.func.36    = ec.app.canonical.ionosphere.fs.Div
+gp.fs.0.func.36.nc = nc2
+gp.fs.0.func.37    = ec.app.canonical.ionosphere.fs.Max
+gp.fs.0.func.37.nc = nc2
+gp.fs.0.func.38    = ec.app.canonical.ionosphere.fs.Min
+gp.fs.0.func.38.nc = nc2
+gp.fs.0.func.39    = ec.app.canonical.ionosphere.fs.Ln
+gp.fs.0.func.39.nc = nc1
+gp.fs.0.func.40    = ec.app.canonical.ionosphere.fs.Log10
+gp.fs.0.func.40.nc = nc1
+#END================================================================================= 
+
+eval.problem       = ec.app.canonical.ionosphere.Ionosphere
+eval.problem.data  = ec.app.canonical.ionosphere.DoubleData
+# shuffle data when a cycle of kfold cross validation is completed
+# when not shuffled, this will be like testing the same data sample
+# n times. where n = jobs/cross-validation-size
+eval.problem.kfold-cycle-data-shuffle = true
+
+eval.problem.ionosphere-all        = /Users/anthony/git/ecj22/ec/app/canonical/ionosphere/data/ionosphere-all.data
+eval.problem.ionosphere-clean      = /Users/anthony/git/ecj22/ec/app/canonical/ionosphere/data/ionosphere-new.data
+eval.problem.ionosphere-train-data = /Users/anthony/git/ecj22/ec/app/canonical/ionosphere/data/ionosphere-train.data
+eval.problem.ionosphere-test-data  = /Users/anthony/git/ecj22/ec/app/canonical/ionosphere/data/ionosphere-test.data
 
 eval.problem.total-number-of-points        = 168
+
 
 #Specification of output statistics files
 

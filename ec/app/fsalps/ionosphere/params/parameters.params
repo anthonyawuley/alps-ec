@@ -1,6 +1,7 @@
 # Anthony Awuley
-# COSC5P71 - Genetic Programming
-# Testing ALPS - Pima Indians Diabetes - Parameter file
+# COSC5F90 - Thesis
+# Testing SONAR
+# https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)
 
 parent.0                = ../../../../gp/koza/koza.params
 quit-on-run-complete    = false
@@ -14,15 +15,16 @@ eval                    = ec.alps.ALPSEvaluator
 stat                    = ec.alps.statistics.ALPSStatistics
 init                    = ec.alps.fsalps.FSALPSGPInitializer
 pop                     = ec.Population
-jobs                    = 1
+jobs                    = 20
 pop.subpops             = 1
 pop.subpop.0.size       = 50
-select.tournament.size  = 7
+select.tournament.size  = 4
 breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 2000
+generations             = 1000
+cross-validation-size   = 20
 
 
 #Begin ALPS configuration ==============================================================
@@ -67,8 +69,11 @@ alps.fsalps-last-layer-gen-freq-count = false
 
 # when enabled, nodes are counted in all layers and converted
 # to probability values used during mutation and tree initialization in bottom layer
-alps.fsalps-use-all-layers            = false
+alps.fsalps-use-all-layers            = true
 
+# Determine which frequency selection criteria is used for generating probability
+alps.fsalps.probability-selection     = ec.alps.fsalps.probability.RankingFrequency
+  
 
 
 #ec.gp.koza.koza.params
@@ -125,8 +130,8 @@ pop.subpop.0.species.pipe.source.0.prob          = 0.90
 
 pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
 pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
-pop.subpop.0.species.pipe.source.0.source.0.size = 7
-#pop.subpop.0.species.pipe.source.1.prob          = 0.10
+#pop.subpop.0.species.pipe.source.0.source.0.size = 7
+pop.subpop.0.species.pipe.source.1.prob          = 0.10
 
 #Node Selectors
 gp.koza.ns.terminals                             = 0.1
@@ -163,59 +168,103 @@ gp.fs.size         = 1
 gp.fs.0            = ec.alps.fsalps.FSALPSGPFunctionSet
 gp.fs.0.name       = f0
 
-gp.fs.0.size       = 17
-gp.fs.0.func.0     = ec.app.fsalps.alpspima.ts.NumbTimesPreg
-gp.fs.0.func.0.nc  = nc0
-gp.fs.0.func.0.pr  = 0
-gp.fs.0.func.1     = ec.app.fsalps.alpspima.ts.PlasmaGlucoseConc
-gp.fs.0.func.1.nc  = nc0
-gp.fs.0.func.1.pr  = 0
-gp.fs.0.func.2     = ec.app.fsalps.alpspima.ts.DiastolicBP
-gp.fs.0.func.2.nc  = nc0
-gp.fs.0.func.2.pr  = 0
-gp.fs.0.func.3     = ec.app.fsalps.alpspima.ts.TricepsSkinFoldThickness
-gp.fs.0.func.3.nc  = nc0
-gp.fs.0.func.3.pr  = 0
-gp.fs.0.func.4     = ec.app.fsalps.alpspima.ts.TwoHourSerumInsulin
-gp.fs.0.func.4.nc  = nc0
-gp.fs.0.func.4.pr  = 0
-gp.fs.0.func.5     = ec.app.fsalps.alpspima.ts.BMI
-gp.fs.0.func.5.nc  = nc0
-gp.fs.0.func.5.pr  = 0
-gp.fs.0.func.6     = ec.app.fsalps.alpspima.ts.DiabetesPedigreeFunction
-gp.fs.0.func.6.nc  = nc0
-gp.fs.0.func.6.pr  = 0
-gp.fs.0.func.7     = ec.app.fsalps.alpspima.ts.Age
-gp.fs.0.func.7.nc  = nc0
-gp.fs.0.func.7.pr  = 0
-gp.fs.0.func.8     = ec.app.fsalps.alpspima.ts.RegERC
-gp.fs.0.func.8.nc  = nc0
-gp.fs.0.func.8.pr  = 0
-gp.fs.0.func.9     = ec.app.fsalps.alpspima.fs.Add
-gp.fs.0.func.9.nc  = nc2
-gp.fs.0.func.10    = ec.app.fsalps.alpspima.fs.Sub
-gp.fs.0.func.10.nc = nc2
-gp.fs.0.func.11    = ec.app.fsalps.alpspima.fs.Mul
-gp.fs.0.func.11.nc = nc2
-gp.fs.0.func.12    = ec.app.fsalps.alpspima.fs.Div
-gp.fs.0.func.12.nc = nc2
-gp.fs.0.func.13    = ec.app.fsalps.alpspima.fs.Max
-gp.fs.0.func.13.nc = nc2
-gp.fs.0.func.14    = ec.app.fsalps.alpspima.fs.Min
-gp.fs.0.func.14.nc = nc2
-gp.fs.0.func.15    = ec.app.fsalps.alpspima.fs.Ln
-gp.fs.0.func.15.nc = nc1
-gp.fs.0.func.16    = ec.app.fsalps.alpspima.fs.Log10
-gp.fs.0.func.16.nc = nc1
-#END=================================================================================
+gp.fs.0.size      = 41
+gp.fs.0.func.0		=	ec.app.fsalps.ionosphere.ts.Ion1
+gp.fs.0.func.0.nc	=	nc0		
+gp.fs.0.func.1		=	ec.app.fsalps.ionosphere.ts.Ion2
+gp.fs.0.func.1.nc	=	nc0		
+gp.fs.0.func.2		=	ec.app.fsalps.ionosphere.ts.Ion3
+gp.fs.0.func.2.nc	=	nc0		
+gp.fs.0.func.3		=	ec.app.fsalps.ionosphere.ts.Ion4
+gp.fs.0.func.3.nc	=	nc0		
+gp.fs.0.func.4		=	ec.app.fsalps.ionosphere.ts.Ion5
+gp.fs.0.func.4.nc	=	nc0		
+gp.fs.0.func.5		=	ec.app.fsalps.ionosphere.ts.Ion6
+gp.fs.0.func.5.nc	=	nc0		
+gp.fs.0.func.6		=	ec.app.fsalps.ionosphere.ts.Ion7
+gp.fs.0.func.6.nc	=	nc0		
+gp.fs.0.func.7		=	ec.app.fsalps.ionosphere.ts.Ion8
+gp.fs.0.func.7.nc	=	nc0		
+gp.fs.0.func.8		=	ec.app.fsalps.ionosphere.ts.Ion9
+gp.fs.0.func.8.nc	=	nc0		
+gp.fs.0.func.9		=	ec.app.fsalps.ionosphere.ts.Ion10
+gp.fs.0.func.9.nc	=	nc0		
+gp.fs.0.func.10		=	ec.app.fsalps.ionosphere.ts.Ion11
+gp.fs.0.func.10.nc	=	nc0		
+gp.fs.0.func.11		=	ec.app.fsalps.ionosphere.ts.Ion12
+gp.fs.0.func.11.nc	=	nc0		
+gp.fs.0.func.12		=	ec.app.fsalps.ionosphere.ts.Ion13
+gp.fs.0.func.12.nc	=	nc0		
+gp.fs.0.func.13		=	ec.app.fsalps.ionosphere.ts.Ion14
+gp.fs.0.func.13.nc	=	nc0		
+gp.fs.0.func.14		=	ec.app.fsalps.ionosphere.ts.Ion15
+gp.fs.0.func.14.nc	=	nc0		
+gp.fs.0.func.15		=	ec.app.fsalps.ionosphere.ts.Ion16
+gp.fs.0.func.15.nc	=	nc0		
+gp.fs.0.func.16		=	ec.app.fsalps.ionosphere.ts.Ion17
+gp.fs.0.func.16.nc	=	nc0		
+gp.fs.0.func.17		=	ec.app.fsalps.ionosphere.ts.Ion18
+gp.fs.0.func.17.nc	=	nc0		
+gp.fs.0.func.18		=	ec.app.fsalps.ionosphere.ts.Ion19
+gp.fs.0.func.18.nc	=	nc0		
+gp.fs.0.func.19		=	ec.app.fsalps.ionosphere.ts.Ion20
+gp.fs.0.func.19.nc	=	nc0		
+gp.fs.0.func.20		=	ec.app.fsalps.ionosphere.ts.Ion21
+gp.fs.0.func.20.nc	=	nc0		
+gp.fs.0.func.21		=	ec.app.fsalps.ionosphere.ts.Ion22
+gp.fs.0.func.21.nc	=	nc0		
+gp.fs.0.func.22		=	ec.app.fsalps.ionosphere.ts.Ion23
+gp.fs.0.func.22.nc	=	nc0		
+gp.fs.0.func.23		=	ec.app.fsalps.ionosphere.ts.Ion24
+gp.fs.0.func.23.nc	=	nc0		
+gp.fs.0.func.24		=	ec.app.fsalps.ionosphere.ts.Ion25
+gp.fs.0.func.24.nc	=	nc0		
+gp.fs.0.func.25		=	ec.app.fsalps.ionosphere.ts.Ion26
+gp.fs.0.func.25.nc	=	nc0		
+gp.fs.0.func.26		=	ec.app.fsalps.ionosphere.ts.Ion27
+gp.fs.0.func.26.nc	=	nc0		
+gp.fs.0.func.27		=	ec.app.fsalps.ionosphere.ts.Ion28
+gp.fs.0.func.27.nc	=	nc0		
+gp.fs.0.func.28		=	ec.app.fsalps.ionosphere.ts.Ion29
+gp.fs.0.func.28.nc	=	nc0		
+gp.fs.0.func.29		=	ec.app.fsalps.ionosphere.ts.Ion30
+gp.fs.0.func.29.nc	=	nc0		
+gp.fs.0.func.30		=	ec.app.fsalps.ionosphere.ts.Ion31
+gp.fs.0.func.30.nc	=	nc0		
+gp.fs.0.func.31		=	ec.app.fsalps.ionosphere.ts.Ion32
+gp.fs.0.func.31.nc	=	nc0		
+gp.fs.0.func.32		=	ec.app.fsalps.ionosphere.ts.Ion33
+gp.fs.0.func.32.nc	=	nc0		
 
-eval.problem = ec.app.fsalps.alpspima.MultiValuedRegressionCoscA1B
-eval.problem.data = ec.app.fsalps.alpspima.DoubleData
+gp.fs.0.func.33    = ec.app.fsalps.ionosphere.fs.Add
+gp.fs.0.func.33.nc = nc2
+gp.fs.0.func.34   = ec.app.fsalps.ionosphere.fs.Sub
+gp.fs.0.func.34.nc = nc2
+gp.fs.0.func.35    = ec.app.fsalps.ionosphere.fs.Mul
+gp.fs.0.func.35.nc = nc2
+gp.fs.0.func.36    = ec.app.fsalps.ionosphere.fs.Div
+gp.fs.0.func.36.nc = nc2
+gp.fs.0.func.37    = ec.app.fsalps.ionosphere.fs.Max
+gp.fs.0.func.37.nc = nc2
+gp.fs.0.func.38    = ec.app.fsalps.ionosphere.fs.Min
+gp.fs.0.func.38.nc = nc2
+gp.fs.0.func.39    = ec.app.fsalps.ionosphere.fs.Ln
+gp.fs.0.func.39.nc = nc1
+gp.fs.0.func.40    = ec.app.fsalps.ionosphere.fs.Log10
+gp.fs.0.func.40.nc = nc1
+#END================================================================================= 
 
-eval.problem.pima-indians-diabetes-data-raw        = ../Extensions/ecj22/ec/app/fsalps/alpspima/data/pima-indians-diabetes-data.txt
-eval.problem.pima-indians-diabetes-data-clean      = ../Extensions/ecj22/ec/app/fsalps/alpspima/data/pima-indians-diabetes-data-new.txt
-eval.problem.pima-indians-diabetes-data-train-data = ../Extensions/ecj22/ec/app/fsalps/alpspima/data/pima-indians-diabetes-train-data.txt
-eval.problem.pima-indians-diabetes-data-test-data  = ../Extensions/ecj22/ec/app/fsalps/alpspima/data/pima-indians-diabetes-test-data.txt
+eval.problem       = ec.app.fsalps.ionosphere.Ionosphere
+eval.problem.data  = ec.app.fsalps.ionosphere.DoubleData
+# shuffle data when a cycle of kfold cross validation is completed
+# when not shuffled, this will be like testing the same data sample
+# n times. where n = jobs/cross-validation-size
+eval.problem.kfold-cycle-data-shuffle = true
+
+eval.problem.ionosphere-all        = /Users/anthony/git/ecj22/ec/app/fsalps/ionosphere/data/ionosphere-all.data
+eval.problem.ionosphere-clean      = /Users/anthony/git/ecj22/ec/app/fsalps/ionosphere/data/ionosphere-new.data
+eval.problem.ionosphere-train-data = /Users/anthony/git/ecj22/ec/app/fsalps/ionosphere/data/ionosphere-train.data
+eval.problem.ionosphere-test-data  = /Users/anthony/git/ecj22/ec/app/fsalps/ionosphere/data/ionosphere-test.data
 
 eval.problem.total-number-of-points        = 168
 

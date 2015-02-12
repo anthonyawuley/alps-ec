@@ -17,12 +17,12 @@ pop                     = ec.Population
 jobs                    = 20
 pop.subpops             = 1
 pop.subpop.0.size       = 50
-select.tournament.size  = 3
-breed.elite.0           = 0
+select.tournament.size  = 7
+breed.elite.0.1         = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 1000
+generations             = 500
 cross-validation-size   = 20
 
 
@@ -31,7 +31,7 @@ alps.age-gap                           = 5
 alps.number-of-layers                  = 10
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
-alps.tournament-size                   = 3
+alps.tournament-size                   = 7
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
 

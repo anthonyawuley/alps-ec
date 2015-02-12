@@ -26,6 +26,7 @@ breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
 generations             = 300
+cross-validation-size   = 20
 
 
 #Begin ALPS configuration =========================================================== 
@@ -197,6 +198,10 @@ gp.fs.0.func.38.nc  = nc1
 
 eval.problem       = ec.app.alps.breastcancer.BreastCancer
 eval.problem.data  = ec.app.alps.breastcancer.DoubleData
+# shuffle data when a cycle of kfold cross validation is completed
+# when not shuffled, this will be like testing the same data sample
+# n times. where n = jobs/cross-validation-size
+eval.problem.kfold-cycle-data-shuffle = true
 
 eval.problem.wdbc-all        = /Users/anthony/git/ecj22/ec/app/alps/breastcancer/data/wdbc-all.data
 eval.problem.wdbc-clean      = /Users/anthony/git/ecj22/ec/app/alps/breastcancer/data/wdbc-new.data

@@ -102,7 +102,8 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
     			boolean kFoldCycleDataShuffle = state.parameters.
     					getBoolean(base.push(KFOLD_CYCLE_SHUFFLE),null,false);
 
-    			String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+    			//String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+    			String [] regex =  {"",""};
 
     			/** 
     			 * 1. Reads raw data
@@ -181,8 +182,8 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
             float expectedResult;
             
            
-            for(int i=0;i<POPULATION_DATA.size();i++){
-		          //decoded Data Point
+            for(int i=0;i<TRAINING_DATA.size();i++){
+		        //decoded Data Point
             	ion0	= (float) TRAINING_DATA.get(i).get(0);
             	ion1	= (float) TRAINING_DATA.get(i).get(1);
             	ion2	= (float) TRAINING_DATA.get(i).get(2);
@@ -218,16 +219,10 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
             	ion32	= (float) TRAINING_DATA.get(i).get(32);
             	ion33	= (float) TRAINING_DATA.get(i).get(33);
             	expectedResult	= (float) TRAINING_DATA.get(i).get(34);
-                  
+                
                 ((GPIndividual)ind).trees[0].child.eval(
                         state,threadnum,input,stack,((GPIndividual)ind),this);
-                 /*
-                   //hits=input.x >= 0 && expectedResult == 1?hits++:hits;
-                   //hits=input.x <  0 && expectedResult == 0?hits++:hits;
-                   //varied 0,5,10, 20, 55,56,59:140  60,600:141 65:141  70:139 200:144
-                   //199.2:145 : just run ok in run 1
-                 */
-                 
+             
                   if ((input.x >= 199.2 && expectedResult == 1) | (input.x < 199.2 && expectedResult == 0))
                          hits++;
 	     }
@@ -244,7 +239,7 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
         }
     
     /** PERFORM TESTING */
-    @Override
+     @Override
      public void describe(final EvolutionState state, 
         final Individual ind, 
         final int subpopulation,
@@ -307,17 +302,15 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
                 ((GPIndividual)ind).trees[0].child.eval(
                         state,threadnum,input,stack,((GPIndividual)ind),this);
 
-                 /**
-                    if ((input.x >= 199.2 && expectedResult == 1) | (input.x < 199.2 && expectedResult == 0))
-                    hits++;
-                    * 
-                    * Hit&/Confusion matrix conditions
-                   */
-                
-                 if(input.x >= 199.2 && expectedResult == 1){confusionMatrix[0][0]++;hits++;}
-                 if(input.x <  199.2 && expectedResult == 1){confusionMatrix[1][0]++;}
-                 if(input.x <  199.2 && expectedResult == 0){confusionMatrix[0][1]++;hits++; }
-                 if(input.x >= 199.2 && expectedResult == 0){confusionMatrix[1][1]++;}
+              
+                 if(input.x >= 199.2 && expectedResult == 1)
+                     {confusionMatrix[0][0]++;hits++;}
+                 if(input.x <  199.2 && expectedResult == 1)
+                     {confusionMatrix[1][0]++;}
+                 if(input.x <  199.2 && expectedResult == 0)
+                     {confusionMatrix[0][1]++;hits++; }
+                 if(input.x >= 199.2 && expectedResult == 0)
+                     {confusionMatrix[1][1]++;}
                 
            
             // the fitness better be KozaFitness!

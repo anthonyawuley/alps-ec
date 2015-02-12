@@ -8,7 +8,7 @@
 package ec.app.fsalps.ionosphere.fs;
 
 import ec.*;
-import ec.app.fsalps.pima.DoubleData;
+import ec.app.fsalps.ionosphere.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

@@ -102,7 +102,8 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
     			boolean kFoldCycleDataShuffle = state.parameters.
     					getBoolean(base.push(KFOLD_CYCLE_SHUFFLE),null,false);
 
-    			String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+    			//String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+    			String [] regex =  {"",""};
 
     			/** 
     			 * 1. Reads raw data
@@ -181,7 +182,7 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
             float expectedResult;
             
            
-            for(int i=0;i<POPULATION_DATA.size();i++){
+            for(int i=0;i<TRAINING_DATA.size();i++){
 		        //decoded Data Point
             	ion0	= (float) TRAINING_DATA.get(i).get(0);
             	ion1	= (float) TRAINING_DATA.get(i).get(1);
@@ -218,16 +219,10 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
             	ion32	= (float) TRAINING_DATA.get(i).get(32);
             	ion33	= (float) TRAINING_DATA.get(i).get(33);
             	expectedResult	= (float) TRAINING_DATA.get(i).get(34);
-                  
+                
                 ((GPIndividual)ind).trees[0].child.eval(
                         state,threadnum,input,stack,((GPIndividual)ind),this);
-                 /*
-                   //hits=input.x >= 0 && expectedResult == 1?hits++:hits;
-                   //hits=input.x <  0 && expectedResult == 0?hits++:hits;
-                   //varied 0,5,10, 20, 55,56,59:140  60,600:141 65:141  70:139 200:144
-                   //199.2:145 : just run ok in run 1
-                 */
-                 
+             
                   if ((input.x >= 199.2 && expectedResult == 1) | (input.x < 199.2 && expectedResult == 0))
                          hits++;
 	     }

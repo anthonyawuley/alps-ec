@@ -17,12 +17,12 @@ pop                     = ec.Population
 jobs                    = 20
 pop.subpops             = 1
 pop.subpop.0.size       = 50
-select.tournament.size  = 3
-breed.elite.0           = 0
+select.tournament.size  = 7
+breed.elite.0.1         = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 1000
+generations             = 500
 cross-validation-size   = 20
 
 
@@ -31,7 +31,7 @@ alps.age-gap                           = 5
 alps.number-of-layers                  = 10
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
-alps.tournament-size                   = 3
+alps.tournament-size                   = 7
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
 
@@ -128,8 +128,8 @@ pop.subpop.0.species.pipe.source.0.prob          = 0.90
 
 pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
 pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
-pop.subpop.0.species.pipe.source.0.source.0.size = 7
-#pop.subpop.0.species.pipe.source.1.prob          = 0.10
+#pop.subpop.0.species.pipe.source.0.source.0.size = 7
+pop.subpop.0.species.pipe.source.1.prob          = 0.10
 
 #Node Selectors
 gp.koza.ns.terminals                             = 0.1
