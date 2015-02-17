@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.imageio.ImageIO;
 
 import ec.EvolutionState;
+import ec.util.MersenneTwister;
 
 
 public class DataCruncher  {
@@ -29,13 +30,21 @@ public class DataCruncher  {
 	static Pattern[] pattern = new Pattern[2];
 	static Matcher[] matcher = new Matcher[2];
 	static ArrayList<Integer> blockSizes = new ArrayList<>();
+	
+	/** 
+	 * this is to ensure that seed is specified using job-number and all activities performed
+	 * here are consistent across various EA strategies. eg. canonical, alps and fsalps 
+	 * */
+	static MersenneTwister shuffleTwister;
 
-	//public static ArrayList<ArrayList> POPULATION_DATA;
 
-
-	public static boolean IS_SHUFFLED = false;
-
-	public static boolean KFOLD_LOCK_DOWN_SHUFFLE = false;
+	//public static boolean IS_SHUFFLED = false;
+    /** 
+     * lock down shuffle when it has been done
+     * this is used as a user parameter to determine if
+     * the caller must perform another shuffle
+     */
+	public static boolean LOCK_DOWN_SHUFFLE = false;
 
 	/** when true, auto numbering will be attached to the newly generated file */
 	static final boolean AUTO_NUMBERING = true;
@@ -395,30 +404,36 @@ public class DataCruncher  {
 
 	/**
 	 * 
+	 * @param state
 	 * @param dataSet
+	 * @param shuffle dataSet is shuffled only when true
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
 	public static ArrayList<ArrayList> shuffleData
-	(EvolutionState state, ArrayList<ArrayList> dataSet, boolean shuffled)
+	(EvolutionState state, ArrayList<ArrayList> dataSet, boolean shuffle)
 	{
-		//this is to avoid continious shuffling for every individual
-		//if(IS_SHUFFLED) return population;
-
+		/* when false, just return dataSet */
+		if(!shuffle) 
+			return dataSet;
+        /* initialize variable using current job */
+		shuffleTwister = new MersenneTwister((int) state.job[0]);
+		
 		for (int i=0;i<dataSet.size();i++)
 		{
 			//ignore possible max count for ArrayList to ensure capacity constraint
 			//int rand = (int)(Math.random() * dataSet.size());
-			int rand = (int)state.random[0].nextDouble() * dataSet.size();
+			int rand = (int) (shuffleTwister.nextDouble() * dataSet.size());
+			//System.out.println(rand);
 			//swap both values randomly
 			ArrayList swap = dataSet.get(i);
 			dataSet.set(i,dataSet.get(rand));
 			dataSet.set(rand,swap);
 		}
-		IS_SHUFFLED = shuffled;
-
-		KFOLD_LOCK_DOWN_SHUFFLE = true;
-
+		//IS_SHUFFLED = shuffle;
+        /* lock down shuffle */
+		LOCK_DOWN_SHUFFLE = true;
+        
 		return dataSet;
 
 	}
@@ -446,16 +461,20 @@ public class DataCruncher  {
 		for(int i=0;i<kFold;i++)
 		{
 			if( ((diff * chunkSize)>1) && i==0)
+			{
 				chunk.add(chunkSize+1);
+			}
 			else if(((diff * chunkSize)>1))
 			{
-				if((dataSet.size()-total)%(kFold-i) == 0)
+				if(((dataSet.size()-total)%(kFold-i)) == 0)
 					chunk.add(chunkSize);
 				else
 					chunk.add(chunkSize+1);
 			}
 			else
+			{
 				chunk.add(chunkSize);
+			}
 			total+=chunk.get(i);
 		}
 

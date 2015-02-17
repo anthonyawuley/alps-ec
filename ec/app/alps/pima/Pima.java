@@ -83,6 +83,7 @@ public class Pima extends GPProblem implements SimpleProblemForm
 		return newobj;
 	}
 
+	/** setup is called once per run */
 	public void setup(final EvolutionState state,
 			final Parameter base)
 	{
@@ -103,7 +104,8 @@ public class Pima extends GPProblem implements SimpleProblemForm
 		boolean kFoldCycleDataShuffle = state.parameters.
 				getBoolean(base.push(KFOLD_CYCLE_SHUFFLE),null,false);
 
-		String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+		//String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
+		String [] regex =  {"",""};
 
 		/** 
 		 * 1. Reads raw data
@@ -117,11 +119,18 @@ public class Pima extends GPProblem implements SimpleProblemForm
 		 */
 		if(state.isKFoldCrossValidation)
 		{ 
-			if(!DataCruncher.KFOLD_LOCK_DOWN_SHUFFLE) 
-			{ 
+			if(!DataCruncher.LOCK_DOWN_SHUFFLE) 
+			{  
+				/* it is assumed that data is already shuffled, this is to ensure that the same 
+				 * data block is always selected for training and testing for all strategies
+				 * i.e. canonical, alps and fsalps 
+				 * */
 				POPULATION_DATA = DataCruncher.shuffleData(state,
-						Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean+".clean"),","),false);
-				Out.writeDataToFile(POPULATION_DATA,dataClean,false); //write if file does not exist
+						Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean+".clean"),","),true);
+				/* write if file does not exist */
+				Out.writeDataToFile(POPULATION_DATA,dataClean,true); 
+				/* read from file */
+				POPULATION_DATA = Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
 			}
 			/*
 			 * when one k-fold cross validation cycle is exhausted, force data shuffle and force
@@ -133,14 +142,15 @@ public class Pima extends GPProblem implements SimpleProblemForm
 			{   /* read cleaned data */
 				POPULATION_DATA = Reader.readFile(
 						DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
-				/* turn off shuffle lock  and force shuffle */
-				DataCruncher.KFOLD_LOCK_DOWN_SHUFFLE = false; 
-				POPULATION_DATA = DataCruncher.shuffleData(state,POPULATION_DATA,false);
+				/* turn off shuffle lock  and FORCE shuffle */
+				DataCruncher.LOCK_DOWN_SHUFFLE = false; 
+				POPULATION_DATA = DataCruncher.shuffleData(state,POPULATION_DATA,true);
 				/* forced rewrite of cleaned data) */
 				Out.writeDataToFile(POPULATION_DATA,dataClean,true); 
+
 			}
-			else //read from file
-			{  
+			else 
+			{   /* this is necessary to prevent NullPinterException when using ALPS */
 				POPULATION_DATA = Reader.readFile(DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"); 
 			}
 			/* fetch training chunk */
@@ -151,20 +161,24 @@ public class Pima extends GPProblem implements SimpleProblemForm
 			TESTING_DATA = DataCruncher.selectTestingChunk(POPULATION_DATA,
 					state.kFoldCrossValidationSize, 
 					(int) state.job[0] % state.kFoldCrossValidationSize);
+
+			/* shuffle training and testing data */
+			TRAINING_DATA = DataCruncher.shuffleData (state,TRAINING_DATA,true);
+			TESTING_DATA  = DataCruncher.shuffleData (state,TESTING_DATA,true);
 		}
-		else
-		{
+		else 
+		{   
+			/* when splitting data into test and train */
 			POPULATION_DATA = DataCruncher.shuffleData(state,Reader.readFile(
 					DataCruncher.cleanFile(regex,dataRaw,dataClean),"\\s"),false);
 			/* Split formated data and write to training and test file */
 			Out.writeDataToFile(POPULATION_DATA,trainFile,testFile);
+
+			/* shuffle training and testing data */
+			TRAINING_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile,","),true);
+			TESTING_DATA  = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
 		}
 
-		/* TRAINING FILE */
-		if(!DataCruncher.IS_SHUFFLED && state.isKFoldCrossValidation )
-			TRAINING_DATA = DataCruncher.shuffleData(state,TRAINING_DATA,true);
-		else if(!DataCruncher.IS_SHUFFLED) //reading from training file
-			TRAINING_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile,","),true);
 	}
 
 
@@ -225,14 +239,6 @@ public class Pima extends GPProblem implements SimpleProblemForm
 			final int subpopulation,
 			final int threadnum,
 			final int log){
-
-
-		/* READ TEST FILE */
-		DataCruncher.IS_SHUFFLED = false;
-		if(!DataCruncher.IS_SHUFFLED && state.isKFoldCrossValidation )
-			TESTING_DATA = DataCruncher.shuffleData(state,TESTING_DATA,true);
-		else if(!DataCruncher.IS_SHUFFLED )
-			TESTING_DATA = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
 
 		int [][] confusionMatrix = new int[2][2];
 

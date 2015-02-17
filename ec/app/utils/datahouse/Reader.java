@@ -11,7 +11,7 @@ public class Reader {
 
 	static ArrayList<ArrayList> population = new ArrayList<>();
 	public static int [] dataCount = new int [2];
-	
+
 	/**
 	 * 
 	 * @param filename
@@ -36,7 +36,7 @@ public class Reader {
 			ArrayList<String> directories,String base_dir, String regex)
 			{
 		DataCruncher dc = new DataCruncher();
-		
+
 		ArrayList<ArrayList<ArrayList>> megaFiles = new ArrayList<>();
 		ArrayList<ArrayList> fileCont;
 		ArrayList<String> row = null;
@@ -119,8 +119,8 @@ public class Reader {
 		}
 		return newAr;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param rawFileDirectory
@@ -146,16 +146,14 @@ public class Reader {
 				int max = line.toString().split(regex).length;
 				for(int i=0;i < max;i++)
 					dataPoint.add(Float.parseFloat(line.toString().split(regex)[i]));
-			
+                 //System.out.println(dataPoint.get(34));
 				/* count records of number of entries for diabetic & non-diabetic */   
 				switch (line.toString().split(regex)[max-1].toString()) 
 				{
 				case "0.0":
-					dataCount[0]++;
-					break;
+					dataCount[0]++; break;
 				case "1.0":
-					dataCount[1]++;
-					break;
+					dataCount[1]++; break;
 				}
 				population.add(dataPoint);
 			}
@@ -166,13 +164,13 @@ public class Reader {
 			System.out.println("Could not open file "+ e.getMessage());
 			e.printStackTrace();
 		}
-
+ //System.exit(0);
 		return population;
 
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Reads a file, line by line and replaces every occurence in string with csv
 	 * @param rawFileDirectory
@@ -184,7 +182,7 @@ public class Reader {
 	{
 		ArrayList<String> pop = new ArrayList<>();
 		String [] template = csv.toString().split(regex);
-		
+
 		try
 		{
 			Reader rd = new Reader();
@@ -201,15 +199,15 @@ public class Reader {
 					if(!line.equalsIgnoreCase(newLine))
 					{
 						//System.out.println(newLine);
-					    pop.add(newLine);
-					    modified = true;
+						pop.add(newLine);
+						modified = true;
 					}
-					
+
 				}
 				if (!modified)
 					pop.add(line);
-					//System.out.println(line);
-					
+				//System.out.println(line);
+
 			}
 			f.close();
 		}
@@ -221,8 +219,8 @@ public class Reader {
 
 		return pop;
 	}
-	
-	
-	
-	
+
+
+
+
 }

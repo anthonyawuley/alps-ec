@@ -18,12 +18,12 @@ pop                     = ec.Population
 jobs                    = 20
 pop.subpops             = 1
 pop.subpop.0.size       = 50
-select.tournament.size  = 7
+select.tournament.size  = 3
 breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 2000
+generations             = 500
 cross-validation-size   = 20
 
 
@@ -33,7 +33,7 @@ alps.age-gap                           = 5
 alps.number-of-layers                  = 10
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
-alps.tournament-size                   = 7
+alps.tournament-size                   = 3
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
 
@@ -44,7 +44,7 @@ alps.always-breed-maximum-population   = true
 
 #when true, only individuals selected from breeding from current layer have their age increased
 #else both both individuals coming from current and lower layer used as parents will have their age increased
-alps.age-only-current-layer            = false
+alps.age-only-current-layer            = true
 
 # when moving old individuals from bottom layer to next higher layer, use this flag to determine
 # replacement strategy in higher layer. if false lower layer individual only replace higher layer individual
@@ -65,13 +65,13 @@ pop.subpop.0.species.pipe.source.0.ns.0          = ec.gp.koza.KozaNodeSelector
 pop.subpop.0.species.pipe.source.0.ns.1          = same
 pop.subpop.0.species.pipe.source.0.maxdepth      = 17
 pop.subpop.0.species.pipe.source.0.tries         = 1
-pop.subpop.0.species.pipe.source.0.source.0.size = 7
-pop.subpop.0.species.pipe.source.0.source.1.size = 7
+#pop.subpop.0.species.pipe.source.0.source.0.size = 7
+#pop.subpop.0.species.pipe.source.0.source.1.size = 7
 pop.subpop.0.species.pipe.source.0.prob          = 0.90
 
 pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
 pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
-pop.subpop.0.species.pipe.source.0.source.0.size = 7
+#pop.subpop.0.species.pipe.source.0.source.0.size = 7
 pop.subpop.0.species.pipe.source.1.prob          = 0.10
 
 #Node Selectors
