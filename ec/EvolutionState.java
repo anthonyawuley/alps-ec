@@ -590,21 +590,19 @@ public class EvolutionState implements Singleton
 
 		/* count only when evolve is performed */
 		alps.layers.get(alps.index).layerGenerationalCount++;
-		
 		/*count evaluations in a layer */
 		alps.layers.get(alps.index).layerEvaluationCount += 
 				Operations.activePopulaton(alps.layers.get(alps.index).evolutionState);
-
 		/* count evaluations */
 		Engine.globalEvaluations += Operations.activePopulaton(alps.layers.get(alps.index).evolutionState);
 
 		/* perform describe(...) for last layer */
-		if( (alps.layers.get(alps.layers.size()-1).result != R_NOTDONE) && (alps.index==alps.layers.size()-1 ))
+		if( (alps.layers.get(alps.layers.size()-1).result != R_NOTDONE) && (alps.index== (alps.layers.size()-1) ))
 			finish(alps.layers.get(alps.layers.size()-1).result);
 
 		/* DUMPING INDIVIDUAL AGE TO CONSOLE */
-		//alpsLayers.printAge(); 
-		//alpsLayers.printPopSize();
+		//alps.printAge(); 
+		// alps.printPopSize();
 	}
 
 

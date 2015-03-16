@@ -110,6 +110,12 @@ public class ShortStatistics extends Statistics
 	public long[] totalSizeThisGen;                         // per-subpop total size of individuals this generation
 	public double[] totalFitnessThisGen;                    // per-subpop mean fitness this generation
 	public Individual[] bestOfGeneration;   // per-subpop best individual this generation
+	
+	public long[] minimumAgeThisGen;
+	public long[] maximumAgeThisGen;
+	public long[] totalAgeThisGen;
+	
+	
 
 	// timings
 	public long lastTime;
@@ -278,11 +284,15 @@ public class ShortStatistics extends Statistics
 		totalSizeThisGen = new long[subpops];                                   // per-subpop total size of individuals this generation
 		totalFitnessThisGen = new double[subpops];                              // per-subpop mean fitness this generation
 		double[] meanFitnessThisGen = new double[subpops];                      // per-subpop mean fitness this generation
-
+		
+		minimumAgeThisGen = new long[subpops];
+		maximumAgeThisGen = new long[subpops];
+		totalAgeThisGen = new long[subpops];
+		double[] averageAgeThisGen   = new double[subpops];
 		
 		prepareStatistics(state);
 
-		// gather per-subpopulation statistics
+		//gather per-subpopulation statistics
 
 		for(int x=0;x<subpops;x++)
 		{                   
@@ -305,6 +315,19 @@ public class ShortStatistics extends Statistics
 						if (bestSoFar[x]==null || bestOfGeneration[x].fitness.betterThan(bestSoFar[x].fitness))
 							bestSoFar[x] = (Individual)(bestOfGeneration[x].clone());
 					}
+					
+					/*
+					 * @author anthony
+					 */
+					if(y>0)
+					{
+						minimumAgeThisGen[x] = (long) (y==0?state.population.subpops[x].individuals[y].age:
+							(long) Math.min(state.population.subpops[x].individuals[y-1].age, state.population.subpops[x].individuals[y].age));
+						maximumAgeThisGen[x] = (long) (y==0?state.population.subpops[x].individuals[y].age:
+							(long) Math.max(state.population.subpops[x].individuals[y-1].age, state.population.subpops[x].individuals[y].age));		   
+					}
+					totalAgeThisGen[x] += state.population.subpops[x].individuals[y].age;
+					
 
 					// sum up mean fitness for population
 					totalFitnessThisGen[x] += state.population.subpops[x].individuals[y].fitness.fitness();
@@ -315,7 +338,9 @@ public class ShortStatistics extends Statistics
 			} 
 			// compute mean fitness stats
 			meanFitnessThisGen[x] = (totalIndsThisGen[x] > 0 ? totalFitnessThisGen[x] / totalIndsThisGen[x] : 0);
-
+            /* compute average age */
+			averageAgeThisGen[x]  = (totalIndsThisGen[x] > 0 ? totalAgeThisGen[x] / totalIndsThisGen[x] : 0);
+			
 			// hook for KozaShortStatistics etc.
 			if (output && doSubpops) printExtraSubpopStatisticsBefore(state, x);
 
@@ -335,7 +360,7 @@ public class ShortStatistics extends Statistics
 				state.output.print("" + bestOfGeneration[x].fitness.fitness() + " ", statisticslog);
 				state.output.print("" + bestSoFar[x].fitness.fitness() + " ", statisticslog);
 			}
-
+			
 			// hook for KozaShortStatistics etc.
 			if (output && doSubpops) printExtraSubpopStatisticsAfter(state, x);
 		}
@@ -349,6 +374,9 @@ public class ShortStatistics extends Statistics
 		long popTotalSizeSoFar = 0;
 		double popMeanFitness = 0;
 		double popTotalFitness = 0;
+		double popTotalAverageAge = 0;
+		double popMinimumAge = 0;
+		double popMaximumAge     = 0;
 		Individual popBestOfGeneration = null;
 		Individual popBestSoFar = null;
 
@@ -364,6 +392,12 @@ public class ShortStatistics extends Statistics
 			if (bestSoFar[x] != null && (popBestSoFar == null || bestSoFar[x].fitness.betterThan(popBestSoFar.fitness)))
 				popBestSoFar = bestSoFar[x];
 
+			
+			popTotalAverageAge += averageAgeThisGen[x];
+			
+			popMinimumAge = x==0?minimumAgeThisGen[x]:Math.min(minimumAgeThisGen[x-1], minimumAgeThisGen[x]);
+			popMaximumAge = x==0?minimumAgeThisGen[x]:Math.max(maximumAgeThisGen[x-1], maximumAgeThisGen[x]);
+			
 			// hook for KozaShortStatistics etc.
 			gatherExtraPopStatistics(state, x);
 		}
@@ -389,6 +423,11 @@ public class ShortStatistics extends Statistics
 			state.output.print("" + popMeanFitness + " " , statisticslog);                                                                                  // mean fitness of pop this gen
 			state.output.print("" + (double)(popBestOfGeneration.fitness.fitness()) + " " , statisticslog);                 // best fitness of pop this gen
 			state.output.print("" + (double)(popBestSoFar.fitness.fitness()) + " " , statisticslog);                // best fitness of pop so far
+		
+			state.output.print("" + (popMinimumAge) + " " , statisticslog);
+			state.output.print("" + (popMaximumAge) + " " , statisticslog);
+			state.output.print("" + (popTotalAverageAge/subpops) + " " , statisticslog);
+			
 		}
 
 		// hook for KozaShortStatistics etc.

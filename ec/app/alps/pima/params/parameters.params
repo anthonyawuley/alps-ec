@@ -18,11 +18,11 @@ jobs                    = 20
 pop.subpops             = 1
 pop.subpop.0.size       = 50
 select.tournament.size  = 7
-breed.elite.0.1         = 2
+breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 500
+generations             = 200
 cross-validation-size   = 20
 
 
@@ -163,6 +163,7 @@ eval.problem.total-number-of-points        = 168
 
 stat.num-children           = 3
 stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
 stat.child.1                = ec.alps.statistics.ALPSStatistics
 stat.child.1.silent.print   = true

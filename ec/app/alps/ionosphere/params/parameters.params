@@ -214,6 +214,7 @@ eval.problem.total-number-of-points        = 168
 
 stat.num-children           = 3
 stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
 stat.child.1                = ec.alps.statistics.ALPSStatistics
 stat.child.1.silent.print   = true

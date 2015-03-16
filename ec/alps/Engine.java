@@ -147,19 +147,20 @@ public class Engine extends Evolve {
 		{
 			if(!l.getIsBottomLayer())
 				l.initializerFlag = false;
-			// should we print the help message and quit?
+			/* should we print the help message and quit? */
 			checkForHelp(args);
 
-			// if we're loading from checkpoint, let's finish out the most recent job
+			/* if we're loading from checkpoint, let's finish out the most recent job */
 			l.evolutionState = (EvolutionState) possiblyRestoreFromCheckpoint(args);
 			l.currentJob     = 0;                             // the next job number (0 by default)
 
-			// this simple job iterator just uses the 'jobs' parameter, iterating from 0 to 'jobs' - 1
-			// inclusive.  The current job number is stored in state.jobs[0], so we'll begin there if
-			// we had loaded from checkpoint.
+			/* this simple job iterator just uses the 'jobs' parameter, iterating from 0 to 'jobs' - 1
+			 * inclusive.  The current job number is stored in state.jobs[0], so we'll begin there if
+			 * we had loaded from checkpoint.
+			 */
 			if (l.evolutionState != null)  // loaded from checkpoint
 			{
-				// extract the next job number from state.job[0] (where in this example we'll stash it)
+				/* extract the next job number from state.job[0] (where in this example we'll stash it) */
 				try
 				{
 					if (l.evolutionState.runtimeArguments == null)
@@ -176,12 +177,14 @@ public class Engine extends Evolve {
 				cleanup(l.evolutionState);
 			}
 
-			// A this point we've finished out any previously-checkpointed job.  If there was
-			// one such job, we've updated the current job number (currentJob) to the next number.
-			// Otherwise currentJob is 0.
+			/*  A this point we've finished out any previously-checkpointed job.  If there was
+			 *  one such job, we've updated the current job number (currentJob) to the next number.
+			 *  Otherwise currentJob is 0.
+			 */
 
-			// Now we're going to load the parameter database to see if there are any more jobs.
-			// We could have done this using the previous parameter database, but it's no big deal.
+			/* Now we're going to load the parameter database to see if there are any more jobs.
+			 * We could have done this using the previous parameter database, but it's no big deal.
+			 */
 			l.parameterDatabase = loadParameterDatabase(args);
 			if (l.currentJob == 0)  // no current job number yet
 				l.currentJob = l.parameterDatabase.getIntWithDefault(new Parameter("current-job"), null, 0);
@@ -195,7 +198,7 @@ public class Engine extends Evolve {
 
 			numberOfJobs = numJobs;
 
-			// load the parameter database (reusing the very first if it exists)
+			/* load the parameter database (reusing the very first if it exists) */
 			if (l.parameterDatabase == null)
 				l.parameterDatabase = loadParameterDatabase(args);
 
@@ -213,9 +216,10 @@ public class Engine extends Evolve {
 				l.evolutionState.checkpointPrefix = jobFilePrefix + l.evolutionState.checkpointPrefix;  // also set up checkpoint prefix
 			}
 
-			// Here you can set up the EvolutionState's parameters further before it's setup(...).
-			// This includes replacing the random number generators, changing values in state.parameters,
-			// changing instance variables (except for job and runtimeArguments, please), etc.
+			/* Here you can set up the EvolutionState's parameters further before it's setup(...).
+			 * This includes replacing the random number generators, changing values in state.parameters,
+			 * changing instance variables (except for job and runtimeArguments, please), etc.
+			 */
 
 			l.result = EvolutionState.R_NOTDONE;
 
@@ -227,9 +231,6 @@ public class Engine extends Evolve {
 
 		/* determine number of evaluations */
 		alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * generationSize;
-		//alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * (Engine.generationSize + 1);
-
-		//print replacement strategy
 	}
 
 
@@ -245,7 +246,7 @@ public class Engine extends Evolve {
 		ageScheme.setup(parameters);
 
 		try
-		{
+		{   /* Get FSALPS frequency count strategy */
 			roulette = (Roulette)
 					(parameters.getInstanceForParameter(FSALPS.defaultBase().push(FSALPS_ROULETTE),null,Roulette.class));
 			fsalps_active = true;
@@ -300,11 +301,13 @@ public class Engine extends Evolve {
 
 
 
-	/** Initializes an evolutionary run given the parameters and a random seed adjustment (added to each random seed),
-    with the Output pre-constructed.
-    The adjustment offers a convenient way to change the seeds of the random number generators each time you
-    do a new evolutionary run.  You are of course welcome to replace the random number generators after initialize(...)
-    but before startFresh(...) */
+	/** 
+	 * Initializes an evolutionary run given the parameters and a random seed adjustment (added to each random seed),
+       with the Output pre-constructed.
+       The adjustment offers a convenient way to change the seeds of the random number generators each time you
+       do a new evolutionary run.  You are of course welcome to replace the random number generators after initialize(...)
+       but before startFresh(...) 
+     */
 
 	public static EvolutionState initialize(ParameterDatabase parameters, int randomSeedOffset, Output output)
 	{
@@ -374,11 +377,11 @@ public class Engine extends Evolve {
 		state.breedthreads = breedthreads;
 		state.randomSeedOffset = randomSeedOffset;
 
-		/**
-		output.systemMessage("-------------ALPS SYSTEM-------------");
-		output.systemMessage("Ageing Scheme "+ ageScheme.toString().substring(0, ageScheme.toString().length()-9));
-		output.systemMessage("Layers "+alpsAgeLayers );
-		output.systemMessage("Age Gap "+alpsAgeGap );
+		/*
+		  output.systemMessage("-------------ALPS SYSTEM-------------");
+		  output.systemMessage("Ageing Scheme "+ ageScheme.toString().substring(0, ageScheme.toString().length()-9));
+		  output.systemMessage("Layers "+alpsAgeLayers );
+		  output.systemMessage("Age Gap "+alpsAgeGap );
 		 */
 		output.systemMessage("Threads:  breed/" + breedthreads + " eval/" + evalthreads);
 		output.systemMessage(seedMessage);
@@ -389,6 +392,7 @@ public class Engine extends Evolve {
 
 
 	/**
+	 * now we let it go
 	 * clears up the system after every run
 	 * @param alps
 	 */
@@ -396,8 +400,6 @@ public class Engine extends Evolve {
 	{
 		for(Layer l: alps.layers)
 		{
-			// now we let it go
-			//state.run(EvolutionState.C_STARTED_FRESH);
 			cleanup(l.evolutionState);  // flush and close various streams, print out parameters if necessary
 			l.parameterDatabase = null;  // so we load a fresh database next time around
 			//l.evolutionState.finish(l.result);
@@ -406,6 +408,7 @@ public class Engine extends Evolve {
 		completeEvaluationCount    = 0;
 		globalEvaluations          = 0;
 	}
+	
 
 
 	/** Top-level evolutionary loop.  */
@@ -415,19 +418,22 @@ public class Engine extends Evolve {
 
 		ParameterDatabase pd      =  loadParameterDatabase(args) ;
 
-		// Now we know how many jobs remain.  Let's loop for that many jobs.  Each time we'll
-		// load the parameter database scratch (except the first time where we reuse the one we
-		// just loaded a second ago).  The reason we reload from scratch each time is that the
-		// experimenter is free to scribble all over the parameter database and it'd be nice to
-		// have everything fresh and clean.  It doesn't take long to load the database anyway,
-		// it's usually small.
+		/* Now we know how many jobs remain.  Let's loop for that many jobs.  Each time we'll
+		 * load the parameter database scratch (except the first time where we reuse the one we
+		 * just loaded a second ago).  The reason we reload from scratch each time is that the
+		 * experimenter is free to scribble all over the parameter database and it'd be nice to
+		 * have everything fresh and clean.  It doesn't take long to load the database anyway,
+		 * it's usually small.
+		 */
 		//for(int job = currentJob ; job < numJobs; job++)
+		//TODO checkpointing
 		for(int job = 0 ; job < numberOfJobs; job++)
 		{
-			// We used to have a try/catch here to catch errors thrown by this job and continue to the next.
-			// But the most common error is an OutOfMemoryException, and printing its stack trace would
-			// just create another OutOfMemoryException!  Which dies anyway and has a worthless stack
-			// trace as a result.
+			/* We used to have a try/catch here to catch errors thrown by this job and continue to the next.
+			 * But the most common error is an OutOfMemoryException, and printing its stack trace would
+			 * just create another OutOfMemoryException!  Which dies anyway and has a worthless stack
+			 * trace as a result.
+			 */
 
 			new Engine(args,job,pd);
 

@@ -433,9 +433,7 @@ public class DataCruncher  {
 		//IS_SHUFFLED = shuffle;
         /* lock down shuffle */
 		LOCK_DOWN_SHUFFLE = true;
-        
 		return dataSet;
-
 	}
 
 

@@ -8,6 +8,7 @@
 package ec.alps.statistics;
 import ec.*;
 import ec.alps.Engine;
+import ec.alps.util.TreeAnalyzer;
 import ec.simple.SimpleProblemForm;
 import ec.simple.SimpleStatistics;
 import ec.steadystate.*;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import ec.util.*;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /* 
  * SimpleStatistics.java
@@ -148,18 +151,32 @@ public class ALPSStatistics extends Statistics implements SteadyStateStatisticsF
 				best_of_run[x] = (Individual)(best_i[x].clone());
 		}
 
-		// print the best-of-generation individual 
-		/*
+	
+		/* print the best-of-generation individual 
 		 * @author anthony
 		 * ALPS Stats Modification
 		 */
-		//if (doGeneration) state.output.println("\nGeneration: " + state.generation,statisticslog);
-		if (doGeneration) state.output.println("\nGeneration: " + Engine.completeGenerationalCount,statisticslog);
+		if (doGeneration && NodeStatistics.isALPSEA) 
+			state.output.println("\nGeneration: " + Engine.completeGenerationalCount,statisticslog);
+		else //when using canonical EA
+			state.output.println("\nGeneration: " + state.generation,statisticslog);
+		
+		
+		/* this is to get the terminals*/
+		Map<String, Double>  bestIndividualTerminalSet  = state.nodeCountTerminalSet;
+		/* now clear any default values*/
+		TreeAnalyzer.unsetNodeCount(state, bestIndividualTerminalSet);
+		
 		
 		if (doGeneration) state.output.println("Best Individual:",statisticslog);
 		for(int x=0;x<state.population.subpops.length;x++)
 		{
 			if (doGeneration) state.output.println("Subpopulation " + x + ":",statisticslog);
+			if (doGeneration) best_i[x].individualTreeDepth(state,statisticslog);
+			
+			/*get node count for best individual of generation*/
+			best_i[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
+			
 			if (doGeneration) best_i[x].printIndividualForHumans(state,statisticslog);
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of generation" + 
 					(best_i[x].evaluated ? " " : " (evaluated flag not set): ") +
@@ -186,10 +203,20 @@ public class ALPSStatistics extends Statistics implements SteadyStateStatisticsF
 
 		// for now we just print the best fitness 
 
+		/* this is to get the terminals*/
+		Map<String, Double>  bestIndividualTerminalSet  = state.nodeCountTerminalSet;
+		/* now clear any default values*/
+		TreeAnalyzer.unsetNodeCount(state, bestIndividualTerminalSet);
+		
 		if (doFinal) state.output.println("\nBest Individual of Run:",statisticslog);
 		for(int x=0;x<state.population.subpops.length;x++ )
 		{
 			if (doFinal) state.output.println("Subpopulation " + x + ":",statisticslog);
+			/* tree depth */
+            if (doGeneration) best_of_run[x].individualTreeDepth(state,statisticslog);
+			/*get node count for best individual of generation*/
+            best_of_run[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
+			
 			if (doFinal) best_of_run[x].printIndividualForHumans(state,statisticslog);
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of run: " + best_of_run[x].fitness.fitnessToStringForHumans());
 			

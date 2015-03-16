@@ -250,11 +250,7 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
             f.setStandardizedFitness(state,1 - (float)hits/TRAINING_DATA.size());
             f.hits = hits;
             ind.evaluated = true;
-            
-            /*
-             * state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\n"
-                                  + "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[0][1],2);
-             */
+           
             }
         
         }
@@ -314,12 +310,6 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
                 ((GPIndividual)ind).trees[0].child.eval(
                         state,threadnum,input,stack,((GPIndividual)ind),this);
 
-                 /**
-                    if ((input.x >= 199.2 && expectedResult == 1) | (input.x < 199.2 && expectedResult == 0))
-                    hits++;
-                    * 
-                    * Hit&/Confusion matrix conditions
-                   */
                 
                  if(input.x >= 199.2 && expectedResult == 1)
                       {confusionMatrix[0][0]++;hits++;}
@@ -341,8 +331,8 @@ public class BreastCancer extends GPProblem implements SimpleProblemForm
             /** CONFUSION MATRIX + DIABETIC CANDIDATE STATUS IN TEST FILE */ 
             state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\t"
                                + "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[1][1]
-                               + "\nTOTAL DIABETIC: "     +Reader.dataCount[1]
-                               + "\tTOTAL NON-DIABETIC: " +Reader.dataCount[0],log);
+                               + "\nCASEA: "     +Reader.dataCount[1]
+                               + "\tCASEB: " +Reader.dataCount[0],log);
           
         }
      

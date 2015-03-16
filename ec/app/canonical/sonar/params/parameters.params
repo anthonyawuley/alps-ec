@@ -3,6 +3,7 @@
 # Testing SONAR
 # https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)
 
+
 parent.0                            = ../../../../gp/koza/koza.params
 generations                         = 100
 quit-on-run-complete                = false
@@ -11,7 +12,7 @@ quit-on-run-complete                = false
 jobs                                = 20
 pop.subpops                         = 1
 pop.subpop.0.size                   = 250
-breed.elite.0.1                     = 2
+breed.elite.0                       = 2
 breed                               = ec.simple.SimpleBreeder
 breedthreads                        = 1
 select.tournament.size              = 4
@@ -35,12 +36,21 @@ gp.koza.xover.source.1             = same
 gp.koza.xover.tries                = 1
 
 
-pop.subpop.0.species.crossover-type = one
-pop.subpop.0.species.crossover-prob = 0.90
-pop.subpop.0.species.mutation-prob  = 0.10
+#Begin Koza Breeding ==============================================================
+pop.subpop.0.species.pipe = ec.breed.MultiBreedingPipeline
+# Koza's decision here was odd...
+pop.subpop.0.species.pipe.generate-max = false
+# Subsidiary pipelines:
+pop.subpop.0.species.pipe.num-sources = 2
+pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.prob = 0.90
+pop.subpop.0.species.pipe.source.1 = ec.gp.koza.MutationPipeline
+pop.subpop.0.species.pipe.source.1.prob = 0.10
+
 pop.subpop.0.species.ind.numtrees   = 1
 pop.subpop.0.species.ind.tree.0     = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.0.tc  = tc0
+#END===============================================================================
 
 #DEFINE NODE CONSTRAINTS
 gp.nc.size = 3
@@ -231,8 +241,9 @@ eval.problem.total-number-of-points        = 168
 
 stat.num-children = 3
 stat.child.0                = ec.simple.SimpleShortStatistics
+stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
-stat.child.1                = ec.simple.SimpleStatistics
+stat.child.1                = ec.alps.statistics.ALPSStatistics
 stat.child.1.silent.print   = true
 stat.child.1.file           = ../output/ss.stats
 stat.child.2                = ec.alps.statistics.NodeStatistics

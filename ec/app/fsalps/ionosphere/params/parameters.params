@@ -72,7 +72,7 @@ alps.fsalps-last-layer-gen-freq-count = false
 alps.fsalps-use-all-layers            = true
 
 # Determine which frequency selection criteria is used for generating probability
-alps.fsalps.probability-selection     = ec.alps.fsalps.probability.UniformFrequency
+alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency
   
 
 #ec.gp.koza.koza.params
@@ -167,7 +167,7 @@ gp.fs.size         = 1
 gp.fs.0            = ec.alps.fsalps.FSALPSGPFunctionSet
 gp.fs.0.name       = f0
 
-gp.fs.0.size      = 41
+gp.fs.0.size        =   41
 gp.fs.0.func.0		=	ec.app.fsalps.ionosphere.ts.Ion1
 gp.fs.0.func.0.nc	=	nc0		
 gp.fs.0.func.1		=	ec.app.fsalps.ionosphere.ts.Ion2
@@ -271,6 +271,7 @@ eval.problem.total-number-of-points        = 168
 
 stat.num-children           = 3
 stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
 stat.child.1                = ec.alps.statistics.ALPSStatistics
 stat.child.1.silent.print   = true

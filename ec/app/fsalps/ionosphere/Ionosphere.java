@@ -144,7 +144,6 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 				POPULATION_DATA = DataCruncher.shuffleData(state,POPULATION_DATA,true);
 				/* forced rewrite of cleaned data) */
 				Out.writeDataToFile(POPULATION_DATA,dataClean,true); 
-
 			}
 			else 
 			{   /* this is necessary to prevent NullPinterException when using ALPS */
@@ -175,7 +174,6 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 			TRAINING_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile,","),true);
 			TESTING_DATA  = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
 		}
-
 	}
 
 
@@ -190,7 +188,6 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 		{
 			int hits = 0;
 			float expectedResult;
-
 
 			for(int i=0;i<TRAINING_DATA.size();i++){
 				//decoded Data Point
@@ -239,7 +236,7 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 
 			// the fitness better be KozaFitness!
 			KozaFitness f = ((KozaFitness)ind.fitness);
-			f.setStandardizedFitness(state,1 - (float)(hits/TRAINING_DATA.size()));
+			f.setStandardizedFitness(state,1 - (float) hits/TRAINING_DATA.size());
 			f.hits = hits;
 			ind.evaluated = true;
 
@@ -256,15 +253,9 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 			final int threadnum,
 			final int log){
 
-		/* READ TEST FILE
-		DataCruncher.LOCK_DOWN_SHUFFLE = false;
-		if(!DataCruncher.LOCK_DOWN_SHUFFLE && state.isKFoldCrossValidation )
-			TESTING_DATA = DataCruncher.shuffleData(state,TESTING_DATA,true);
-		else if(!DataCruncher.LOCK_DOWN_SHUFFLE )
-			TESTING_DATA = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
-		 */
 
 		int [][] confusionMatrix = new int[2][2];
+
 
 		int hits = 0;
 		float expectedResult;
@@ -312,23 +303,23 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 					state,threadnum,input,stack,((GPIndividual)ind),this);
 
 
-			if(input.x >= 199.2 && expectedResult == 1.0)
+			if(input.x >= 199.2 && expectedResult == 1)
 			{confusionMatrix[0][0]++;hits++;}
-			if(input.x <  199.2 && expectedResult == 1.0)
+			if(input.x <  199.2 && expectedResult == 1)
 			{confusionMatrix[1][0]++;}
-			if(input.x <  199.2 && expectedResult == 0.0)
+			if(input.x <  199.2 && expectedResult == 0)
 			{confusionMatrix[0][1]++;hits++; }
-			if(input.x >= 199.2 && expectedResult == 0.0)
+			if(input.x >= 199.2 && expectedResult == 0)
 			{confusionMatrix[1][1]++;}
-			//System.out.println(expectedResult);
+
 
 			// the fitness better be KozaFitness!
 			KozaFitness f = ((KozaFitness)ind.fitness);
-			f.setStandardizedFitness(state,1 - (float) (hits/TESTING_DATA.size()));
+			f.setStandardizedFitness(state,1 - (float)hits/TESTING_DATA.size());
 			f.hits = hits;
 			ind.evaluated = true;
 		}
-		//System.exit(0);
+
 		/** CONFUSION MATRIX + DIABETIC CANDIDATE STATUS IN TEST FILE */ 
 		state.output.println("TP: "+confusionMatrix[0][0] + "\tTN: "+confusionMatrix[0][1]+"\t"
 				+ "FP: "+confusionMatrix[1][0] + "\tFN: "+confusionMatrix[1][1]

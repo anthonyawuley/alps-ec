@@ -24,7 +24,8 @@ breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 300
+generations             = 500
+cross-validation-size   = 20
 
 
 #Begin ALPS configuration ==============================================================
@@ -71,6 +72,8 @@ alps.fsalps-last-layer-gen-freq-count = false
 # to probability values used during mutation and tree initialization in bottom layer
 alps.fsalps-use-all-layers            = true
 
+# Determine which frequency selection criteria is used for generating probability
+alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency
 
 
 #ec.gp.koza.koza.params
@@ -121,14 +124,14 @@ pop.subpop.0.species.pipe.source.0.ns.0          = ec.gp.koza.KozaNodeSelector
 pop.subpop.0.species.pipe.source.0.ns.1          = same
 pop.subpop.0.species.pipe.source.0.maxdepth      = 17
 pop.subpop.0.species.pipe.source.0.tries         = 1
-#pop.subpop.0.species.pipe.source.0.source.0.size = 7
-#pop.subpop.0.species.pipe.source.0.source.1.size = 7
+# pop.subpop.0.species.pipe.source.0.source.0.size = 7
+# pop.subpop.0.species.pipe.source.0.source.1.size = 7
 pop.subpop.0.species.pipe.source.0.prob          = 0.90
 
 pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
 pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
-pop.subpop.0.species.pipe.source.0.source.0.size = 7
-#pop.subpop.0.species.pipe.source.1.prob          = 0.10
+# pop.subpop.0.species.pipe.source.0.source.0.size = 7
+pop.subpop.0.species.pipe.source.1.prob          = 0.10
 
 #Node Selectors
 gp.koza.ns.terminals                             = 0.1
@@ -251,6 +254,10 @@ gp.fs.0.func.38.nc  = nc1
 
 eval.problem       = ec.app.fsalps.breastcancer.BreastCancer
 eval.problem.data  = ec.app.fsalps.breastcancer.DoubleData
+# shuffle data when a cycle of kfold cross validation is completed
+# when not shuffled, this will be like testing the same data sample
+# n times. where n = jobs/cross-validation-size
+eval.problem.kfold-cycle-data-shuffle = true
 
 eval.problem.wdbc-all        = /Users/anthony/git/ecj22/ec/app/fsalps/breastcancer/data/wdbc-all.data
 eval.problem.wdbc-clean      = /Users/anthony/git/ecj22/ec/app/fsalps/breastcancer/data/wdbc-new.data
@@ -263,6 +270,7 @@ eval.problem.total-number-of-points        = 168
 
 stat.num-children           = 3
 stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
 stat.child.1                = ec.alps.statistics.ALPSStatistics
 stat.child.1.silent.print   = true

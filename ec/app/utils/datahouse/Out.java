@@ -8,6 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import ec.EvolutionState;
+
 
 public class Out {
 
@@ -35,7 +37,30 @@ public class Out {
 			}
 		}
 		return filename;
-
+	}
+	
+	protected static String createData(EvolutionState state, String filename, int numb_data, int seed)
+	{
+		DecimalFormat df = new DecimalFormat("#");
+		if(!(new File(filename).isFile()))
+		{ 
+			try (PrintWriter createfile = new PrintWriter(filename, "UTF-8")) 
+			{
+				int i = 0;
+				while(i<numb_data)
+				{    
+					createfile.println(df.format((float)(state.random[0].nextDouble()+(Math.random() * seed))) + " " + df.format((float)(state.random[0].nextDouble()+(Math.random() * seed))));
+					i++;
+				}
+			}
+			catch(FileNotFoundException | UnsupportedEncodingException e)
+			{
+				System.out.println("Could not write data file "+ e.getMessage()); 
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
+		return filename;
 	}
 
 
@@ -43,16 +68,16 @@ public class Out {
 	 * 
 	 * @param dataSet
 	 * @param dataFile
-	 * @param forceRewrite used to force a write operation
-	 *        even if the file already exists
+	 * @param forceRewrite used to force a write operation even if the file already exists
 	 */
-	public static void writeDataToFile(ArrayList<ArrayList> dataSet,String dataFile, boolean foreceRewrite){
-
-		if (foreceRewrite) //file will be overwritten
+	public static void writeDataToFile(ArrayList<ArrayList> dataSet,String dataFile, boolean foreceRewrite)
+	{
+		//file will be overwritten
+		if (foreceRewrite) 
 			writeDataToFile(dataSet,dataFile);
-		else if(!(new File(dataFile).isFile())) //perform write only when file already exists
+		//perform write only when file already exists
+		else if(!(new File(dataFile).isFile())) 
 			writeDataToFile(dataSet,dataFile);
-		  
 	}
 
 
