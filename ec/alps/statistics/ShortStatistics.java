@@ -388,7 +388,8 @@ public class ShortStatistics extends Statistics
 			popTotalSize += totalSizeThisGen[x];
 			popTotalSizeSoFar += totalSizeSoFar[x];
 			popTotalFitness += totalFitnessThisGen[x];
-			if (bestOfGeneration[x] != null && (popBestOfGeneration == null || bestOfGeneration[x].fitness.betterThan(popBestOfGeneration.fitness)))
+			if (bestOfGeneration[x] != null && (popBestOfGeneration == null || 
+					bestOfGeneration[x].fitness.betterThan(popBestOfGeneration.fitness)))
 				popBestOfGeneration = bestOfGeneration[x];
 			if (bestSoFar[x] != null && (popBestSoFar == null || bestSoFar[x].fitness.betterThan(popBestSoFar.fitness)))
 				popBestSoFar = bestSoFar[x];
@@ -424,6 +425,7 @@ public class ShortStatistics extends Statistics
 			state.output.print("" + (double)(popBestOfGeneration.fitness.fitness()) + " " , statisticslog);                 // best fitness of pop this gen
 			state.output.print("" + (double)(popBestSoFar.fitness.fitness()) + " " , statisticslog);                // best fitness of pop so far
 		
+			
 			/* age of pop best of gen */
 			state.output.print("" + (popBestOfGeneration.age) + " " , statisticslog); 
 			/* age of best so far */
