@@ -295,7 +295,10 @@ public class ShortStatistics extends Statistics
 		//gather per-subpopulation statistics
 
 		for(int x=0;x<subpops;x++)
-		{                   
+		{          
+			minimumAgeThisGen[x] = (long) state.population.subpops[x].individuals[0].age;
+			maximumAgeThisGen[x] = (long) state.population.subpops[x].individuals[0].age;
+			
 			for(int y=0; y<state.population.subpops[x].individuals.length; y++)
 			{
 				if (state.population.subpops[x].individuals[y].evaluated)               // he's got a valid fitness
@@ -319,16 +322,11 @@ public class ShortStatistics extends Statistics
 					/*
 					 * @author anthony
 					 */
-					if(y>0)
-					{
-						minimumAgeThisGen[x] = (long) (y==0?state.population.subpops[x].individuals[y].age:
-							(long) Math.min(state.population.subpops[x].individuals[y-1].age, state.population.subpops[x].individuals[y].age));
-						maximumAgeThisGen[x] = (long) (y==0?state.population.subpops[x].individuals[y].age:
-							(long) Math.max(state.population.subpops[x].individuals[y-1].age, state.population.subpops[x].individuals[y].age));		   
-					}
-					totalAgeThisGen[x] += state.population.subpops[x].individuals[y].age;
+					minimumAgeThisGen[x] = (long) Math.min(minimumAgeThisGen[x], state.population.subpops[x].individuals[y].age);
+					maximumAgeThisGen[x] = (long) Math.max(maximumAgeThisGen[x], state.population.subpops[x].individuals[y].age);		   
+				
+					totalAgeThisGen[x] +=  state.population.subpops[x].individuals[y].age;
 					
-
 					// sum up mean fitness for population
 					totalFitnessThisGen[x] += state.population.subpops[x].individuals[y].fitness.fitness();
 
@@ -339,7 +337,7 @@ public class ShortStatistics extends Statistics
 			// compute mean fitness stats
 			meanFitnessThisGen[x] = (totalIndsThisGen[x] > 0 ? totalFitnessThisGen[x] / totalIndsThisGen[x] : 0);
             /* compute average age */
-			averageAgeThisGen[x]  = (totalIndsThisGen[x] > 0 ? totalAgeThisGen[x] / totalIndsThisGen[x] : 0);
+			averageAgeThisGen[x]  = (totalIndsThisGen[x] > 0 ? totalAgeThisGen[x] / (double)totalIndsThisGen[x] : 0);
 			
 			// hook for KozaShortStatistics etc.
 			if (output && doSubpops) printExtraSubpopStatisticsBefore(state, x);
@@ -380,6 +378,9 @@ public class ShortStatistics extends Statistics
 		Individual popBestOfGeneration = null;
 		Individual popBestSoFar = null;
 
+		popMinimumAge = minimumAgeThisGen[0];
+		popMaximumAge = maximumAgeThisGen[0];
+		
 		for(int x=0;x<subpops;x++)
 		{
 			popTotalInds += totalIndsThisGen[x];
@@ -394,9 +395,8 @@ public class ShortStatistics extends Statistics
 
 			
 			popTotalAverageAge += averageAgeThisGen[x];
-			
-			popMinimumAge = x==0?minimumAgeThisGen[x]:Math.min(minimumAgeThisGen[x-1], minimumAgeThisGen[x]);
-			popMaximumAge = x==0?minimumAgeThisGen[x]:Math.max(maximumAgeThisGen[x-1], maximumAgeThisGen[x]);
+			popMinimumAge = Math.min(popMinimumAge, minimumAgeThisGen[x]);
+			popMaximumAge = Math.max(popMaximumAge, maximumAgeThisGen[x]);
 			
 			// hook for KozaShortStatistics etc.
 			gatherExtraPopStatistics(state, x);
@@ -424,8 +424,15 @@ public class ShortStatistics extends Statistics
 			state.output.print("" + (double)(popBestOfGeneration.fitness.fitness()) + " " , statisticslog);                 // best fitness of pop this gen
 			state.output.print("" + (double)(popBestSoFar.fitness.fitness()) + " " , statisticslog);                // best fitness of pop so far
 		
+			/* age of pop best of gen */
+			state.output.print("" + (popBestOfGeneration.age) + " " , statisticslog); 
+			/* age of best so far */
+			state.output.print("" + (popBestSoFar.age) + " " , statisticslog);
+			/* minimum age of gen */
 			state.output.print("" + (popMinimumAge) + " " , statisticslog);
+			/* maximum age of gen */
 			state.output.print("" + (popMaximumAge) + " " , statisticslog);
+			/* average age of gen */
 			state.output.print("" + (popTotalAverageAge/subpops) + " " , statisticslog);
 			
 		}
