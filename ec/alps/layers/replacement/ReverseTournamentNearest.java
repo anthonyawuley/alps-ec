@@ -132,7 +132,8 @@ public class ReverseTournamentNearest extends Replacement{
 				 */
 				deleteList.clear();
 
-				/* fill empty slots for maximum breeding */
+
+				/* fill empty slots for maximum breeding 
 				if(Engine.always_breed_maximum_pop)
 					current.subpops[subpopulation].individuals =
 					fillPopTournament(current.subpops[subpopulation].individuals.length,
@@ -140,9 +141,13 @@ public class ReverseTournamentNearest extends Replacement{
 							subpopulation,
 							alps.layers.get(alps.index).evolutionState,
 							0);
+                 */
 			}//subpops
-
 		}
+
+		/* fill empty slots for maximum breeding */
+		if(Engine.always_breed_maximum_pop)
+			consolidatePopulation(alps,0);
 
 	}
 

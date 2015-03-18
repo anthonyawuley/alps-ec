@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ec.EvolutionState;
 import ec.Individual;
+import ec.Initializer;
 import ec.Population;
 import ec.alps.Engine;
 import ec.select.TournamentSelection;
@@ -42,8 +43,8 @@ public abstract class Replacement extends TournamentSelection {
 		if (!state.parameters.exists(Engine.base().push(ALPS_TOURNAMENT_SIZE),
 				null))
 			state.output
-					.fatal("tournament size parameter not defined for \"alps."
-							+ ALPS_TOURNAMENT_SIZE + "\" ");
+			.fatal("tournament size parameter not defined for \"alps."
+					+ ALPS_TOURNAMENT_SIZE + "\" ");
 		if (!state.parameters.exists(defaultBase().push(REPLACE_WEAKEST), null))
 			state.output.fatal("replace weakest parameter not defined "
 					+ "\"alps." + ALPS_LAYER_REPLACEMENT + "."
@@ -90,6 +91,50 @@ public abstract class Replacement extends TournamentSelection {
 	 */
 	public abstract void layerMigrations(ALPSLayers alpsLayers,
 			Population current);
+
+
+	/**
+	 * when aged individuals are moved to next higher layer, ECJ breeds maximum
+	 * individuals of the total number left in the layer. In order to overcome this
+	 * such that at anypoint ECJ breeds a total number of population equal to
+	 * the size as contained in parameter file, consolidatePopulation(...) loops through
+	 * all subpopulation in a layer and fills in the missing slots
+	 * 
+	 * @author Anthony
+	 * 
+	 * @param end
+	 *            total size of pop for sub population
+	 * @param thread
+	 *            thread
+	 */
+	public void  consolidatePopulation(ALPSLayers alps,final int thread)
+	{
+	
+		for(int sub=0;sub<alps.layers.get(alps.index).evolutionState.population.subpops.length;sub++)
+		{
+			/** total number of populations expected */
+			int size = alps.layers.get(alps.index).evolutionState.
+					parameters.getInt(new Parameter(Initializer.P_POP).
+							push(Population.P_SUBPOP).push(sub+"").push(POP_SIZE),null);
+
+			
+			if(alps.index == (alps.layers.size() - 1))
+			{
+				alps.layers.get(alps.index).evolutionState.population.subpops[sub].individuals =
+						fillPopTournament(alps.layers.get(alps.index).evolutionState.population.subpops[sub].individuals.length,
+								size,sub,alps.layers.get(alps.index).evolutionState,thread);
+			}
+			else 
+			{   /* consolidate current and next population */
+				for(int index=alps.index;index<alps.index+2;index++)
+					alps.layers.get(index).evolutionState.population.subpops[sub].individuals =
+					fillPopTournament(alps.layers.get(index).evolutionState.population.subpops[sub].individuals.length,
+							size,sub,alps.layers.get(index).evolutionState,thread);
+			}
+		}
+	}
+
+
 
 	/**
 	 * 
@@ -218,14 +263,10 @@ public abstract class Replacement extends TournamentSelection {
 	 * 
 	 * @author Anthony
 	 * 
-	 * @param start
-	 *            begin random copy of existing individuals
 	 * @param end
 	 *            total size of pop for sub population
 	 * @param sub
 	 *            supbpopulation
-	 * @param state
-	 *            EvolutionState
 	 * @param thread
 	 *            thread
 	 * @return population with filled in individuals to size of end

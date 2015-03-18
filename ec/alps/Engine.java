@@ -224,8 +224,8 @@ public class Engine extends Evolve {
 			l.result = EvolutionState.R_NOTDONE;
 
 			/* set other parameters */
-			l.setEvaluations(alpsEvaluations);
-			l.evolutionState.generation = alpsEvaluations;
+			l.setEvaluations(alpsEvaluations); //TODO not accurate
+			l.evolutionState.generation = alpsEvaluations; //TODO not accurate
 			l.evolutionState.startFresh(l);
 		}
 
@@ -494,7 +494,7 @@ public class Engine extends Evolve {
 
 			clearSystem(alps); // now we let it go
 		}//end jobs
-
+		System.exit(0);
 	}
 
 
