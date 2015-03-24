@@ -268,11 +268,15 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		{
 			if (doFinal) state.output.println("Subpopulation " + x + ":",statisticslog);
 			/* tree depth */
-			if (doGeneration) best_of_run[x].individualTreeDepth(state,statisticslog);
+			if (doFinal) best_of_run[x].individualTreeDepth(state,statisticslog);
 			/*get node count for best individual of generation*/
-			best_of_run[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
+			if (doFinal) best_of_run[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
 
+			/* print tree size*/
+            if (doFinal) state.output.println("Tree Size " + best_of_run[x].size(),statisticslog);
+            
 			if (doFinal) best_of_run[x].printIndividualForHumans(state,statisticslog);
+			
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of run: " + best_of_run[x].fitness.fitnessToStringForHumans());
 
 			// finally describe the winner if there is a description

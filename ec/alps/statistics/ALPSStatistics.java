@@ -173,6 +173,8 @@ public class ALPSStatistics extends Statistics implements SteadyStateStatisticsF
 		{
 			if (doGeneration) state.output.println("Subpopulation " + x + ":",statisticslog);
 			if (doGeneration) best_i[x].individualTreeDepth(state,statisticslog);
+			  /* print tree size*/
+            if (doGeneration) state.output.println("Tree Size " + best_of_run[x].size(),statisticslog);
 			
 			/*get node count for best individual of generation*/
 			best_i[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
@@ -213,9 +215,11 @@ public class ALPSStatistics extends Statistics implements SteadyStateStatisticsF
 		{
 			if (doFinal) state.output.println("Subpopulation " + x + ":",statisticslog);
 			/* tree depth */
-            if (doGeneration) best_of_run[x].individualTreeDepth(state,statisticslog);
+            if (doFinal) best_of_run[x].individualTreeDepth(state,statisticslog);
+            /* print tree size*/
+            if (doFinal) state.output.println("Tree Size " + best_of_run[x].size(),statisticslog);
 			/*get node count for best individual of generation*/
-            best_of_run[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
+            if (doFinal) best_of_run[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
 			
 			if (doFinal) best_of_run[x].printIndividualForHumans(state,statisticslog);
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of run: " + best_of_run[x].fitness.fitnessToStringForHumans());
