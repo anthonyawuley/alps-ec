@@ -206,7 +206,7 @@ public class Subpopulation implements Group
 
     /**
      * merge two subpopulations
-     * @param ind
+     * @param ind individuals in a subpopulation
      * @author anthony
      */
     public void add(Individual[] ind){
@@ -214,14 +214,10 @@ public class Subpopulation implements Group
     	Individual[] newIndividuals = new Individual[newSize];
     	
     	for(int i=0;i<this.individuals.length;i++)
-    	{
     		newIndividuals[i] = this.individuals[i];
-    	}
     	
     	for(int i=this.individuals.length;i<newSize;i++)
-    	{
     		newIndividuals[i] = ind[i-this.individuals.length];
-    	}
     	
     	this.individuals = newIndividuals;
     }
@@ -232,12 +228,12 @@ public class Subpopulation implements Group
      * @param ind
      * @author anthony
      */
-    public void add(Individual ind){
-    	//int newSize = this.individuals.length + ind.length;
+    public void add(Individual ind)
+    {
     	Individual[] newIndividuals = new Individual[this.individuals.length+1];
     	
     	for(int i=0;i<this.individuals.length;i++)
-    	  { newIndividuals[i] = this.individuals[i];}
+    	   newIndividuals[i] = this.individuals[i];
     	//add new individual
     	newIndividuals[this.individuals.length] = ind;
     	

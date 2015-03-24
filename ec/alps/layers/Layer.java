@@ -41,6 +41,18 @@ public class Layer implements LayerInterface {
     
 	public int layerCompleteGenerationCount = 0;
 	
+	/**
+	 * (If do-time is true) How long initialization took in milliseconds, or how 
+	 * long the previous generation took to breed to form this generation for 
+	 * this layer
+	 */
+	public long initializationTime;
+	/**
+	 * (If do-time is true) How long evaluation took in milliseconds this generation 
+	 * for this layer
+	 */
+	public long evaluationTime;
+	
 	public boolean initializerFlag = true;
 	/**
 	 * used to count the number of individuals added to a higher layer
@@ -104,54 +116,7 @@ public class Layer implements LayerInterface {
 	{
 		this.maxAgeLayer = age;
 	}
-   
-  /*
-	@Override
-	public void setParameterDatabase(ParameterDatabase p) 
-	{
-		this.params = p;
-	}
-
-
-
-	@Override
-	public ParameterDatabase getParameterDatabase() 
-	{
-		return this.params;
-	}
-
-
   
-	@Override
-	public void setEvolutionState(EvolutionState e) 
-	{
-		this.state = e;
-	}
-
-
-
-	@Override
-	public EvolutionState getEvolutionState() 
-	{
-		return this.state;
-	}
-
-
-	@Override
-	public int getGenerationalCount() 
-	{
-		return this.layerGenerationalCount;
-	}
-
-
-
-	@Override
-	public void setGenerationalCount(int count) 
-	{
-		this.layerGenerationalCount = count;
-	}
-  */
-
 
 	@Override
 	public int getGenerations() 

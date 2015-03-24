@@ -451,24 +451,22 @@ public class Engine extends Evolve {
 			while( alps.layers.get(alps.layers.size()-1).result == EvolutionState.R_NOTDONE ) 
 			{
 				for(int j=alpsLayers.size()-1;j>=0;j--)
-				{   //System.out.println("INIIT" + Engine.completeGenerationalCount + " :: "+alpsLayers.get(0).layerEvaluationCount);
+				{   
 					alps.index =  j; //only modify the index
 
 					if(alpsLayers.get(j).getIsBottomLayer() ) //set initializer flag to true when bottom layer is called
-					{ //System.out.println("DEFAULT "+ j+ " ::: "+ Engine.completeGenerationalCount +" .... "+alpsLayers.get(j).getMaxAge());
+					{ 
 
 						if( (alpsLayers.get(j).layerGenerationalCount == 1) 
 								|| (alpsLayers.get(j).evolutionState.population.subpops[0].individuals.length>0 ) 
-								//|| ((alpsLayers.get(j).layerEvaluationCount % alpsLayers.get(j).getMaxAge())==0)   //remove if problematic NB: for layer 0: getGenerations() = getMaxAge()
 								|| alpsLayers.get(j).initializerFlag  )
 						{
-							//alpsLayers.get(j).getEvolution().start(alps); //good
 							alpsLayers.get(j).evolutionState.run(alps,EvolutionState.C_STARTED_FRESH); //good
 							alpsLayers.get(j).initializerFlag      = false; 
 						}
 
 						if(completeGenerationalCount > 0 && (completeGenerationalCount % alpsLayers.get(j).getMaxAge() )==0) 
-						{   //System.out.println(Engine.completeGenerationalCount); System.exit(0);
+						{   
 							alpsLayers.get(j).initializerFlag      = true; 
 							alpsLayers.get(j).layerGenerationalCount = 1;
 							//alpsLayers.get(j).evolutionState.generation = 0; //problems with counting when enabled
@@ -476,7 +474,7 @@ public class Engine extends Evolve {
 					} 
 					else if((alpsLayers.get(j).evolutionState.population.subpops[0].individuals.length>0) && //remove if problematic
 							completeGenerationalCount > alpsLayers.get(j-1).getMaxAge() )
-					{   //System.out.println("OTHER "+ j+ " ::: "+ Engine.completeGenerationalCount +" .... "+alpsLayers.get(j).getMaxAge());
+					{  
 						/*Generational worked without this condition */
 						alpsLayers.get(j).evolutionState.run(alps,EvolutionState.C_STARTED_FRESH); //good was put here because of SteadyState -- remove if problematic
 

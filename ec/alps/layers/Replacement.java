@@ -137,7 +137,7 @@ public abstract class Replacement extends TournamentSelection {
 
 
 	/**
-	 * 
+	 * @author anthony
 	 * @param arr
 	 * @param remIndex
 	 */
@@ -148,6 +148,7 @@ public abstract class Replacement extends TournamentSelection {
 	}
 
 	/**
+	 * @author anthony
 	 * @param Individuals
 	 * @return
 	 */
@@ -161,6 +162,7 @@ public abstract class Replacement extends TournamentSelection {
 	}
 
 	/**
+	 * @author anthony
 	 * @param individuals
 	 * @return
 	 */

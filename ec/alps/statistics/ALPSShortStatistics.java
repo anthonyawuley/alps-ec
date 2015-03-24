@@ -21,6 +21,11 @@ import ec.alps.Engine;
  */
 
 /**
+ *===================================================================================
+ * use simple short statistics to generate overall averaged alps statistics for 
+ * each layer
+ *===================================================================================
+ *
  * A Simple-style statistics generator, intended to be easily parseable with
  * awk or other Unix tools.  Prints fitness information,
  * one generation (or pseudo-generation) per line.
@@ -87,8 +92,10 @@ import ec.alps.Engine;
  * @version 2.0 
  */
 
-public class ShortStatistics extends Statistics
+public class ALPSShortStatistics extends Statistics
 {
+
+	private static final long serialVersionUID = 1L;
 	public static final String P_STATISTICS_MODULUS = "modulus";
 	public static final String P_COMPRESS = "gzip";
 	public static final String P_FULL = "gather-full";
@@ -110,12 +117,12 @@ public class ShortStatistics extends Statistics
 	public long[] totalSizeThisGen;                         // per-subpop total size of individuals this generation
 	public double[] totalFitnessThisGen;                    // per-subpop mean fitness this generation
 	public Individual[] bestOfGeneration;   // per-subpop best individual this generation
-	
+
 	public long[] minimumAgeThisGen;
 	public long[] maximumAgeThisGen;
 	public long[] totalAgeThisGen;
-	
-	
+
+
 
 	// timings
 	public long lastTime;
@@ -184,13 +191,13 @@ public class ShortStatistics extends Statistics
 		// we don't know if the number of subpopulations has been determined yet
 		bestSoFar = new Individual[state.population.subpops.length];
 
-		
+
 		// print out our generation number
 		if (Engine.globalEvaluations==0 && output) 
 			state.output.print("0 ", statisticslog);
 		else
 			state.output.print("", statisticslog);
-		
+
 		// gather timings       
 		totalSizeSoFar = new long[state.population.subpops.length];
 		totalIndsSoFar = new long[state.population.subpops.length];
@@ -213,29 +220,41 @@ public class ShortStatistics extends Statistics
 		}
 	}
 
+	/**
+	 * modified for alps stats
+	 */
 	public void postBreedingStatistics(final EvolutionState state) 
 	{
 		super.postBreedingStatistics(state); 
 		boolean output = (Engine.completeGenerationalCount % modulus == modulus - 1);
-		long initTime = System.currentTimeMillis()-lastTime;
+		long totalInitTime = 0;
 		
 		/* @author anthony
 		 * ALPS Stats Modification
 		 */
 		//if (output) state.output.print("" + (Engine.completeGenerationalCount + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
-		//if (output) state.output.print("" + (Engine.completeGenerationalCount + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
-
+		
 		if (output) state.output.print("" + (Engine.globalEvaluations + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
 
-		
 		// gather timings
 		if (output && doTime)
 		{
 			//Runtime r = Runtime.getRuntime();
-			//long curU =  r.totalMemory() - r.freeMemory();          
-			state.output.print("" + (initTime) + " ",  statisticslog);
+			//long curU =  r.totalMemory() - r.freeMemory();  
+			for(int index=0;index< Engine.alps.layers.size() ;index++)
+				try
+				{
+					totalInitTime += Engine.alps.layers.get(index).initializationTime;
+				}
+			    catch(ArrayIndexOutOfBoundsException e){} //do nothing
 			
-			Engine.alps.layers.get(Engine.alps.index).initializationTime = initTime;
+			state.output.print("" + (totalInitTime) + " ",  statisticslog);
+			
+			/*
+			 * last initialization time (moved to ShortStatistics) this is to allow a uniform
+			 * timing between both statistics objects
+			 */
+			//Engine.alps.layers.get(Engine.alps.index).initializationTime = System.currentTimeMillis()-lastTime;
 		}
 	}
 
@@ -265,22 +284,34 @@ public class ShortStatistics extends Statistics
 
 
 
-	/** Prints out the statistics, but does not end with a println --
+	/** 
+	 * MODIFIED for alps
+	 * Prints out the statistics, but does not end with a println --
         this lets overriding methods print additional statistics on the same line */
 	public void postEvaluationStatistics(final EvolutionState state)
 	{
 		super.postEvaluationStatistics(state);
 
 		boolean output = (Engine.completeGenerationalCount % modulus == 0);
-        long evaltime = System.currentTimeMillis()-lastTime;
+
 		// gather timings
 		if (output && doTime)
 		{
 			Runtime r = Runtime.getRuntime();
-			long curU =  r.totalMemory() - r.freeMemory();          
-			state.output.print("" + (evaltime) + " ",  statisticslog);
+			long curU =  r.totalMemory() - r.freeMemory();   
+			long totalEvalTime = 0;
 			
-			Engine.alps.layers.get(Engine.alps.index).evaluationTime = evaltime;
+			for(int index=0;index< Engine.alps.layers.size() ;index++)
+				try
+				{
+					totalEvalTime += Engine.alps.layers.get(index).evaluationTime;
+				}
+			    catch(ArrayIndexOutOfBoundsException e){} //do nothing
+			
+			state.output.print("" + (totalEvalTime) + " ",  statisticslog);
+			
+			//record last evaluation time for layer (moved to ShortStatistics)
+			//Engine.alps.layers.get(Engine.alps.index).evaluationTime = System.currentTimeMillis()-lastTime;
 		}
 
 		int subpops = state.population.subpops.length;                          // number of supopulations
@@ -289,61 +320,70 @@ public class ShortStatistics extends Statistics
 		totalSizeThisGen = new long[subpops];                                   // per-subpop total size of individuals this generation
 		totalFitnessThisGen = new double[subpops];                              // per-subpop mean fitness this generation
 		double[] meanFitnessThisGen = new double[subpops];                      // per-subpop mean fitness this generation
-		
+
 		minimumAgeThisGen = new long[subpops];
 		maximumAgeThisGen = new long[subpops];
 		totalAgeThisGen = new long[subpops];
 		double[] averageAgeThisGen   = new double[subpops];
-		
+
 		prepareStatistics(state);
 
 		//gather per-subpopulation statistics
 
 		for(int x=0;x<subpops;x++)
-		{          
-			minimumAgeThisGen[x] = (long) state.population.subpops[x].individuals[0].age;
-			maximumAgeThisGen[x] = (long) state.population.subpops[x].individuals[0].age;
-			
-			for(int y=0; y<state.population.subpops[x].individuals.length; y++)
+		{    
+			for(int index=0;index< Engine.alps.layers.size() ;index++)
 			{
-				if (state.population.subpops[x].individuals[y].evaluated)               // he's got a valid fitness
+				try
 				{
-					// update sizes
-					long size = state.population.subpops[x].individuals[y].size();
-					totalSizeThisGen[x] += size;
-					totalSizeSoFar[x] += size;
-					totalIndsThisGen[x] += 1;
-					totalIndsSoFar[x] += 1;
+					minimumAgeThisGen[x] = (long) Engine.alps.layers.get(index).evolutionState.
+							population.subpops[x].individuals[0].age;
+					maximumAgeThisGen[x] = (long) Engine.alps.layers.get(index).evolutionState.
+							population.subpops[x].individuals[0].age;
 
-					// update fitness
-					if (bestOfGeneration[x]==null ||
-							state.population.subpops[x].individuals[y].fitness.betterThan(bestOfGeneration[x].fitness))
+					for(int y=0; y<Engine.alps.layers.get(index).evolutionState
+							.population.subpops[x].individuals.length; y++)
 					{
-						bestOfGeneration[x] = state.population.subpops[x].individuals[y];
-						if (bestSoFar[x]==null || bestOfGeneration[x].fitness.betterThan(bestSoFar[x].fitness))
-							bestSoFar[x] = (Individual)(bestOfGeneration[x].clone());
-					}
-					
-					/*
-					 * @author anthony
-					 */
-					minimumAgeThisGen[x] = (long) Math.min(minimumAgeThisGen[x], state.population.subpops[x].individuals[y].age);
-					maximumAgeThisGen[x] = (long) Math.max(maximumAgeThisGen[x], state.population.subpops[x].individuals[y].age);		   
-				
-					totalAgeThisGen[x] +=  state.population.subpops[x].individuals[y].age;
-					
-					// sum up mean fitness for population
-					totalFitnessThisGen[x] += state.population.subpops[x].individuals[y].fitness.fitness();
+						if (Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].evaluated)               // he's got a valid fitness
+						{
+							// update sizes
+							long size = Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].size();
+							totalSizeThisGen[x] += size;
+							totalSizeSoFar[x]   += size;
+							totalIndsThisGen[x] += 1;
+							totalIndsSoFar[x]   += 1;
 
-					// hook for KozaShortStatistics etc.
-					gatherExtraSubpopStatistics(state, x, y);
+							// update fitness
+							if (bestOfGeneration[x]==null ||
+									Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].fitness.betterThan(bestOfGeneration[x].fitness))
+							{
+								bestOfGeneration[x] = Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y];
+								if (bestSoFar[x]==null || bestOfGeneration[x].fitness.betterThan(bestSoFar[x].fitness))
+									bestSoFar[x] = (Individual)(bestOfGeneration[x].clone());
+							}
+
+							/*@author anthony */
+							minimumAgeThisGen[x] = (long) Math.min(minimumAgeThisGen[x], Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].age);
+							maximumAgeThisGen[x] = (long) Math.max(maximumAgeThisGen[x], Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].age);		   
+
+							totalAgeThisGen[x] +=  Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].age;
+
+							// sum up mean fitness for population
+							totalFitnessThisGen[x] += Engine.alps.layers.get(index).evolutionState.population.subpops[x].individuals[y].fitness.fitness();
+
+							// hook for KozaShortStatistics etc.
+							gatherExtraSubpopStatistics(Engine.alps.layers.get(index).evolutionState, x, y);
+						}
+					}
 				}
-			} 
+				catch(ArrayIndexOutOfBoundsException e){} //do nothing
+			}//END alpsLoop
+
 			// compute mean fitness stats
 			meanFitnessThisGen[x] = (totalIndsThisGen[x] > 0 ? totalFitnessThisGen[x] / totalIndsThisGen[x] : 0);
-            /* compute average age */
+			/* compute average age */
 			averageAgeThisGen[x]  = (totalIndsThisGen[x] > 0 ? totalAgeThisGen[x] / (double)totalIndsThisGen[x] : 0);
-			
+
 			// hook for KozaShortStatistics etc.
 			if (output && doSubpops) printExtraSubpopStatisticsBefore(state, x);
 
@@ -363,12 +403,12 @@ public class ShortStatistics extends Statistics
 				state.output.print("" + bestOfGeneration[x].fitness.fitness() + " ", statisticslog);
 				state.output.print("" + bestSoFar[x].fitness.fitness() + " ", statisticslog);
 			}
-			
+
 			// hook for KozaShortStatistics etc.
 			if (output && doSubpops) printExtraSubpopStatisticsAfter(state, x);
-		}
+		}//END subpop loop
 
-
+		
 
 		// Now gather per-Population statistics
 		long popTotalInds = 0;
@@ -385,7 +425,7 @@ public class ShortStatistics extends Statistics
 
 		popMinimumAge = minimumAgeThisGen[0];
 		popMaximumAge = maximumAgeThisGen[0];
-		
+
 		for(int x=0;x<subpops;x++)
 		{
 			popTotalInds += totalIndsThisGen[x];
@@ -399,11 +439,10 @@ public class ShortStatistics extends Statistics
 			if (bestSoFar[x] != null && (popBestSoFar == null || bestSoFar[x].fitness.betterThan(popBestSoFar.fitness)))
 				popBestSoFar = bestSoFar[x];
 
-			
 			popTotalAverageAge += averageAgeThisGen[x];
 			popMinimumAge = Math.min(popMinimumAge, minimumAgeThisGen[x]);
 			popMaximumAge = Math.max(popMaximumAge, maximumAgeThisGen[x]);
-			
+
 			// hook for KozaShortStatistics etc.
 			gatherExtraPopStatistics(state, x);
 		}
@@ -419,8 +458,8 @@ public class ShortStatistics extends Statistics
 		{
 			state.output.print("" + (popTotalInds > 0 ? popTotalSize / popTotalInds : 0)  + " " , statisticslog);                    // mean size of pop this gen
 			state.output.print("" + (popTotalIndsSoFar > 0 ? popTotalSizeSoFar / popTotalIndsSoFar : 0) + " " , statisticslog);      // mean size of pop so far
-			state.output.print("" + (double)(popBestOfGeneration.size()) + " " , statisticslog);                    // size of best ind of pop this gen
-			state.output.print("" + (double)(popBestSoFar.size()) + " " , statisticslog);                           // size of best ind of pop so far
+			state.output.print("" + (double) (popBestOfGeneration.size()) + " " , statisticslog);                    // size of best ind of pop this gen
+			state.output.print("" + (double) (popBestSoFar.size()) + " " , statisticslog);                           // size of best ind of pop so far
 		}
 
 		// print out fitness info
@@ -429,8 +468,7 @@ public class ShortStatistics extends Statistics
 			state.output.print("" + popMeanFitness + " " , statisticslog);                                                                                  // mean fitness of pop this gen
 			state.output.print("" + (double)(popBestOfGeneration.fitness.fitness()) + " " , statisticslog);                 // best fitness of pop this gen
 			state.output.print("" + (double)(popBestSoFar.fitness.fitness()) + " " , statisticslog);                // best fitness of pop so far
-		
-			
+
 			/* age of pop best of gen */
 			state.output.print("" + (popBestOfGeneration.age) + " " , statisticslog); 
 			/* age of best so far */
@@ -441,7 +479,7 @@ public class ShortStatistics extends Statistics
 			state.output.print("" + (popMaximumAge) + " " , statisticslog);
 			/* average age of gen */
 			state.output.print("" + (popTotalAverageAge/subpops) + " " , statisticslog);
-			
+
 		}
 
 		// hook for KozaShortStatistics etc.
