@@ -195,10 +195,15 @@ public class ShortStatistics extends Statistics
 		totalSizeSoFar = new long[state.population.subpops.length];
 		totalIndsSoFar = new long[state.population.subpops.length];
 
+		/* @author anthony
+		 * TODO 
+		 * uncoment later - responsible for non-uniform statistics dumps
+		 * state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
+		 */
 		if (output && doTime)
 		{
 			//Runtime r = Runtime.getRuntime();
-			state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
+			//state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
 		}
 	}
 

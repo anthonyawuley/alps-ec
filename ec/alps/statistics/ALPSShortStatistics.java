@@ -193,7 +193,7 @@ public class ALPSShortStatistics extends Statistics
 
 
 		// print out our generation number
-		if (Engine.globalEvaluations==0 && output) 
+		if (Engine.completeGenerationalCount==0 && output) 
 			state.output.print("0 ", statisticslog);
 		else
 			state.output.print("", statisticslog);
@@ -201,11 +201,16 @@ public class ALPSShortStatistics extends Statistics
 		// gather timings       
 		totalSizeSoFar = new long[state.population.subpops.length];
 		totalIndsSoFar = new long[state.population.subpops.length];
-
+		
+		/* @author anthony
+		 * TODO 
+		 * uncoment later - responsible for non-uniform statistics dumps
+		 * state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
+		 */
 		if (output && doTime)
-		{
+		{   
 			//Runtime r = Runtime.getRuntime();
-			state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
+			//state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
 		}
 	}
 
@@ -250,8 +255,7 @@ public class ALPSShortStatistics extends Statistics
 			
 			state.output.print("" + (totalInitTime) + " ",  statisticslog);
 			
-			/*
-			 * last initialization time (moved to ShortStatistics) this is to allow a uniform
+			/* last initialization time (moved to ShortStatistics) this is to allow a uniform
 			 * timing between both statistics objects
 			 */
 			//Engine.alps.layers.get(Engine.alps.index).initializationTime = System.currentTimeMillis()-lastTime;

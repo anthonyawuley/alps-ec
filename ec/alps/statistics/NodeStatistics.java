@@ -284,5 +284,9 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 				if (state.evaluator.p_problem instanceof SimpleProblemForm)
 					((SimpleProblemForm)(state.evaluator.p_problem.clone())).describe(state, best_of_run[x], x, 0, statisticslog);      
 		}
+		
+		// we're done! @anthony
+		//if (doFinal) state.output.println("", statisticslog);
+		
 	}
 }
