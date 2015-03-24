@@ -207,10 +207,10 @@ public class ALPSShortStatistics extends Statistics
 		 * uncoment later - responsible for non-uniform statistics dumps
 		 * state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
 		 */
-		if (output && doTime)
+		if (output && doTime && Engine.completeGenerationalCount==0)
 		{   
 			//Runtime r = Runtime.getRuntime();
-			//state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
+			state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
 		}
 	}
 
@@ -386,7 +386,7 @@ public class ALPSShortStatistics extends Statistics
 			// compute mean fitness stats
 			meanFitnessThisGen[x] = (totalIndsThisGen[x] > 0 ? totalFitnessThisGen[x] / totalIndsThisGen[x] : 0);
 			/* compute average age */
-			averageAgeThisGen[x]  = (totalIndsThisGen[x] > 0 ? totalAgeThisGen[x] / (double)totalIndsThisGen[x] : 0);
+			averageAgeThisGen[x]  = (totalIndsThisGen[x] > 0 ? totalAgeThisGen[x] / totalIndsThisGen[x] : 0);
 
 			// hook for KozaShortStatistics etc.
 			if (output && doSubpops) printExtraSubpopStatisticsBefore(state, x);
@@ -421,7 +421,8 @@ public class ALPSShortStatistics extends Statistics
 		long popTotalSizeSoFar = 0;
 		double popMeanFitness = 0;
 		double popTotalFitness = 0;
-		double popTotalAverageAge = 0;
+		double popTotalAge = 0;
+		double popMeanAge = 0;
 		double popMinimumAge = 0;
 		double popMaximumAge     = 0;
 		Individual popBestOfGeneration = null;
@@ -443,7 +444,7 @@ public class ALPSShortStatistics extends Statistics
 			if (bestSoFar[x] != null && (popBestSoFar == null || bestSoFar[x].fitness.betterThan(popBestSoFar.fitness)))
 				popBestSoFar = bestSoFar[x];
 
-			popTotalAverageAge += averageAgeThisGen[x];
+			popTotalAge += totalAgeThisGen[x];
 			popMinimumAge = Math.min(popMinimumAge, minimumAgeThisGen[x]);
 			popMaximumAge = Math.max(popMaximumAge, maximumAgeThisGen[x]);
 
@@ -453,7 +454,9 @@ public class ALPSShortStatistics extends Statistics
 
 		// build mean
 		popMeanFitness = (popTotalInds > 0 ? popTotalFitness / popTotalInds : 0);               // average out
-
+		
+		popMeanAge     = (popTotalInds > 0 ? popTotalAge / popTotalInds : 0);  
+		
 		// hook for KozaShortStatistics etc.
 		if (output) printExtraPopStatisticsBefore(state);
 
@@ -482,7 +485,7 @@ public class ALPSShortStatistics extends Statistics
 			/* maximum age of gen */
 			state.output.print("" + (popMaximumAge) + " " , statisticslog);
 			/* average age of gen */
-			state.output.print("" + (popTotalAverageAge/subpops) + " " , statisticslog);
+			state.output.print("" + (popMeanAge) + " " , statisticslog);
 
 		}
 

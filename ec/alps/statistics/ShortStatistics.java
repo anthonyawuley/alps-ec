@@ -200,10 +200,10 @@ public class ShortStatistics extends Statistics
 		 * uncoment later - responsible for non-uniform statistics dumps
 		 * state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
 		 */
-		if (output && doTime)
+		if (output && doTime && Engine.completeGenerationalCount==0)
 		{
 			//Runtime r = Runtime.getRuntime();
-			//state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
+			state.output.print("" + (System.currentTimeMillis()-lastTime) + " ",  statisticslog);
 		}
 	}
 
