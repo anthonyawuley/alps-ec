@@ -87,8 +87,8 @@ public class FSALPSGPInitializer extends GPInitializer
 			state.output.warning("default value of \"false\" will be assumed for parameter \"alps."+Engine.FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM+"\" ");
 		if (!state.parameters.exists(Engine.base().push(Engine.FSALPS_USE_MUTATION_PARAM), null))
 			state.output.warning("default value of \"true\" will be assumed for parameter  "+ "\"alps."+Engine.FSALPS_USE_MUTATION_PARAM+ " ");
-		if (!state.parameters.exists(Engine.base().push(Engine.FSALPS_LAST_LAYER_GEN_FREQ_COUNT), null))
-			state.output.warning("default value of \"true\" will be assumed for parameter  " + "\"alps."+Engine.FSALPS_LAST_LAYER_GEN_FREQ_COUNT+ " ");
+		if (!state.parameters.exists(Engine.base().push(Engine.FSALPS_GEN_FREQ_COUNT), null))
+			state.output.warning("default value of \"true\" will be assumed for parameter  " + "\"alps."+Engine.FSALPS_GEN_FREQ_COUNT+ " ");
 
 	}
 

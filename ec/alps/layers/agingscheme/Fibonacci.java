@@ -21,7 +21,7 @@ public class Fibonacci extends AgingScheme {
 		int first  = 0;
 	    int second = 1;
 	    int sum;
-	    ArrayList<Layer> layers  = new ArrayList<>();
+	    layers  = new ArrayList<>();
 	    //this.toString(" with an age gap of "+ ageGap +" and "+ ageLayers +" layers");
 	    
 		for(int i=0; i<AgingScheme.alpsAgeLayers;i++)

@@ -542,9 +542,8 @@ public class EvolutionState implements Singleton
 		 * NB: A layer can be active when no statistics data [NodeStatistics has not been called] has been generated for the first time
 		 * in such cases, the frequency data is the same as what is already been used. 
 		 * */
-		if(!Engine.fsalps_use_only_default_node_pr && Engine.fsalps_last_layer_gen_freq_count && 
-				alps.layers.get(alps.layers.size()-1).getIsActive() &&
-				Engine.fsalps_active
+		if(!Engine.fsalps_use_only_default_node_pr && Engine.fsalps_gen_freq_count && 
+				alps.layers.get(alps.layers.size()-1).getIsActive() && Engine.fsalps_active
 				/*(Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState) == Engine.generationSize)*/ )
 			Engine.roulette.calculateNodeProbabilities(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
 			//Engine.roulette = new Roulette(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
@@ -560,9 +559,8 @@ public class EvolutionState implements Singleton
 		     * NB: A layer can be active when no statistics data [NodeStatistics has not been called] has been generated for the first time
 		     * in such cases, the frequency data is the same as what is already been used. 
 			 * */
-			if(!Engine.fsalps_use_only_default_node_pr  && !Engine.fsalps_last_layer_gen_freq_count  && 
-					alps.layers.get(alps.layers.size()-1).getIsActive() &&
-					Engine.fsalps_active
+			if(!Engine.fsalps_use_only_default_node_pr  && !Engine.fsalps_gen_freq_count  && 
+					alps.layers.get(alps.layers.size()-1).getIsActive() && Engine.fsalps_active
 					/*(Operations.popSize(alps.layers.get(alps.layers.size()-1).evolutionState) == Engine.generationSize)*/  )
 				Engine.roulette.calculateNodeProbabilities(alps,alps.layers.get(alps.layers.size()-1).evolutionState);
 				//Engine.roulette = new Roulette( alps,alps.layers.get(alps.layers.size()-1).evolutionState);
@@ -583,9 +581,10 @@ public class EvolutionState implements Singleton
 			alps.layers.get(alps.index).result = evolve();
 		}
 
-		/* Attempt inter-layer individual migration  */
-		//replacement = (ALPSReplacement)
-		//		(parameters.getInstanceForParameter(new Parameter(P_REPLACEMENT),null,ALPSReplacement.class));
+		/* Attempt inter-layer individual migration  
+		 * replacement = (ALPSReplacement)
+		 *		(parameters.getInstanceForParameter(new Parameter(P_REPLACEMENT),null,ALPSReplacement.class));
+		 */
 		replacement.layerMigrations(alps,alps.layers.get(alps.index).evolutionState.population);
 
 		/* count only when evolve is performed */
@@ -602,7 +601,7 @@ public class EvolutionState implements Singleton
 
 		/* DUMPING INDIVIDUAL AGE TO CONSOLE */
 		//alps.printAge(); 
-		// alps.printPopSize();
+		//alps.printPopSize();
 	}
 
 

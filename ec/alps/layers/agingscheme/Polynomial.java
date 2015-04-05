@@ -24,7 +24,7 @@ public class Polynomial  extends AgingScheme {
 	public ArrayList<Layer> agingScheme()
 	{
 		//this.toString(" with an age gap of "+ ageGap +" and "+ ageLayers +" layers");
-		ArrayList<Layer> layers  = new ArrayList<>();
+		layers  = new ArrayList<>();
 		
 		for(int i=0; i<AgingScheme.alpsAgeLayers;i++)
 		{

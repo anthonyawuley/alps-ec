@@ -65,11 +65,11 @@ alps.use-only-default-node-pr         = false
 alps.fsalps-in-mutation               = true
 
 # used to determine if frequency in last layer is used to generate probality selection on a generational basis
-alps.fsalps-last-layer-gen-freq-count = false
+alps.fsalps-gen-freq-count            = false
 
 # when enabled, nodes are counted in all layers and converted
 # to probability values used during mutation and tree initialization in bottom layer
-alps.fsalps-use-all-layers            = true
+alps.fsalps-count-all-layers            = true
 
 # Determine which frequency selection criteria is used for generating probability
 alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency

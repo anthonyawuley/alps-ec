@@ -18,7 +18,7 @@ public class Linear extends AgingScheme {
 	
 	public ArrayList<Layer> agingScheme()
 	{
-		ArrayList<Layer> layers = new ArrayList<>();
+		layers = new ArrayList<>();
 		
 		//this.toString(" with an age gap of "+ ageGap +" and "+ ageLayers +" layers");
 		

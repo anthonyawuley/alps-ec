@@ -37,7 +37,7 @@ public abstract class Roulette {
 
 		try
 		{   //Avoid Engine.alps.layers exception when alps.layers have not been set up
-			if (Engine.fsalps_use_all_layers)
+			if (Engine.fsalps_count_all_layers)
 			{   /* Obtain initial node, value pairs from last layer */
 				map = alps.layers.get(0).evolutionState.nodeCountTerminalSet;
 				/* loop through remaining layers and add respective node frequency counts */

@@ -68,10 +68,10 @@ public class Engine extends Evolve {
 	/** FSALPS */
 	public static final String FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM = "use-only-default-node-pr";
 	public static final String FSALPS_USE_MUTATION_PARAM             = "fsalps-in-mutation";
-	public static final String FSALPS_LAST_LAYER_GEN_FREQ_COUNT      = "fsalps-last-layer-gen-freq-count";
+	public static final String FSALPS_GEN_FREQ_COUNT                 = "fsalps-gen-freq-count";
 	public static final String ALPS_AGE_ONLY_CURRENT_LAYER           = "age-only-current-layer";
 	public static final String ALPS_ALWAYS_BREED_MAXIMUM_POP         = "always-breed-maximum-population";
-	public static final String FSALPS_USE_ALL_LAYERS                 = "fsalps-use-all-layers";
+	public static final String FSALPS_COUNT_ALL_LAYERS               = "fsalps-count-all-layers";
 	public static final String FSALPS_ROULETTE                       = "probability-selection";
 
 	/** Used to keep node usage for terminal sets 
@@ -86,16 +86,18 @@ public class Engine extends Evolve {
 
 	/** When true, all layers node count is used in generating
 	 *  probability node selection
-	 *  Else only last layer node count (frequency) is converted to probabilities */
-	public static boolean fsalps_use_all_layers             = false;
+	 *  Else only last layer node count (frequency) is converted to probabilities 
+	 *  see layerFrequencySelection(ALPSLayers alps,EvolutionState state) in Roulette class for implementation*/
+	public static boolean fsalps_count_all_layers           = false;
 
 	/** FSALPS is active */
 	public static boolean fsalps_active                     = false;
 	/** Use FSALPS generated frequency count during mutation 
 	 * @deprecated */
 	public static boolean fsalps_use_mutation               = true;
-	/** Should frequency count be performed for every generation in the highest ALPS layer? */
-	public static boolean fsalps_last_layer_gen_freq_count  = false;
+	/** Should frequency count be performed for every generation in the highest ALPS layer? 
+	 *  if false, frequency count is performed at every age-gap interval */
+	public static boolean fsalps_gen_freq_count  = false;
 
 	/**
 	 * when true, only individuals selected from breeding from current layer have their age increased
@@ -131,6 +133,9 @@ public class Engine extends Evolve {
 	 * 0.98 - 1.00 is item 10<br><br>
 	 * */
 	public static Roulette roulette;
+	
+	/**  this engine seed is to ensure that all layers are started off with a different seed */
+	public static int seed  = 0;
 
 	/** aging scheme */
 	public static AgingScheme       ageScheme;
@@ -273,10 +278,10 @@ public class Engine extends Evolve {
 				parameters.getBoolean(base().push(FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM),null,false);
 		fsalps_use_mutation              =  
 				parameters.getBoolean(base().push(FSALPS_USE_MUTATION_PARAM),null,true);
-		fsalps_last_layer_gen_freq_count =  
-				parameters.getBoolean(base().push(FSALPS_LAST_LAYER_GEN_FREQ_COUNT),null,false);
-		fsalps_use_all_layers            =  
-				parameters.getBoolean(base().push(FSALPS_USE_ALL_LAYERS),null,false);
+		fsalps_gen_freq_count            =  
+				parameters.getBoolean(base().push(FSALPS_GEN_FREQ_COUNT),null,false);
+		fsalps_count_all_layers          =  
+				parameters.getBoolean(base().push(FSALPS_COUNT_ALL_LAYERS),null,false);
 
 		//p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
 		/** number of chunks available when using k-fold cross validation */
@@ -335,9 +340,11 @@ public class Engine extends Evolve {
 		// output was already created for us. 
 		/* COMMENTED OUT AND MOVED TO EVOLUTION STATE  */
 		//output.systemMessage(Version.message());
+		
+		
 
 		// 2. set up thread values
-
+        
 		breedthreads = Evolve.determineThreads(output, parameters, new Parameter(P_BREEDTHREADS));
 		evalthreads = Evolve.determineThreads(output, parameters, new Parameter(P_EVALTHREADS));
 		boolean auto = (V_THREADS_AUTO.equalsIgnoreCase(parameters.getString(new Parameter(P_BREEDTHREADS),null)) ||
@@ -353,9 +360,9 @@ public class Engine extends Evolve {
 		String seedMessage = "Seed: ";
 		int time = (int)(System.currentTimeMillis());
 		for (x=0;x<random.length;x++)
-		{
+		{   /*@author: anthony modified to ensure different seed for all layers  */
 			seeds[x] = determineSeed(output, parameters, new Parameter(P_SEED).push(""+x),
-					time+x,random.length * randomSeedOffset, auto);
+					time+x,random.length * randomSeedOffset, auto) + Engine.seed;
 			for (int y=0;y<x;y++)
 				if (seeds[x]==seeds[y])
 					output.fatal(P_SEED+"."+x+" ("+seeds[x]+") and "+P_SEED+"."+y+" ("+seeds[y]+") ought not be the same seed.",null,null); 
@@ -386,6 +393,8 @@ public class Engine extends Evolve {
 		output.systemMessage("Threads:  breed/" + breedthreads + " eval/" + evalthreads);
 		output.systemMessage(seedMessage);
 
+		//Engine.seed +=  100;
+		
 		return state;
 	}
 

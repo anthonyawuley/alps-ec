@@ -20,7 +20,7 @@ public class Exponential extends AgingScheme {
 	 */
 	public ArrayList<Layer> agingScheme()
 	{
-		ArrayList<Layer> layers = new ArrayList<>();
+		layers = new ArrayList<>();
 		//this.toString(" with an age gap of "+ AgingScheme.alpsAgeGap +" and "+ AgingScheme.alpsAgeLayers +" layers");
 		
 		for(int i=0; i< AgingScheme.alpsAgeLayers;i++)

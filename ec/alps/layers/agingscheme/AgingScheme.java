@@ -14,9 +14,11 @@ public abstract class AgingScheme {
 	public final static String AGE_GAP      = "age-gap";
 	public final static String AGE_LAYERS   = "number-of-layers";
 
-
+   
 	public  static int alpsAgeGap                = 0;
 	public  static int alpsAgeLayers             = 0;
+	
+	public ArrayList<Layer> layers;
 
 
 	public Parameter defaultBase()
@@ -49,12 +51,6 @@ public abstract class AgingScheme {
 	 * @return
 	 */
 	public abstract ArrayList<Layer> agingScheme();
-
-
-	//public abstract ArrayList<Layer> agingScheme(int ageGap,int ageLayers);
-
-
-
 
 
 }
