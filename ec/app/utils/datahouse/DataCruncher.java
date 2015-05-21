@@ -46,6 +46,23 @@ public class DataCruncher  {
      */
 	public static boolean LOCK_DOWN_SHUFFLE = false;
 
+	/**
+	 * Lock down the entire system
+	 */
+	public static boolean LOCK_DOWN = false;
+	/**
+	 * 
+	 */
+	public static ArrayList<ArrayList<ArrayList>> DATA;
+	/**
+	 * 
+	 */
+	public static ArrayList<ArrayList> TRAINING_DATA;
+	/**
+	 * 
+	 */
+	public static ArrayList<ArrayList> TESTING_DATA;
+	
 	/** when true, auto numbering will be attached to the newly generated file */
 	static final boolean AUTO_NUMBERING = true;
 	/**

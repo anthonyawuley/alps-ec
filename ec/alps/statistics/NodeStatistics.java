@@ -184,14 +184,12 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		for(int x=0;x<state.population.subpops.length;x++)
 		{
 			best_i[x] = state.population.subpops[x].individuals[0];
-			/*
-			 * for efficiency, its best to start from y=1 to test for best individual. 
+			/* for efficiency, its best to start from y=1 to test for best individual. 
 			 * started from 0 because node statistics data is generated in the same loop
 			 */
 			for(int y=0;y<state.population.subpops[x].individuals.length;y++) 
 			{
-				/*
-				 * gather statistics of node usage in entire population 
+				/* gather statistics of node usage in entire population 
 				 * state.nodeCountTerminalSet is updated
 				 */
 				state.population.subpops[x].individuals[y].gatherIndividualNodeStats(state,state.nodeCountTerminalSet);
@@ -205,29 +203,27 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 			if (best_of_run[x]==null || best_i[x].fitness.betterThan(best_of_run[x].fitness))
 				best_of_run[x] = (Individual)(best_i[x].clone());
 		}
-
-
-		// print the best-of-generation individual 
+		//print the best-of-generation individual 
 
 		//if (doGeneration) state.output.print("" + Engine.completeGenerationalCount,statisticslog);
 		if (doGeneration && isALPSEA) 
-			state.output.print("" + Engine.globalEvaluations,statisticslog);
+			state.output.print(Engine.globalEvaluations+"\t",statisticslog);
 		else //when using canonical EA
-			state.output.print("" + state.generation,statisticslog);
-
+			state.output.print(state.generation+"\t",statisticslog);
 
 		//if (doGeneration) state.output.println("Best Individual:",statisticslog);
 		for(int x=0;x<state.population.subpops.length;x++)
 		{
 			//if (doGeneration) state.output.println("Subpopulation " + x + ":",statisticslog);
 
-			/** use this to gather statistics of best individual in population */
+			/* use this to gather statistics of best individual in population */
 			//if (doGeneration) best_i[x].gatherIndividualNodeStats(state,statisticslog,false);
 
 
-			/** PRINT all nodes with related usage frequency per layer */
-			for (Entry<String, Double> entry : state.nodeCountTerminalSet.entrySet()) 
-				state.output.print("\t"+entry.getValue(),statisticslog);
+			/* PRINT all nodes with related usage frequency per layer */
+			if (doGeneration)
+				for (Entry<String, Double> entry : state.nodeCountTerminalSet.entrySet()) 
+					state.output.print(entry.getValue()+"\t",statisticslog);
 
 			/*
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of generation" + 
@@ -263,7 +259,8 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 		TreeAnalyzer.unsetNodeCount(state, bestIndividualTerminalSet);
 
 
-		if (doFinal) state.output.println("\nBest Individual of Run:",statisticslog);
+		if (doFinal) 
+			state.output.println("\nBest Individual of Run:",statisticslog);
 		for(int x=0;x<state.population.subpops.length;x++ )
 		{
 			if (doFinal) state.output.println("Subpopulation " + x + ":",statisticslog);
@@ -273,20 +270,20 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 			if (doFinal) best_of_run[x].printTerminalCount(state,bestIndividualTerminalSet,statisticslog);
 
 			/* print tree size*/
-            if (doFinal) state.output.println("Tree Size " + best_of_run[x].size(),statisticslog);
-            
+			if (doFinal) state.output.println("Tree Size " + best_of_run[x].size(),statisticslog);
+
 			if (doFinal) best_of_run[x].printIndividualForHumans(state,statisticslog);
-			
+
 			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of run: " + best_of_run[x].fitness.fitnessToStringForHumans());
 
 			// finally describe the winner if there is a description
-			if (doFinal && doDescription) 
-				if (state.evaluator.p_problem instanceof SimpleProblemForm)
-					((SimpleProblemForm)(state.evaluator.p_problem.clone())).describe(state, best_of_run[x], x, 0, statisticslog);      
+			//if (doFinal && doDescription) 
+				//if (state.evaluator.p_problem instanceof SimpleProblemForm)
+					//((SimpleProblemForm)(state.evaluator.p_problem.clone())).describe(state, best_of_run[x], x, 0, statisticslog);      
 		}
-		
+
 		// we're done! @anthony
 		//if (doFinal) state.output.println("", statisticslog);
-		
+
 	}
 }

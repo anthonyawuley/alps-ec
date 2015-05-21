@@ -204,7 +204,7 @@ public class FSALPSGPFunctionSet extends GPFunctionSet
 
 			/*
 			 * FSALPS
-			 * (....,null,1) assigns 0 to terminal sets and (....,null,0) assigns -1 to terminal sets
+			 * Note that: (....,null,1) assigns 0 to terminal sets
 			 * @author anthony
 			 */
 			gpfi.nodeFrequency  =  state.parameters.getInt(pp.push(P_PROB),null,1);

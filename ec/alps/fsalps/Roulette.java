@@ -34,7 +34,7 @@ public abstract class Roulette {
 	 */
 	public void layerFrequencySelection(ALPSLayers alps,EvolutionState state) 
 	{
-
+      
 		try
 		{   //Avoid Engine.alps.layers exception when alps.layers have not been set up
 			if (Engine.fsalps_count_all_layers)
@@ -46,8 +46,10 @@ public abstract class Roulette {
 						map.put(node.getKey(), node.getValue() + map.get(node.getKey()));
 				//System.out.println("ENGINE "+i + " "+ node.getKey() + ": "+ node.getValue()+" TOTAL:"+ map.get(node.getKey()));
 			}
-			else /*use last layer */
+			else
+			{ /*use last layer */
 				map = alps.layers.get(alps.layers.size()-1).evolutionState.nodeCountTerminalSet; 
+			}
 			//map = state.nodeCountTerminalSet; will also work if last layer evolutionState is parsed
 		}
 		catch(NullPointerException e) 

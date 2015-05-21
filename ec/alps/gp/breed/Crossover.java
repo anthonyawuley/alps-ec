@@ -322,7 +322,7 @@ public class Crossover extends CrossoverPipeline{
 
 			// add the individuals to the population
 			inds[q] = j1;
-			/**
+			/*
 			 * ALPS: AGE INCREMENT
 			 * increase age of offsping age by oldest parent
 			 * 
@@ -335,29 +335,28 @@ public class Crossover extends CrossoverPipeline{
 			 * 
 			 * @author anthony
 			 */
-			//inds[q].age = parents[0].age>parents[1].age? parents[0].age + 1:parents[1].age + 1;
-			//inds[q].age = parents[0].age > parents[1].age? parents[0].age : parents[1].age;
 			
-			
-			/** offspring gets age of oldest parent */
-			inds[q].age        = Math.max(parents[0].age, parents[1].age);
-			/** get minimum evaluation for parent. the lowest evaluation count is the oldest parent */
-			inds[q].evaluation = Math.min(parents[0].evaluation, parents[1].evaluation);
+			/* offspring gets age of oldest/youngest parent */
+			inds[q].age        = (Engine.alps_assign_max_parent_age)?
+				                       Math.max(parents[0].age, parents[1].age):Math.min(parents[0].age, parents[1].age);
+			/* get minimum/maximum evaluation for parent. the lowest evaluation count is the oldest parent */
+			inds[q].evaluation = (Engine.alps_assign_max_parent_age)? 
+					                  Math.min(parents[0].evaluation, parents[1].evaluation):Math.max(parents[0].evaluation, parents[1].evaluation);
 			q++;
 			if (q<n+start && !tossSecondParent)
 			{
 				inds[q] = j2;
-				/**
+				/*
 				 * ALPS: AGE INCREMENT
 				 * increase age of offsping by oldest parent
 				 * @author anthony
 				 */
-				//inds[q].age = parents[0].age>parents[1].age? parents[0].age + 1:parents[1].age + 1;
-				//inds[q].age = parents[0].age > parents[1].age? parents[0].age : parents[1].age;
-				/** offspring gets age of oldest parent */
-				inds[q].age        = Math.max(parents[0].age, parents[1].age);
-				/** get minimum evaluation for parent. the lowest evaluation count is the oldest parent */
-				inds[q].evaluation = Math.min(parents[0].evaluation, parents[1].evaluation);
+				/* offspring gets age of oldest/youngest parent */
+				inds[q].age        = (Engine.alps_assign_max_parent_age)?
+					                       Math.max(parents[0].age, parents[1].age):Math.min(parents[0].age, parents[1].age);
+				/* get minimum/maximum evaluation for parent. the lowest evaluation count is the oldest parent */
+				inds[q].evaluation = (Engine.alps_assign_max_parent_age)? 
+						                  Math.min(parents[0].evaluation, parents[1].evaluation):Math.max(parents[0].evaluation, parents[1].evaluation);
 				q++;
 			}
 

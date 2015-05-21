@@ -65,12 +65,15 @@ public class Engine extends Evolve {
 	/** */
 	public static final String K_FOLD_CROSS_VALIDATION_CHUNCK        = "k-fold-cross-validation-size";
 
+	/**ALPS */
+	public static final String AGE_ONLY_CURRENT_LAYER                = "age-only-current-layer";
+	public static final String ALWAYS_BREED_MAXIMUM_POP              = "always-breed-maximum-population";
+	public static final String ASSIGN_MAX_PARENT_AGE                 = "assign-max-parent-age";
+	
 	/** FSALPS */
 	public static final String FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM = "use-only-default-node-pr";
 	public static final String FSALPS_USE_MUTATION_PARAM             = "fsalps-in-mutation";
 	public static final String FSALPS_GEN_FREQ_COUNT                 = "fsalps-gen-freq-count";
-	public static final String ALPS_AGE_ONLY_CURRENT_LAYER           = "age-only-current-layer";
-	public static final String ALPS_ALWAYS_BREED_MAXIMUM_POP         = "always-breed-maximum-population";
 	public static final String FSALPS_COUNT_ALL_LAYERS               = "fsalps-count-all-layers";
 	public static final String FSALPS_ROULETTE                       = "probability-selection";
 
@@ -97,8 +100,15 @@ public class Engine extends Evolve {
 	public static boolean fsalps_use_mutation               = true;
 	/** Should frequency count be performed for every generation in the highest ALPS layer? 
 	 *  if false, frequency count is performed at every age-gap interval */
-	public static boolean fsalps_gen_freq_count  = false;
-
+	public static boolean fsalps_gen_freq_count             = false;
+    
+	
+	
+	/**
+	 * by default an offspring is assigned the age of the oldest parent + 1.
+	 * if this flag is set to false, then the minimum age +1 is assigned to the offspring
+	 */
+	public static boolean alps_assign_max_parent_age        = true;
 	/**
 	 * when true, only individuals selected from breeding from current layer have their age increased
 	 * else both both individuals coming from current and lower layer used as parents will have their age increased
@@ -262,18 +272,22 @@ public class Engine extends Evolve {
 
 		numGenerations  = parameters.getInt(new Parameter(EvolutionState.P_GENERATIONS), null);
 
-		if (!parameters.exists(base().push(ALPS_AGE_ONLY_CURRENT_LAYER), null))
+		if (!parameters.exists(base().push(AGE_ONLY_CURRENT_LAYER), null))
 			System.out.println("default value for  "
-					+ "\"alps."+ALPS_AGE_ONLY_CURRENT_LAYER+ "\" of \""+alps_age_only_current_layer+"\" will be used \n");
+					+ "\"alps."+AGE_ONLY_CURRENT_LAYER+ "\" of \""+alps_age_only_current_layer+"\" will be used \n");
 
-		if (!parameters.exists(base().push(ALPS_ALWAYS_BREED_MAXIMUM_POP), null))
+		if (!parameters.exists(base().push(ALWAYS_BREED_MAXIMUM_POP), null))
 			System.out.println("default value for  "
-					+ "\"alps."+ALPS_ALWAYS_BREED_MAXIMUM_POP+ "\" of \""+always_breed_maximum_pop+"\" will be used \n");
+					+ "\"alps."+ALWAYS_BREED_MAXIMUM_POP+ "\" of \""+always_breed_maximum_pop+"\" will be used \n");
 
 		alps_age_only_current_layer      =  
-				parameters.getBoolean(base().push(ALPS_AGE_ONLY_CURRENT_LAYER),null,false);
+				parameters.getBoolean(base().push(AGE_ONLY_CURRENT_LAYER),null,false);
 		always_breed_maximum_pop         =  
-				parameters.getBoolean(base().push(ALPS_ALWAYS_BREED_MAXIMUM_POP),null,true);	
+				parameters.getBoolean(base().push(ALWAYS_BREED_MAXIMUM_POP),null,true);	
+		alps_assign_max_parent_age       =  
+				parameters.getBoolean(base().push(ASSIGN_MAX_PARENT_AGE),null,true);
+		
+	
 		fsalps_use_only_default_node_pr  =  
 				parameters.getBoolean(base().push(FSALPS_USE_ONLY_DEFAULT_NODE_PR_PARAM),null,false);
 		fsalps_use_mutation              =  
@@ -282,6 +296,8 @@ public class Engine extends Evolve {
 				parameters.getBoolean(base().push(FSALPS_GEN_FREQ_COUNT),null,false);
 		fsalps_count_all_layers          =  
 				parameters.getBoolean(base().push(FSALPS_COUNT_ALL_LAYERS),null,false);
+		
+		
 
 		//p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
 		/** number of chunks available when using k-fold cross validation */

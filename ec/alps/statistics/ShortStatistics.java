@@ -230,7 +230,8 @@ public class ShortStatistics extends Statistics
 		//if (output) state.output.print("" + (Engine.completeGenerationalCount + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
 		//if (output) state.output.print("" + (Engine.completeGenerationalCount + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
 
-		if (output) state.output.print("" + (Engine.globalEvaluations + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
+		if (output) 
+			state.output.print("" + (Engine.globalEvaluations + 1) + " ", statisticslog); // 1 because we're putting the breeding info on the same line as the generation it *produces*, and the generation number is increased *after* breeding occurs, and statistics for it
 
 		
 		// gather timings
