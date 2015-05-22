@@ -54,6 +54,10 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 	/** directory to savel cleaned file */
 	private final String DATA_GTI   = "pines-gti";
 	private final String DATA_OUT   = "pines-out";
+	private final String TARGET_COLOR = "target-color";
+	private final String TRAIN_REGEX  = "train-regex";
+	/**store color channels for target pixels*/
+	private String[] targetColor;
 
 	public  static int ctcmtrx = 0;
 	
@@ -83,7 +87,9 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 		input.setup(state,base.push(P_DATA));
 		String dataRaw   = state.parameters.getString(base.push(DATA_RAW), null);
 		String trainData = state.parameters.getString(base.push(TRAIN_DATA), null);
-	
+		/*extract target color channels */
+		targetColor      = state.parameters.getString(base.push(TARGET_COLOR), null).split(",");
+		
 		/** 
 		 * 1. Reads all csv files from "dataRaw" directory with prefix "ch_"
 		 * 2. for each band(channel) read all rows and columns
@@ -101,11 +107,10 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 			//(float) DataCruncher.DATA.addAll(Hyperspectral.channels(dataRaw+"_2/", ",", "ch_"));
             
 			DataCruncher.DATA          = Hyperspectral.bands(dataRaw, ",", "ch_");
-			DataCruncher.TRAINING_DATA = Hyperspectral.trainingPoints(trainData, ",", "corn_");
+			DataCruncher.TRAINING_DATA = Hyperspectral.trainingPoints(trainData, ",", 
+					state.parameters.getString(base.push(TRAIN_REGEX), null));
 
 			//DataCruncher.TRAINING_DATA = DataCruncher.shuffleData(state,DataCruncher.TRAINING_DATA,true);
-			
-			//System.out.println(DataCruncher.TRAINING_DATA.get(0).get(0)); System.exit(0);
 			
 			IOInit.train_ggl_sat_img_tgi = state.parameters.getString(base.push(DATA_GTI), null);
 			IOInit.tt_a2_img             = state.parameters.getString(base.push(DATA_OUT), null);
@@ -335,9 +340,10 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 					//System.out.println(b1 +"::"+ b2 + "::"+b3);
 					((GPIndividual)ind).trees[0].child.eval(
 							state,threadnum,input,stack,((GPIndividual)ind),this);
-
 					//R:30, G:30, B:246
-					boolean isColor = IOInit.compareTwoPixels(2,IOInit.train_ggl_sat_img_tgi,new int[]{0,0,255},(int) DataCruncher.TRAINING_DATA.get(i).get(0),(int) DataCruncher.TRAINING_DATA.get(i).get(1));
+					boolean isColor = IOInit.compareTwoPixels(2,IOInit.train_ggl_sat_img_tgi,
+							new int[]{Integer.parseInt(targetColor[0]),Integer.parseInt(targetColor[1]),Integer.parseInt(targetColor[2])},
+							(int) DataCruncher.TRAINING_DATA.get(i).get(0),(int) DataCruncher.TRAINING_DATA.get(i).get(1));
 
 					if(input.x >= 0 && isColor)  
 						hits++;
@@ -577,7 +583,8 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 				((GPIndividual)ind).trees[0].child.eval(
 						state,threadnum,input,stack,((GPIndividual)ind),this);
 
-				boolean isColor = IOInit.compareTwoPixels(2,IOInit.train_ggl_sat_img_tgi,new int[]{0,0,255},c,r);
+				boolean isColor = IOInit.compareTwoPixels(2,IOInit.train_ggl_sat_img_tgi,
+						new int[]{Integer.parseInt(targetColor[0]),Integer.parseInt(targetColor[1]),Integer.parseInt(targetColor[2])},c,r);
 
 				if(input.x >= 0)
 				{

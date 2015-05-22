@@ -602,9 +602,10 @@ eval.problem.pines-raw      = /Users/anthony/git/ecj22/ec/app/fsalps/indianpines
 eval.problem.pines-training = /Users/anthony/git/ecj22/ec/app/fsalps/indianpines/data/training/
 eval.problem.pines-gti      = /Users/anthony/git/ecj22/ec/app/fsalps/indianpines/data/Indian_pines_gt.png
 eval.problem.pines-out      = /Users/anthony/git/ecj22/ec/app/fsalps/indianpines/output/
+eval.problem.target-color   = 0,0,255
+eval.problem.train-regex    = corn_
 
 #Specification of output statistics files
-
 stat.num-children = 3
 stat.child.0                = ec.simple.SimpleShortStatistics
 stat.child.0.gather-full    = true
