@@ -1,9 +1,5 @@
 package ec.alps.layers;
 
-import ec.EvolutionState;
-import ec.util.ParameterDatabase;
-
-
 
  public interface LayerInterface {
 

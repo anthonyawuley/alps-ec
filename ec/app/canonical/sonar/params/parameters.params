@@ -19,7 +19,7 @@ select.tournament.size              = 4
 gp.koza.reproduce.source.0          = ec.select.TournamentSelection
 evalthreads                         = 1
 seed.0                              = 1
-cross-validation-size               = 10
+#cross-validation-size               = 10
 
 #DEFAULT KozaNodeSelector PARAMETERS
 gp.koza.ns.nonterminals             = 0.9

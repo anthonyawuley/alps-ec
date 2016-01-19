@@ -17,24 +17,26 @@ init                    = ec.alps.fsalps.FSALPSGPInitializer
 pop                     = ec.Population
 jobs                    = 20
 pop.subpops             = 1
-pop.subpop.0.size       = 50
+pop.subpop.0.size       = 100
 select.tournament.size  = 4
 breed.elite.0           = 2
 breedthreads            = 1
-evalthreads             = 1
+evalthreads             = 2
 seed.0                  = 1
+seed.1                  = 1000
 generations             = 1000
-#cross-validation-size   = 20
+cross-validation-size   = 20
 
 
 #Begin ALPS configuration ==============================================================
-alps.age-gap                           = 5
+alps.age-gap                           = 10
 alps.number-of-layers                  = 10
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
 alps.tournament-size                   = 7
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
+alps.assign-max-parent-age             = true
 
 # when using selection pressure, individual aging isnt uniform especially when parents are selected from lower
 # layer. When some individuals are aged faster than others, a population will contain less than expected required number
@@ -69,10 +71,10 @@ alps.fsalps-gen-freq-count            = false
 
 # when enabled, nodes are counted in all layers and converted
 # to probability values used during mutation and tree initialization in bottom layer
-alps.fsalps-count-all-layers            = true
+alps.fsalps-count-all-layers          = false
 
 # Determine which frequency selection criteria is used for generating probability
-alps.fsalps.probability-selection     = ec.alps.fsalps.probability.RankingFrequency
+alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency
   
 
 
@@ -98,7 +100,7 @@ gp.koza.mutate.tries         = 1
 # HalfBuilder will pick GROW half the time and FULL
 # the other half, with a ramp from 2 to 6 inclusive.
 # By ramp we mean that it first picks a random number between
-# 2 and 6 inclusive.  This then becomes the *maximum* tree size
+# 2 and 6 inclusive.  This then becomes the maximum tree size
 # (for the FULL approach, it's the tree size of the tree, for
 # GROW, the tree can get no bigger than this)
 
@@ -326,7 +328,7 @@ eval.problem.total-number-of-points        = 168
 
 #Specification of output statistics files
 
-stat.num-children           = 3
+stat.num-children           = 4
 stat.child.0                = ec.alps.statistics.ShortStatistics
 stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
@@ -336,3 +338,7 @@ stat.child.1.file           = ../output/ss.stats
 stat.child.2                = ec.alps.statistics.NodeStatistics
 stat.child.2.silent.print   = true
 stat.child.2.file           = ../output/node.stats
+stat.child.3                = ec.alps.statistics.ALPSShortStatistics
+stat.child.3.gather-full    = true
+stat.child.3.silent.print   = true
+stat.child.3.file           = ../output/total.stats

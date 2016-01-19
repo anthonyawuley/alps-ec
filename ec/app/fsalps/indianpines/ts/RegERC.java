@@ -1,6 +1,6 @@
 package ec.app.fsalps.indianpines.ts;
 import ec.*;
-import ec.app.alps.indianpines.DoubleData;
+import ec.app.fsalps.indianpines.DoubleData;
 import ec.gp.*;
 import ec.util.*;
 

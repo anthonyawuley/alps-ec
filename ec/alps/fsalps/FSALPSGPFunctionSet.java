@@ -10,6 +10,7 @@ import java.io.*;
 
 import ec.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.gp.*;
 import ec.util.*;
 
@@ -73,100 +74,6 @@ public class FSALPSGPFunctionSet extends GPFunctionSet
 	public final static String P_PROB    = "pr";
 
 
-	/** Sets up the arrays based on the hashtables 
-
-	public void postProcessFunctionSet()
-	{
-		nodes = new GPNode[nodes_h.size()][];
-		terminals = new GPNode[terminals_h.size()][];
-		nonterminals = new GPNode[nonterminals_h.size()][];
-
-		Enumeration e = nodes_h.keys();
-		while(e.hasMoreElements())
-		{
-			GPType gpt = (GPType)(e.nextElement());
-			GPNode[] gpfi = (GPNode[])(nodes_h.get(gpt));
-			nodes[gpt.type] = gpfi;
-		}
-		e = nonterminals_h.keys();
-		while(e.hasMoreElements())
-		{
-			GPType gpt = (GPType)(e.nextElement());
-			GPNode[] gpfi = (GPNode[])(nonterminals_h.get(gpt)); 
-			nonterminals[gpt.type] = gpfi; 
-		}
-		e = terminals_h.keys();
-		while(e.hasMoreElements())
-		{
-			GPType gpt = (GPType)(e.nextElement());
-			GPNode[] gpfi = (GPNode[])(terminals_h.get(gpt));
-			terminals[gpt.type] = gpfi;
-		}
-
-		// set up arity-based arrays
-		// first, determine the maximum arity
-		int max_arity=0;
-		for(int x=0;x<nodes.length;x++)
-			for(int y=0;y<nodes[x].length;y++)
-				if (max_arity < nodes[x][y].children.length)
-					max_arity = nodes[x][y].children.length;
-
-		// next set up the == array
-		nodesByArity = new GPNode[nodes.length][max_arity+1][];
-		for(int x=0;x<nodes.length;x++)
-			for(int a = 0; a <= max_arity; a++)
-			{
-				// how many nodes do we have?
-				int num_of_a = 0;
-				for(int y=0;y<nodes[x].length;y++)
-					if (nodes[x][y].children.length == a) num_of_a++;
-				// allocate and fill
-				nodesByArity[x][a] = new GPNode[num_of_a];
-				int cur_a = 0;
-				for(int y=0;y<nodes[x].length;y++)
-					if (nodes[x][y].children.length == a )
-						nodesByArity[x][a][cur_a++] = nodes[x][y];
-			}
-
-		// now set up the <= nonterminals array
-		nonterminalsUnderArity = new GPNode[nonterminals.length][max_arity+1][]; 
-
-		for(int x=0;x<nonterminals.length;x++) 
-			for (int a = 0;a <= max_arity; a++)
-			{
-				// how many nonterminals do we have?
-				int num_of_a = 0;
-				for(int y=0;y<nonterminals[x].length;y++)
-					if (nonterminals[x][y].children.length <= a) num_of_a++;
-				// allocate and fill
-				nonterminalsUnderArity[x][a] = new GPNode[num_of_a];
-				int cur_a = 0;
-				for(int y=0;y<nonterminals[x].length;y++)
-					if (nonterminals[x][y].children.length <= a )
-						nonterminalsUnderArity[x][a][cur_a++] = nonterminals[x][y]; 
-			}
-
-
-
-		// now set up the >= nonterminals array
-		nonterminalsOverArity = new GPNode[nonterminals.length][max_arity+1][];
-		for(int x=0;x<nonterminals.length;x++)
-			for (int a = 0;a <= max_arity; a++)
-			{
-				// how many nonterminals do we have?
-				int num_of_a = 0;
-				for(int y=0;y<nonterminals[x].length;y++)
-					if (nonterminals[x][y].children.length >= a) num_of_a++;
-				// allocate and fill
-				nonterminalsOverArity[x][a] = new GPNode[num_of_a];
-				int cur_a = 0;
-				for(int y=0;y<nonterminals[x].length;y++)
-					if (nonterminals[x][y].children.length >= a )
-						nonterminalsOverArity[x][a][cur_a++] = nonterminals[x][y];
-			}
-	}
-
-*/
 
 
 	/** Must be done <i>after</i> GPType and GPNodeConstraints have been set up */

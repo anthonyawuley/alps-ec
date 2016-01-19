@@ -36,6 +36,7 @@ alps.selection-pressure                = 0.8
 alps.tournament-size                   = 3
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
+alps.assign-max-parent-age             = true
 
 # when using selection pressure, individual aging isnt uniform especially when parents are selected from lower
 # layer. When some individuals are aged faster than others, a population will contain less than expected required number

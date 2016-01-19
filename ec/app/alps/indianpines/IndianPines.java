@@ -96,11 +96,11 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 		 * 3. Save  all array into (float) DataCruncher.DATA
 		 * 4. Lock down read process.
 		 */
-
+        
 		if(!DataCruncher.LOCK_DOWN) 
 		{  
 			DataCruncher.LOCK_DOWN = true;
-
+              
 			/*read first set*/
 			//(float) DataCruncher.DATA = Hyperspectral.channels(dataRaw+"_1/", ",", "ch_");
 			/*read and append second set to first set*/
@@ -114,7 +114,7 @@ public class IndianPines extends GPProblem implements SimpleProblemForm
 			
 			IOInit.train_ggl_sat_img_tgi = state.parameters.getString(base.push(DATA_GTI), null);
 			IOInit.tt_a2_img             = state.parameters.getString(base.push(DATA_OUT), null);
-
+		
 		}
 
 	}

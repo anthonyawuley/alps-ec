@@ -11,6 +11,7 @@ import java.util.Hashtable;
 
 import ec.EvolutionState;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.gp.GPAtomicType;
 import ec.gp.GPDefaults;
 import ec.gp.GPInitializer;

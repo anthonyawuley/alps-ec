@@ -6,8 +6,14 @@ import ec.EvolutionState;
 import ec.Individual;
 import ec.Initializer;
 import ec.Population;
+import ec.EvolutionState;
 import ec.util.Parameter;
 
+/**
+ * 
+ * @author Anthony Awuley
+ * @version 1.0
+ */
 public class Operations {
        
 	public static final String POP_SIZE               = "size";

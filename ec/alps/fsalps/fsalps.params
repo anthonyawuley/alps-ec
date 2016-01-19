@@ -1,0 +1,64 @@
+# Copyright 2015 by Anthony Awuley and Brock University Computer Science Department
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+
+init                                  = ec.alps.fsalps.FSLPSGPInitializer
+
+
+#BEGIN FSALPS ============================================================================
+#use only default node probability
+alps.use-only-default-node-pr         = false
+
+# used to determine if frequency count is used during mutation
+# DEPRECATED: a simpler solutioin involves setting gp.koza.mutate.build.0 = ec.gp.koza.GrowBuilder for situations
+# where mutation is to be excluded from FSALPS
+alps.fsalps-in-mutation               = true
+
+# used to determine if frequency in last layer is used to generate probality selection on a generational basis
+alps.fsalps-gen-freq-count            = false
+
+# when enabled, nodes are counted in all layers and converted
+# to probability values used during mutation and tree initialization in bottom layer
+alps.fsalps-count-all-layers          = true
+
+# Determine which frequency selection criteria is used for generating probability
+alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency
+        
+
+#ec.gp.koza.koza.params
+
+# Point Mutation will use Tournament Selection, try only 1
+# time, have a max depth of 17, and use KozaNodeSelector
+# and GROW for building.  Also, Point Mutation uses a GrowBuilder
+# by default, with a default of min-depth=max-depth=5
+# as shown a ways below
+gp.koza.mutate.source.0      = ec.select.TournamentSelection
+gp.koza.mutate.ns.0          = ec.gp.koza.KozaNodeSelector
+gp.koza.mutate.build.0       = ec.alps.fsalps.gp.koza.GrowBuilder
+gp.koza.mutate.maxdepth      = 17
+# This is the default for Koza and lil-gp, though it's
+# a little wimpy; on the other hand, a higher number can
+# make things really slow
+gp.koza.mutate.tries         = 1
+
+
+# The tree uses an ec.gp.koza.HalfBuilder to create
+# itself initially.
+# HalfBuilder will pick GROW half the time and FULL
+# the other half, with a ramp from 2 to 6 inclusive.
+# By ramp we mean that it first picks a random number between
+# 2 and 6 inclusive.  This then becomes the *maximum* tree size
+# (for the FULL approach, it's the tree size of the tree, for
+# GROW, the tree can get no bigger than this)
+
+#This is to ensure that the modified KozaBuilder and GrowBuilder in alps.gp.koza are used during tree initialization
+gp.tc.0.init                 = ec.alps.fsalps.gp.koza.HalfBuilder
+
+# We set the default for HalfBuilder to be a ramp of 2--6,
+# with a grow probability of 0.5
+gp.koza.half.min-depth       = 2
+gp.koza.half.max-depth       = 6
+gp.koza.half.growp           = 0.5
+
+#END FSALPS =========================================================================

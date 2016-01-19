@@ -2,11 +2,11 @@ package ec.alps.layers;
 
 import java.util.ArrayList;
 
-import ec.EvolutionState;
 import ec.Individual;
 import ec.Initializer;
 import ec.Population;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.select.TournamentSelection;
 import ec.util.Parameter;
 

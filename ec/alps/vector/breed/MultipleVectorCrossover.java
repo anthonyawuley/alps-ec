@@ -9,6 +9,7 @@ package ec.alps.vector.breed;
 import ec.vector.*;
 import ec.vector.breed.MultipleVectorCrossoverPipeline;
 import ec.*;
+import ec.EvolutionState;
 import ec.util.Parameter;
 
 

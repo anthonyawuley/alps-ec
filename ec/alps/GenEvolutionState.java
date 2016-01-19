@@ -19,40 +19,18 @@ import ec.util.Parameter;
  * By: Sean Luke
  */
 
-/**
- * A SimpleEvolutionState is an EvolutionState which implements a simple form
- * of generational evolution.
- *
- * <p>First, all the individuals in the population are created.
- * <b>(A)</b>Then all individuals in the population are evaluated.
- * Then the population is replaced in its entirety with a new population
- * of individuals bred from the old population.  Goto <b>(A)</b>.
- *
- * <p>Evolution stops when an ideal individual is found (if quitOnRunComplete
- * is set to true), or when the number of generations (loops of <b>(A)</b>)
- * exceeds the parameter value numGenerations.  Each generation the system
- * will perform garbage collection and checkpointing, if the appropriate
- * parameters were set.
- *
- * <p>This approach can be readily used for
- * most applications of Genetic Algorithms and Genetic Programming.
- *
- * @author Sean Luke
- * @version 1.0 
- */
 
+/**
+ * Modified by
+ * @author Anthony Awuley
+ * @version 1.0
+ */
 public class GenEvolutionState extends EvolutionState
 {
 
-	/**
-	 * 
-	 */
+	/** */
 	private static final long serialVersionUID = 1;
 	
-	
-	
-	
-
 	//public ALPSReplacement replacement;
 	//public final static String P_REPLACEMENT = "alps.layer-replacement";
 
@@ -179,9 +157,10 @@ public class GenEvolutionState extends EvolutionState
 	public int evolve()
 	{
 		if (generation > 0) 
-			output.message("Generation " + generation + " "
-					+ "Layer "+ Engine.alps.index + " "
-					+ "Global Generation # " + Engine.completeGenerationalCount);
+			output.message(
+					"L"+ Engine.alps.index + " "
+					+ "Gen: " + generation + " "
+					+ "Global Gen: # " + Engine.completeGenerationalCount);
 
 		//population.subpops[0].individuals[0]
 

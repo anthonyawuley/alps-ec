@@ -14,7 +14,9 @@ import java.util.Map;
  * http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
  * 
  * http://www.mkyong.com/java/how-to-sort-a-map-in-java/
- * 
+ *
+ * @author Anthony Awuley
+ * @version 1.0
  */
 public class MapUtil {
 
@@ -107,6 +109,11 @@ public class MapUtil {
 		return sortedMap;
 	}
  
+	
+	/**
+	 * 
+	 * @param map
+	 */
 	public static void printMap(Map<String, Double> map) 
 	{
 		for (Map.Entry<String, Double> entry : map.entrySet()) 
@@ -115,6 +122,8 @@ public class MapUtil {
                                       + " [Value] : " + entry.getValue());
 		}
 	}
+	
+	
 	
 	public void test()
 	{

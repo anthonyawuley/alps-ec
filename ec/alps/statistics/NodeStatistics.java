@@ -8,6 +8,7 @@
 package ec.alps.statistics;
 import ec.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.alps.util.TreeAnalyzer;
 import ec.simple.SimpleProblemForm;
 import ec.simple.SimpleStatistics;

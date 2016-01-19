@@ -4,6 +4,7 @@ import ec.EvolutionState;
 import ec.Individual;
 import ec.SelectionMethod;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.breed.ReproductionPipeline;
 
 public class Reproduction extends ReproductionPipeline{

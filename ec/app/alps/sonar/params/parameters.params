@@ -17,7 +17,7 @@ init                    = ec.gp.GPInitializer
 pop                     = ec.Population
 jobs                    = 20
 pop.subpops             = 1
-pop.subpop.0.size       = 50
+pop.subpop.0.size       = 200
 select.tournament.size  = 4
 breed.elite.0           = 2
 breedthreads            = 1
@@ -28,13 +28,14 @@ cross-validation-size   = 20
 
 
 #Begin ALPS configuration ==============================================================
-alps.age-gap                           = 5
-alps.number-of-layers                  = 10
+alps.age-gap                           = 20
+alps.number-of-layers                  = 5
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
-alps.tournament-size                   = 4
+alps.tournament-size                   = 7
 alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
 alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
+alps.assign-max-parent-age             = true
 
 # when using selection pressure, individual aging isnt uniform especially when parents are selected from lower
 # layer. When some individuals are aged faster than others, a population will contain less than expected required number
@@ -230,8 +231,8 @@ gp.fs.0.func.58		=	ec.app.alps.sonar.ts.ENFB59
 gp.fs.0.func.58.nc	=	nc0		
 gp.fs.0.func.59		=	ec.app.alps.sonar.ts.ENFB60
 gp.fs.0.func.59.nc	=	nc0	
-gp.fs.0.func.60     = ec.app.alps.pima.ts.RegERC
-gp.fs.0.func.60.nc  = nc0
+gp.fs.0.func.60     =   ec.app.alps.sonar.ts.RegERC
+gp.fs.0.func.60.nc  =   nc0
 
 gp.fs.0.func.61     = ec.app.alps.sonar.fs.Add
 gp.fs.0.func.61.nc  = nc2
@@ -267,7 +268,7 @@ eval.problem.total-number-of-points        = 168
 
 #Specification of output statistics files
 
-stat.num-children           = 3
+stat.num-children           = 4
 stat.child.0                = ec.alps.statistics.ShortStatistics
 stat.child.0.gather-full    = true
 stat.child.0.file           = ../output/cmtrx.stats
@@ -277,3 +278,7 @@ stat.child.1.file           = ../output/ss.stats
 stat.child.2                = ec.alps.statistics.NodeStatistics
 stat.child.2.silent.print   = true
 stat.child.2.file           = ../output/node.stats
+stat.child.3                = ec.alps.statistics.ALPSShortStatistics
+stat.child.3.gather-full    = true
+stat.child.3.silent.print   = true
+stat.child.3.file           = ../output/total.stats

@@ -17,6 +17,11 @@ import ec.util.Parameter;
 import ec.util.ParameterDatabase;
 import ec.util.Version;
 
+/**
+ * 
+ * @author Anthony Awuley
+ * @version 1.0
+ */
 public class Engine extends Evolve {
 
 	/** base(parent) alps parameter */
@@ -44,14 +49,14 @@ public class Engine extends Evolve {
 	 */
 	public  static int generationSize            = 0; //
 	/**
+	 * Evaluation is always measured using alpsEvaluations. when generation is specified, it is converted to alpsEvaluations using
 	 * numGenerations * alpsAgeLayers * generationSize;
+	 * else the number of evaluations specified is used.
 	 * this gives the total number of evaluations required to complete 
 	 * all ALPS runs
 	 */
 	public  static int alpsEvaluations           = 0; //modified in code
-	/**
-	 * number of jobs specified from parameter file
-	 */
+	/** number of jobs specified from parameter file */
 	public  static int numberOfJobs              = 1; 
 
 	/** this is the total number of specified generations in parameter file */
@@ -102,8 +107,6 @@ public class Engine extends Evolve {
 	 *  if false, frequency count is performed at every age-gap interval */
 	public static boolean fsalps_gen_freq_count             = false;
     
-	
-	
 	/**
 	 * by default an offspring is assigned the age of the oldest parent + 1.
 	 * if this flag is set to false, then the minimum age +1 is assigned to the offspring
@@ -121,27 +124,7 @@ public class Engine extends Evolve {
 	 */
 	public static boolean always_breed_maximum_pop          = true;
 
-	/** 
-	 * perform routlette selection of nodes 
-	 * this class translates the generated frequency count into routlette probability for the intended node
-	 * "terminal sets" or "function sets".
-	 * 
-	 * Explanation taken from http://stackoverflow.com/questions/298301/roulette-wheel-selection-algorithm
-	 * Assume you have 10 items to choose from and you choose by generating a random number between 0 and 1. 
-	 * You divide the range 0 to 1 up into ten NON-OVERLAPPING segments, each proportional to the fitness of 
-	 * one of the ten items. For example, this might look like this:<br><br>
-	 * 
-	 * 0    - 0.30 is item 1<br>
-	 * 0.3  - 0.40 is item 2<br>
-	 * 0.4  - 0.50 is item 3<br>
-	 * 0.5  - 0.57 is item 4<br>
-	 * 0.57 - 0.63 is item 5<br>
-	 * 0.63 - 0.68 is item 6<br>
-	 * 0.68 - 0.80 is item 7<br>
-	 * 0.8  - 0.85 is item 8<br>
-	 * 0.85 - 0.98 is item 9<br>
-	 * 0.98 - 1.00 is item 10<br><br>
-	 * */
+	/** hold rouletee values */
 	public static Roulette roulette;
 	
 	/**  this engine seed is to ensure that all layers are started off with a different seed */
@@ -235,7 +218,6 @@ public class Engine extends Evolve {
 			 * This includes replacing the random number generators, changing values in state.parameters,
 			 * changing instance variables (except for job and runtimeArguments, please), etc.
 			 */
-
 			l.result = EvolutionState.R_NOTDONE;
 
 			/* set other parameters */
@@ -243,9 +225,13 @@ public class Engine extends Evolve {
 			l.evolutionState.generation = alpsEvaluations; //TODO not accurate
 			l.evolutionState.startFresh(l);
 		}
-
+		
 		/* determine number of evaluations */
-		alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * generationSize;
+		if(alpsLayers.get(0).evolutionState.numEvaluations==0)
+			alpsEvaluations = alpsLayers.get(0).evolutionState.numGenerations * AgingScheme.alpsAgeLayers * generationSize;
+		else
+			alpsEvaluations = (int) alpsLayers.get(0).evolutionState.numEvaluations;
+		
 	}
 
 
@@ -267,7 +253,9 @@ public class Engine extends Evolve {
 			fsalps_active = true;
 		}
 		catch(ec.util.ParamClassLoadException e)
-		{fsalps_active = false;} //when using normal ALPS, deactivate fsalps
+		{
+			fsalps_active = false; //when using normal ALPS, deactivate fsalps
+		} 
 
 
 		numGenerations  = parameters.getInt(new Parameter(EvolutionState.P_GENERATIONS), null);
@@ -297,11 +285,9 @@ public class Engine extends Evolve {
 		fsalps_count_all_layers          =  
 				parameters.getBoolean(base().push(FSALPS_COUNT_ALL_LAYERS),null,false);
 		
-		
-
-		//p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
-		/** number of chunks available when using k-fold cross validation */
-		//kFoldCrossValidationSize  = parameters.getInt(p, null, 1); 
+		/* p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);
+		 * number of chunks available when using k-fold cross validation 
+		 * kFoldCrossValidationSize  = parameters.getInt(p, null, 1); */
 
 	}
 
@@ -324,10 +310,10 @@ public class Engine extends Evolve {
 
 	/** 
 	 * Initializes an evolutionary run given the parameters and a random seed adjustment (added to each random seed),
-       with the Output pre-constructed.
-       The adjustment offers a convenient way to change the seeds of the random number generators each time you
-       do a new evolutionary run.  You are of course welcome to replace the random number generators after initialize(...)
-       but before startFresh(...) 
+     * with the Output pre-constructed.
+     * The adjustment offers a convenient way to change the seeds of the random number generators each time you
+     * do a new evolutionary run.  You are of course welcome to replace the random number generators after initialize(...)
+     * but before startFresh(...) 
      */
 
 	public static EvolutionState initialize(ParameterDatabase parameters, int randomSeedOffset, Output output)
@@ -357,10 +343,7 @@ public class Engine extends Evolve {
 		/* COMMENTED OUT AND MOVED TO EVOLUTION STATE  */
 		//output.systemMessage(Version.message());
 		
-		
-
 		// 2. set up thread values
-        
 		breedthreads = Evolve.determineThreads(output, parameters, new Parameter(P_BREEDTHREADS));
 		evalthreads = Evolve.determineThreads(output, parameters, new Parameter(P_EVALTHREADS));
 		boolean auto = (V_THREADS_AUTO.equalsIgnoreCase(parameters.getString(new Parameter(P_BREEDTHREADS),null)) ||
@@ -368,7 +351,6 @@ public class Engine extends Evolve {
 
 		// 3. create the Mersenne Twister random number generators,
 		// one per thread
-
 		random = new MersenneTwisterFast[breedthreads > evalthreads ? 
 				breedthreads : evalthreads];
 		seeds = new int[random.length];
@@ -387,7 +369,6 @@ public class Engine extends Evolve {
 		}
 
 		// 4.  Start up the evolution
-
 		// what evolution state to use?
 		state = (EvolutionState)
 				parameters.getInstanceForParameter(new Parameter("state"),null,
@@ -409,8 +390,6 @@ public class Engine extends Evolve {
 		output.systemMessage("Threads:  breed/" + breedthreads + " eval/" + evalthreads);
 		output.systemMessage(seedMessage);
 
-		//Engine.seed +=  100;
-		
 		return state;
 	}
 
@@ -469,7 +448,8 @@ public class Engine extends Evolve {
 			//alpsEvaluations = numGenerations * AgingScheme.alpsAgeLayers * (Engine.generationSize + 1);
 
 			/* 
-			 * the big loop
+			 * Sequential selection
+			 * the big loop 
 			 * wrap up when the last layer completes evaluation
 			 * used to be this: "Engine.globalEvaluations <= alpsEvaluations",  "Engine.completeGenerationalCount <= alpsEvaluations"
 			 */
@@ -481,7 +461,6 @@ public class Engine extends Evolve {
 
 					if(alpsLayers.get(j).getIsBottomLayer() ) //set initializer flag to true when bottom layer is called
 					{ 
-
 						if( (alpsLayers.get(j).layerGenerationalCount == 1) 
 								|| (alpsLayers.get(j).evolutionState.population.subpops[0].individuals.length>0 ) 
 								|| alpsLayers.get(j).initializerFlag  )

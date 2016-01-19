@@ -209,12 +209,13 @@ public class ALPSBreeder extends SimpleBreeder
 			 * This is to ensure that a layer with population less than number of elites runs successfully
 			 * This is achieved by scaling the number of elites in that subpopulation to the number of population
 			 * 
+			 * This condition might not be necessary if breed size is forced to population size per layer
+			 * 
 			 * @author anthony
 			 */
 			if(state.population.subpops[x].individuals.length < numElites(state, x))
 			{
 				elite[x] = state.population.subpops[x].individuals.length;
-
 			}
 			else
 			{ //original condition

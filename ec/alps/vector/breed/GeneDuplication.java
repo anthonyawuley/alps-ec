@@ -7,9 +7,9 @@
 package ec.alps.vector.breed;
 
 import ec.BreedingPipeline;
-import ec.EvolutionState;
 import ec.Individual;
 import ec.SelectionMethod;
+import ec.EvolutionState;
 import ec.util.Parameter;
 import ec.vector.*;
 import ec.vector.breed.GeneDuplicationPipeline;

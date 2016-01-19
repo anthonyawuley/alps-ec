@@ -2,11 +2,6 @@ package ec.alps.layers;
 
 import java.util.ArrayList;
 
-import ec.EvolutionState;
-import ec.util.ParameterDatabase;
-
-
-
 public class ALPSLayers {
 	/**ArrayList of all running ALPS layers **/
 	public ArrayList<Layer> layers;

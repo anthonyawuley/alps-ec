@@ -3,6 +3,7 @@ package ec.alps.gp.breed;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.gp.GPIndividual;
 import ec.gp.GPInitializer;
 import ec.gp.GPNode;

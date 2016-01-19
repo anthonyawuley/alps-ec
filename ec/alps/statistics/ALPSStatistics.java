@@ -8,6 +8,7 @@
 package ec.alps.statistics;
 import ec.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.alps.util.TreeAnalyzer;
 import ec.simple.SimpleProblemForm;
 import ec.simple.SimpleStatistics;
@@ -62,6 +63,11 @@ import java.util.Map;
 
 public class ALPSStatistics extends Statistics implements SteadyStateStatisticsForm //, ec.eval.ProvidesBestSoFar
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -991660334266614433L;
+
 	public Individual[] getBestSoFar() { return best_of_run; }
 
 	/** log file parameter */
@@ -91,7 +97,7 @@ public class ALPSStatistics extends Statistics implements SteadyStateStatisticsF
 	public boolean doPerGenerationDescription;
 
 	public void setup(final EvolutionState state, final Parameter base)
-	{
+	{ 
 		super.setup(state,base);
 
 		compress = state.parameters.getBoolean(base.push(P_COMPRESS),null,false);
@@ -134,7 +140,7 @@ public class ALPSStatistics extends Statistics implements SteadyStateStatisticsF
 
 	/** Logs the best individual of the generation. */
 	public void postEvaluationStatistics(final EvolutionState state)
-	{
+	{ 
 		super.postEvaluationStatistics(state);
 
 		// for now we just print the best fitness per subpopulation.

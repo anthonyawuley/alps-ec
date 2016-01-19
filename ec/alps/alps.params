@@ -1,91 +1,67 @@
-# Copyright 2006 by Sean Luke and George Mason University
+# Copyright 2015 by Anthony Awuley and Brock University Computer Science Department
 # Licensed under the Academic Free License version 3.0
 # See the file "LICENSE" for more information
 
-parent.0 = ../ec.params
 
-# 
-# The following parameter file will set up a very basic form
-# of evolution, single-threaded, no coevolution, no exchanging,
-# no cross-population breeding, using generational evolution,
-# simple fitness, popsize=1024, etc. 
-# You'll need to fill in some of the gaps.
-#
 
-# ec.Evolve
-# ==============================
-
-# simple generational evolution
-state = 				ec.simple.SimpleEvolutionState
+#jobs specifies the number of runs you would wish to perform
+state                                 = ec.alps.GenEvolutionState
+breed                                 = ec.alps.ALPSBreeder
+eval                                  = ec.alps.ALPSEvaluator
+stat                                  = ec.alps.statistics.ALPSStatistics
 
 
 
-# ec.EvolutionState
-# ==============================
+#Begin ALPS configuration ==============================================================
+alps.age-gap                           = 5
+alps.number-of-layers                  = 5
+alps.number-of-evaluations             = 2000
+alps.selection-pressure                = 0.8
+alps.tournament-size                   = 4
+alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
+alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
+alps.assign-max-parent-age             = true
 
-# We're using the standard initialization method
-init = 					ec.simple.SimpleInitializer
+# when using selection pressure, individual aging isnt uniform especially when parents are selected from lower
+# layer. When some individuals are aged faster than others, a population will contain less than expected required number
+# ECJ by default breeds a maximum of the number of populations contained in a population.
+alps.always-breed-maximum-population   = true
 
-# We're using the standard (empty) finalization method
-finish = 	        		ec.simple.SimpleFinisher
+#when true, only individuals selected from breeding from current layer have their age increased
+#else both both individuals coming from current and lower layer used as parents will have their age increased
+alps.age-only-current-layer            = true
 
-# We're using the standard (empty) exchange method
-exch = 					ec.simple.SimpleExchanger
+# when moving old individuals from bottom layer to next higher layer, use this flag to determine
+# replacement strategy in higher layer. if false lower layer individual only replace higher layer individual
+# if its fitness is better that of the higher layer individual. if true, selected tournament individual from higher
+# layer is always replaced
+alps.layer-replacement.replace-weakest = false
 
-# We're using standard breeding -- no cross-population breeding
-breed =					ec.simple.SimpleBreeder
-
-# We're using standard evaluation -- no coevolution
-eval =					ec.simple.SimpleEvaluator
-
-# We're using simple statistics
-stat =					ec.simple.SimpleStatistics
-
-# run for 51 generations, quit prematurely if I find something ideal
-generations =				51
-quit-on-run-complete =			true
-
-
-
-# ec.Initializer
-# ==============================
-
-pop = 					ec.Population
+#END================================================================================= 
 
 
-# ec.Population
-# ==============================
+#Begin GP parameters ================================================================
 
-# No multiple populations
-pop.subpops =				1
-pop.subpop.0 = 				ec.Subpopulation
+pop.subpop.0.species.pipe                        = ec.alps.gp.ALPSMultiBreedingPipeline
+pop.subpop.0.species.pipe.num-sources            = 2
+pop.subpop.0.species.pipe.source.0               = ec.alps.gp.breed.Crossover
+pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1      = same
+pop.subpop.0.species.pipe.source.0.ns.0          = ec.gp.koza.KozaNodeSelector
+pop.subpop.0.species.pipe.source.0.ns.1          = same
+pop.subpop.0.species.pipe.source.0.maxdepth      = 17
+pop.subpop.0.species.pipe.source.0.tries         = 1
+pop.subpop.0.species.pipe.source.0.source.0.size = 4
+pop.subpop.0.species.pipe.source.0.source.1.size = 4
+pop.subpop.0.species.pipe.source.0.prob          = 0.90
 
+pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
+pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.0.size = 4
+pop.subpop.0.species.pipe.source.1.prob          = 0.10
 
-# ec.Subpopulation
-# ==============================
-
-# subpop size is 1024 individuals
-pop.subpop.0.size =			1024
-# don't bother trying to eliminate duplicates from the
-# initial population
-pop.subpop.0.duplicate-retries =	0
-
-# ==You need to provide the species info for the subpopulation.==
-
-# ec.simple.SimpleBreeder
-# ==============================
-
-# By default elitism isn't done.  If you want to do elitism for, say,
-# the top 10 individuals in subpopulation 0, you'd say:
-
-# breed.elite.0 = 			10
-
-
-# ec.SimpleStatistics
-# ==============================
-
-# output statistics to the file "out.stat" in the directory
-# the run was started in
-stat.file				$out.stat
-
-
+#Node Selectors
+gp.koza.ns.terminals                             = 0.1
+gp.koza.ns.nonterminals                          = 0.9
+gp.koza.ns.root                                  = 0.0
+#END================================================================================= 

@@ -86,7 +86,7 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 	{
 		// very important, remember this
 		super.setup(state,base);
-
+        
 		// set up our input -- don't want to use the default base, it's unsafe here
 		input = (DoubleData) state.parameters.getInstanceForParameterEq(
 				base.push(P_DATA), null, DoubleData.class);
@@ -103,7 +103,7 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 
 		//String [] regex =  {"^[0]?[\\.]?[0]{0,},.*","^.*?[,]+[0]+\\.?[0]*\\,.*"};
 		String [] regex =  {"",""};
-
+		
 		/** 
 		 * 1. Reads raw data
 		 * 2. Filters content using regex above and passes output to dataClean
@@ -253,7 +253,7 @@ public class Ionosphere extends GPProblem implements SimpleProblemForm
 			final int threadnum,
 			final int log){
 
-
+		
 		int [][] confusionMatrix = new int[2][2];
 
 

@@ -8,6 +8,7 @@
 package ec.alps.gp;
 import ec.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.breed.MultiBreedingPipeline;
 import ec.util.*;
 

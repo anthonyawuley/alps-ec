@@ -1,0 +1,93 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../gp/koza/koza.params
+
+# run for 51 generations, quit prematurely if I find something ideal
+generations =				5
+quit-on-run-complete =			true 
+
+# No multiple populations
+pop.subpops =				1
+pop.subpop.0 = 				ec.Subpopulation
+
+
+# ec.Subpopulation
+# ==============================
+
+# subpop size is 1024 individuals
+pop.subpop.0.size =			1000
+
+# the next four items are already defined in koza.params, but we
+# put them here to be clear.
+
+# We have one function set, of class GPFunctionSet
+gp.fs.size = 1
+gp.fs.0 = ec.gp.GPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name = f0
+breed.elite.0=  0.10
+pop.subpop.0.species.pipe.num-sources = 2
+pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+#pop.subpop.0.species.pipe.source.0.source.0.source.0 = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.prob = 0.85
+pop.subpop.0.species.pipe.source.1 = ec.gp.koza.MutationPipeline
+#pop.subpop.0.species.pipe.source.1.source.1.source.1 = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.1.prob = 0.05
+
+#select.tournament.size = 4
+
+
+#pop.subpop.0.species.crossover-prob = 0.95
+#pop.subpop.0.species.mutation-prob  = 0.05
+seed= 2
+stat.file = C:\\Users\\eli\\Desktop\\Gp course\\assignment2\\eli.csv
+jobs = 10
+
+# We have five functions in the function set.  They are:
+gp.fs.0.size = 15
+gp.fs.0.func.0=ec.app.texture.Avg3x3
+gp.fs.0.func.0.nc = nc0
+gp.fs.0.func.1=ec.app.texture.Avg7x7
+gp.fs.0.func.1.nc = nc0
+gp.fs.0.func.2=ec.app.texture.Avg9x9
+gp.fs.0.func.2.nc = nc0
+gp.fs.0.func.3=ec.app.texture.SD3x3
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.4=ec.app.texture.SD7x7
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.5=ec.app.texture.SD9x9
+gp.fs.0.func.5.nc = nc0
+gp.fs.0.func.6 = ec.app.texture.Add
+gp.fs.0.func.6.nc = nc2
+gp.fs.0.func.7 = ec.app.texture.Div
+gp.fs.0.func.7.nc = nc2
+gp.fs.0.func.8 = ec.app.texture.Sub
+gp.fs.0.func.8.nc = nc2
+gp.fs.0.func.9 = ec.app.texture.Mul
+gp.fs.0.func.9.nc = nc2
+gp.fs.0.func.10 = ec.app.texture.IfThenElse
+gp.fs.0.func.10.nc = nc4
+gp.fs.0.func.11 = ec.app.texture.Sin
+gp.fs.0.func.11.nc = nc1
+gp.fs.0.func.12 = ec.app.texture.Cos
+gp.fs.0.func.12.nc = nc1
+gp.fs.0.func.13 = ec.app.texture.Max
+gp.fs.0.func.13.nc = nc2
+gp.fs.0.func.14 = ec.app.texture.Min
+gp.fs.0.func.14.nc = nc2
+
+
+stat.num-children = 2
+stat.child.0 = ec.simple.SimpleStatistics
+stat.child.0.file = C:\\Users\\eli\\Desktop\\GP course\\assignment2\\eli.csv
+stat.child.1 = ec.simple.SimpleShortStatistics
+stat.child.1.file = C:\\Users\\eli\\Desktop\\GP course\\assignment2\\eli.csv
+
+
+#eval.problem.data = ec.app.regression.RegressionData
+eval.problem = ec.app.texture.MultiValuedRegression
+eval.problem.data = ec.app.texture.DoubleData
+#eval.problem.img_o = E:\\drive h\\eclipse\\ecj22\\ec\\app\\texture\\brodatz2x2.png
+#eval.problem.img_rez = E:\\drive h\\eclipse\\ecj22\\ec\\app\\texture\\outputbrodatz2x2.png

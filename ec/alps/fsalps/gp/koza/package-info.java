@@ -5,4 +5,4 @@
  * @author anthony
  *
  */
-package ec.alps.gp.koza;
+package ec.alps.fsalps.gp.koza;

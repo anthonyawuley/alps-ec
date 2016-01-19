@@ -398,6 +398,7 @@ public class EvolutionState implements Singleton
 
 		
 		/*
+		 * Settint up parameters for k-fold cross validation
 		 * @anthony
 		 */
 		p = new Parameter(K_FOLD_CROSS_VALIDATION_CHUNCK);

@@ -175,8 +175,8 @@ public class Pima extends GPProblem implements SimpleProblemForm
 			Out.writeDataToFile(POPULATION_DATA,trainFile,testFile);
 
 			/* shuffle training and testing data */
-			TRAINING_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile,","),true);
-			TESTING_DATA  = DataCruncher.shuffleData(state,Reader.readFile(testFile,","),true);
+			TRAINING_DATA = DataCruncher.shuffleData(state,Reader.readFile(trainFile," "),true);
+			TESTING_DATA  = DataCruncher.shuffleData(state,Reader.readFile(testFile," "),true);
 		}
 
 	}

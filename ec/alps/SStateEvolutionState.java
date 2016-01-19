@@ -14,6 +14,12 @@ import ec.steadystate.SteadyStateStatisticsForm;
 import ec.util.Checkpoint;
 import ec.util.Parameter;
 
+/**
+ * Modified by
+ * @author Anthony Awuley
+ * @version 1.0
+ */
+
 public class SStateEvolutionState extends SteadyStateEvolutionState{
 
 
@@ -211,9 +217,10 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 	{
 		if (generationBoundary && generation > 0)
 		{ 
-			output.message("Generation " + generation+ "\t"
+			output.message(
+					  "L"+ Engine.alps.index + " "
+					+ "Generation " + generation+ "\t"
 					+ "Evaluations " + evaluations + "\t"
-					+ "Layer "+ Engine.alps.index + " "
 					+ "Global Generation # " + Engine.completeGenerationalCount +"\t"
 					+ "Global Evaluation # " + Engine.completeEvaluationCount);
 			//output.message("Generation " + generation +"\tEvaluations " + evaluations);

@@ -16,6 +16,7 @@ package ec.alps.vector.breed;
 import ec.vector.*;
 import ec.vector.breed.ListCrossoverPipeline;
 import ec.*;
+import ec.EvolutionState;
 import ec.util.*;
 
 
@@ -72,7 +73,11 @@ import ec.util.*;
 
 
 **/
-
+/**
+ * Modified by
+ * @author Anthony Awuley
+ * @version 1.0
+ */
 public class ListCrossover extends ListCrossoverPipeline
     {
     

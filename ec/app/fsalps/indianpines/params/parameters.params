@@ -168,7 +168,7 @@ gp.fs.size          = 1
 gp.fs.0             = ec.alps.fsalps.FSALPSGPFunctionSet
 gp.fs.0.name        = f0
 
-gp.fs.0.size        = 207
+gp.fs.0.size        = 209
 gp.fs.0.func.0		=	ec.app.fsalps.indianpines.ts.B1
 gp.fs.0.func.0.nc	=	nc0	
 gp.fs.0.func.1		=	ec.app.fsalps.indianpines.ts.B2

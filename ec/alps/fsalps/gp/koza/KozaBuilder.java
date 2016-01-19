@@ -5,9 +5,10 @@
  */
 
 
-package ec.alps.gp.koza;
+package ec.alps.fsalps.gp.koza;
 import ec.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.alps.fsalps.FSALPS;
 import ec.alps.fsalps.Roulette;
 import ec.gp.*;

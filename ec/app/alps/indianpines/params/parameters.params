@@ -24,14 +24,14 @@ breed.elite.0           = 2
 breedthreads            = 1
 evalthreads             = 1
 seed.0                  = 1
-generations             = 500
+generations             = 1000
 cross-validation-size   = 20
 
 
 #Begin ALPS configuration =========================================================== 
 
-alps.age-gap                           = 5
-alps.number-of-layers                  = 10
+alps.age-gap                           = 20
+alps.number-of-layers                  = 5
 alps.number-of-evaluations             = 2000
 alps.selection-pressure                = 0.8
 alps.tournament-size                   = 7

@@ -6,10 +6,9 @@
 
 
 package ec.alps;
-import ec.Initializer;
-import ec.EvolutionState;
 import ec.simple.SimpleInitializer;
 import ec.util.Parameter;
+import ec.EvolutionState;
 import ec.Population;
 
 /* 

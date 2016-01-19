@@ -11,6 +11,7 @@ import ec.vector.*;
 import ec.vector.breed.VectorMutationPipeline;
 import ec.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.util.*;
 
 /* 
@@ -41,6 +42,11 @@ import ec.util.*;
  * @version 1.0
  */
 
+/**
+ * Modified by
+ * @author Anthony Awuley
+ * @version 1.0
+ */
 public class VectorMutation extends VectorMutationPipeline
 {
 

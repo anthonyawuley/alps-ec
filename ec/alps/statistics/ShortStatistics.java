@@ -12,6 +12,7 @@ import java.io.*;
 
 import ec.util.*;
 import ec.alps.Engine;
+import ec.EvolutionState;
 
 /* 
  * SimpleShortStatistics.java

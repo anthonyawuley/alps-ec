@@ -5,13 +5,18 @@ import java.util.Map.Entry;
 
 import ec.EvolutionState;
 
+/**
+ * 
+ * @author Anthony Awuley
+ * @version 1.0
+ */
 public class TreeAnalyzer {
 
 	/**
 	 * Count all terminals and non-terminals in the GP-Tree
 	 * terminals are stored in state.nodeCountTerminalSet
 	 * non-terminals are stored in state.nodeCountFunctionSet
-	 * @param state
+	 * @param state EvolutionState
 	 */
 	public static void countNodes(EvolutionState state)
 	{
@@ -22,7 +27,7 @@ public class TreeAnalyzer {
 			{
 				/* gather statistics of node usage in entire population 
 				 * state.nodeCountTerminalSet is updated
-				 * */
+				 */
 				state.population.subpops[x].individuals[y].
 				gatherIndividualNodeStats(state,state.nodeCountTerminalSet);
 				

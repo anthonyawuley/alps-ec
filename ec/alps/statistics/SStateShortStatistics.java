@@ -7,6 +7,7 @@ import ec.EvolutionState;
 import ec.Individual;
 import ec.Statistics;
 import ec.alps.Engine;
+import ec.EvolutionState;
 import ec.simple.SimpleShortStatistics;
 import ec.steadystate.SteadyStateStatisticsForm;
 import ec.util.Output;
