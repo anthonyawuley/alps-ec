@@ -32,10 +32,10 @@ alps.always-breed-maximum-population   = true
 alps.age-only-current-layer            = true
 
 # when moving old individuals from bottom layer to next higher layer, use this flag to determine
-# replacement strategy in higher layer. if false lower layer individual only replace higher layer individual
-# if its fitness is better that of the higher layer individual. if true, selected tournament individual from higher
+# replacement strategy in higher layer. if false lower layer individual only replace higher layer tournament individual
+# if its fitness is better that of the higher layer tournament individual. if true, selected tournament individual from higher
 # layer is always replaced
-alps.layer-replacement.replace-weakest = false
+alps.layer-replacement.replace-weakest = true
 
 #END================================================================================= 
 
