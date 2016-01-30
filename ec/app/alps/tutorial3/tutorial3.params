@@ -1,0 +1,93 @@
+# Generational ALPS GA TUTORIAL 3
+# Copyright 2015 by Anthony Awuley and Prof. Brian Ross
+# Brock University - Computer Science Department
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+
+#Begin ALPS configuration ===========================================================
+parent.0                = ../../../alps/alps.params
+#END================================================================================= 
+
+
+# The parameters that were laid out in Tutorial 1 (see the documentation)
+
+breedthreads	        = 1
+evalthreads	            = 1
+seed.0		            = 0
+
+
+state                   = ec.alps.GenEvolutionState
+finish                  = ec.simple.SimpleFinisher
+exch                    = ec.simple.SimpleExchanger
+breed                   = ec.alps.ALPSBreeder
+eval                    = ec.alps.ALPSEvaluator
+stat                    = ec.alps.statistics.ALPSStatistics
+pop                     = ec.Population
+init                    = ec.simple.SimpleInitializer
+finish                  = ec.simple.SimpleFinisher
+exch                    = ec.simple.SimpleExchanger
+
+evaluations		        = 1000000
+quit-on-run-complete	= false
+checkpoint		        = false
+checkpoint-prefix	    = ec
+checkpoint-modulo	    = 1
+pop.subpops		        = 1
+pop.subpop.0		    = ec.Subpopulation
+breed.elite.0           = 3
+
+
+#================================ ALPS configuration ================================ 
+alps.age-gap                           = 6
+alps.number-of-layers                  = 10
+alps.selection-pressure                = 0.8
+alps.tournament-size                   = 4
+alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial
+alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst
+alps.assign-max-parent-age             = true
+
+# when using selection pressure, individual aging isnt uniform especially when parents are selected from lower
+# layer. When some individuals are aged faster than others, a population will contain less than expected required number
+# ECJ by default breeds a maximum of the number of populations contained in a population.
+alps.always-breed-maximum-population   = true
+
+#when true, only individuals selected from breeding from current layer have their age increased
+#else both both individuals coming from current and lower layer used as parents will have their age increased
+alps.age-only-current-layer            = true
+
+# when moving old individuals from bottom layer to next higher layer, use this flag to determine
+# replacement strategy in higher layer. if false lower layer individual only replace higher layer tournament individual
+# if its fitness is better that of the higher layer tournament individual. if true, selected tournament individual from higher
+# layer is always replaced
+alps.layer-replacement.replace-weakest = true
+#==================================================================================== 
+
+
+pop.subpop.0.size 		             = 128
+pop.subpop.0.duplicate-retries 	     = 0
+pop.subpop.0.species 		         = ec.vector.BitVectorSpecies
+pop.subpop.0.species.fitness 	     = ec.simple.SimpleFitness
+pop.subpop.0.species.ind	         = ec.vector.BitVectorIndividual
+
+pop.subpop.0.species.genome-size	 = 500
+pop.subpop.0.species.crossover-type	 = one
+pop.subpop.0.species.mutation-type	 = flip
+pop.subpop.0.species.mutation-prob	 = 0.01
+
+
+pop.subpop.0.species.pipe			        = ec.alps.vector.breed.VectorMutation
+pop.subpop.0.species.pipe.source.0		    = ec.alps.vector.breed.VectorCrossover
+
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= same
+
+select.tournament.size		= 4
+eval.problem		        = ec.app.alps.tutorial3.MaxOnes
+
+
+stat.num-children           = 1
+stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.file           = output/out.stats
+stat.file                   = output/ind.stats
+
