@@ -29,7 +29,11 @@ import java.util.Map.Entry;
  * Created: Tue Aug 10 21:10:48 1999
  * By: Sean Luke
  */
-
+/* 
+ * Modified by Anthony Awuley for ALPS
+ * Modified to include basic ALPS integration
+ * This prints node statistics and is used to print node usage/data of GP trees
+ */
 /**
  * A basic Statistics class suitable for simple problem applications.
  *
@@ -59,14 +63,10 @@ import java.util.Map.Entry;
 
  *
  * @author Sean Luke
+ * @author Anthony Awuley
  * @version 1.0 
  */
-/**
- * Modified to include basic ALPS integration
- * This prints node statistics and is used to print node usage/data of GP trees
- * @author Anthony Awuley
- *
- */
+
 public class NodeStatistics extends Statistics implements SteadyStateStatisticsForm //, ec.eval.ProvidesBestSoFar
 {
 	/**

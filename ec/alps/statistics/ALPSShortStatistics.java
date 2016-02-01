@@ -21,6 +21,10 @@ import ec.EvolutionState;
  * By: Sean Luke
  */
 
+/* 
+ * Modified by Anthony Awuley for ALPS
+ */
+
 /**
  *===================================================================================
  * use simple short statistics to generate overall averaged alps statistics for 
@@ -89,7 +93,9 @@ import ec.EvolutionState;
  <font size=-1>bool = <tt>true</tt> or <tt>false</tt> (default)</font></td>
  <td valign=top>(print information on a per-subpop basis as well as per-population?)</td></tr>
  </table>
+ *
  * @author Sean Luke
+ * @author Anthony Awuley
  * @version 2.0 
  * 
  * Modified by Anthony Awuley to include basic ALPS statistics

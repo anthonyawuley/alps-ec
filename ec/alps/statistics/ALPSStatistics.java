@@ -26,6 +26,9 @@ import java.util.Map;
  * Created: Tue Aug 10 21:10:48 1999
  * By: Sean Luke
  */
+/* 
+ * Modified by Anthony Awuley for ALPS
+ */
 
 /**
  * A basic Statistics class suitable for simple problem applications.
@@ -56,6 +59,7 @@ import java.util.Map;
 
  *
  * @author Sean Luke
+ * @author Anthony Awuley
  * @version 1.0 
  * 
  * Modified by Anthony Awuley to include basic ALPS statistics

@@ -20,6 +20,9 @@ import ec.EvolutionState;
  * Created: Tue Jun 19 15:08:29 EDT 2001
  * By: Sean Luke
  */
+/* 
+ * Modified by Anthony Awuley to include basic ALPS statistics
+ */
 
 /**
  * A Simple-style statistics generator, intended to be easily parseable with
@@ -84,10 +87,10 @@ import ec.EvolutionState;
  <font size=-1>bool = <tt>true</tt> or <tt>false</tt> (default)</font></td>
  <td valign=top>(print information on a per-subpop basis as well as per-population?)</td></tr>
  </table>
+ *
  * @author Sean Luke
+ * @author Anthony Awuley
  * @version 2.0 
- * 
- * Modified by Anthony Awuley to include basic ALPS statistics
  */
 
 public class ShortStatistics extends Statistics
