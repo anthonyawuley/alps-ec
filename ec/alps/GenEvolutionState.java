@@ -18,11 +18,12 @@ import ec.util.Parameter;
  * Created: Tue Aug 10 22:14:46 1999
  * By: Sean Luke
  */
-
+/* 
+ * Modified by Anthony Awuley to for ALPS
+ */
 
 /**
  * Generational Evolution State for ALPS. extends EvolutionState from ECJ
- * 
  * @author Anthony Awuley
  */
 public class GenEvolutionState extends EvolutionState

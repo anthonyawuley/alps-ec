@@ -345,7 +345,7 @@ public class Engine extends Evolve {
 		
 		// 2. set up thread values
 		breedthreads = Evolve.determineThreads(output, parameters, new Parameter(P_BREEDTHREADS));
-		evalthreads = Evolve.determineThreads(output, parameters, new Parameter(P_EVALTHREADS));
+		evalthreads  = Evolve.determineThreads(output, parameters, new Parameter(P_EVALTHREADS));
 		boolean auto = (V_THREADS_AUTO.equalsIgnoreCase(parameters.getString(new Parameter(P_BREEDTHREADS),null)) ||
 				V_THREADS_AUTO.equalsIgnoreCase(parameters.getString(new Parameter(P_EVALTHREADS),null)));  // at least one thread is automatic.  Seeds may need to be dynamic.
 

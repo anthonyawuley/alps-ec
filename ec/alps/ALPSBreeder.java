@@ -23,6 +23,10 @@ import ec.util.*;
  * 
  */
 
+/* 
+ * Modified by Anthony Awuley to for ALPS
+ */
+
 /**
  * Breeds each subpopulation separately, with no inter-population exchange,
  * and using a generational approach.  A SimpleBreeder may have multiple
@@ -60,9 +64,9 @@ import ec.util.*;
  *
  *
  * @author Sean Luke 
+ * @author Anthony Awuley
  * @version 1.0 
  * 
- * Modified by Anthony Awuley to include some ALPS properties
  */
 
 public class ALPSBreeder extends SimpleBreeder
@@ -109,7 +113,7 @@ public class ALPSBreeder extends SimpleBreeder
 		for(int x=0;x<size;x++)
 		{
 			/*
-			 * @author anthony
+			 * @author anthony awuley
 			 */
 			subpopSize[x] = state.parameters.getInt(new Parameter(Initializer.P_POP).push(Population.P_SUBPOP).push(x+"").push(POP_SIZE), null, 0);
 			//System.out.println(subpopSize[x]); System.exit(0);
@@ -255,10 +259,10 @@ public class ALPSBreeder extends SimpleBreeder
 
 				inds[inds.length-1] = (Individual)(oldinds[best].clone());
 
-				/**
+				/*
 				 * ALPS: ELITE CONTROL
 				 * increase age of the elite individuals
-				 * @author anthony
+				 * @author anthony awuley
 				 */
 				if(state.generation != inds[inds.length-1].generationCount/*!oldinds[best].parentFlag*/) 
 				{ 
@@ -286,7 +290,7 @@ public class ALPSBreeder extends SimpleBreeder
 					/*
 					 * ALPS: ELITE CONTROL
 					 * increase age of elite individuals
-					 * @author anthony
+					 * @author anthony awuley
 					 */
 					if(state.generation != inds[x].generationCount/*!oldinds[orderedPop[x]].parentFlag*/) 
 					{ 

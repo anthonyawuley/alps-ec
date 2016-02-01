@@ -18,6 +18,10 @@ import ec.util.*;
  * By: Sean Luke
  */
 
+/* 
+ * Modified by Anthony Awuley to for ALPS
+ */
+
 /**
  * The SimpleEvaluator is a simple, non-coevolved generational evaluator which
  * evaluates every single member of every subpopulation individually in its
@@ -25,6 +29,7 @@ import ec.util.*;
  * each evaluating thread.  The Problem must implement SimpleProblemForm.
  *
  * @author Sean Luke
+ * @author Anthony Awuley
  * @version 2.0 
  *
  * Thanks to Ralf Buschermohle <lobequadrat@googlemail.com> for early versions

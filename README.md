@@ -14,4 +14,4 @@ premature convergence. In Mike Cattolico, editor, GECCO, pages 815–822. ACM, 2
 
 [ECJ,V22] S. Luke, G. Balan S. Paus Z. Skolicki E. Popovici J. Harrison J. Bassett R. Hubley, L. Panait and 
 A. Chhircop. Ecj: A java-based evolutionary computation research system, version 22, 06 2000-2015. 
-http://www.cs.gmu.edu/~eclab/projects/ ecj/ [Online; Accessed: 2 April 2014].
+http://www.cs.gmu.edu/~eclab/projects/ecj/ [Online; Accessed: 2 April 2014].
