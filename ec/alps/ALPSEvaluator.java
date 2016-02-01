@@ -29,6 +29,8 @@ import ec.util.*;
  *
  * Thanks to Ralf Buschermohle <lobequadrat@googlemail.com> for early versions
  * of code which led to this version.
+ * 
+ * Modified by Anthony Awuley to include some ALPS properties
  *
  */
 

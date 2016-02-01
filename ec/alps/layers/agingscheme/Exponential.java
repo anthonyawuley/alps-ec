@@ -1,8 +1,18 @@
 package ec.alps.layers.agingscheme;
 
 import java.util.ArrayList;
+
+import ec.alps.layers.AgingScheme;
 import ec.alps.layers.Layer;
 
+/**
+ * 
+ * 2^n: 1 2 4 8 16 32 64 128
+ * This values are multipled by the age-gap parameter to determine the maximum age per layer
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Exponential extends AgingScheme {
 
 	public Exponential() {
@@ -21,14 +31,12 @@ public class Exponential extends AgingScheme {
 	public ArrayList<Layer> agingScheme()
 	{
 		layers = new ArrayList<>();
-		//this.toString(" with an age gap of "+ AgingScheme.alpsAgeGap +" and "+ AgingScheme.alpsAgeLayers +" layers");
 		
 		for(int i=0; i< AgingScheme.alpsAgeLayers;i++)
 		{
 			Layer layer = new Layer();
 			layer.setMaxAgeLayer((int) Math.pow(2,i)*AgingScheme.alpsAgeGap);
 			layer.setIsActive(Boolean.FALSE);
-			//layer.setGenerationalCount(0); //initialize generational count
 			layer.setId(i);
 			
 			

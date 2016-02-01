@@ -20,6 +20,7 @@ import ec.util.*;
  * 
  * Created: Tue Aug 10 21:00:11 1999
  * By: Sean Luke
+ * 
  */
 
 /**
@@ -58,8 +59,10 @@ import ec.util.*;
  </table>
  *
  *
- * @author Sean Luke
+ * @author Sean Luke 
  * @version 1.0 
+ * 
+ * Modified by Anthony Awuley to include some ALPS properties
  */
 
 public class ALPSBreeder extends SimpleBreeder
@@ -280,7 +283,7 @@ public class ALPSBreeder extends SimpleBreeder
 				{
 					inds[x] = (Individual)(oldinds[orderedPop[x]].clone());
                    
-					/**
+					/*
 					 * ALPS: ELITE CONTROL
 					 * increase age of elite individuals
 					 * @author anthony

@@ -13,25 +13,22 @@ import ec.util.Parameter;
 
 
 /**
+ * In ReverseTournamentWorst replacement, when an old  individual from a lower layer is moving to a higher layer
+ * with a larger age limit, the individual from the higher layer's population with the worst fitness
+ * is picked for replacement.
  * 
- * @author anthony
+ * @author Anthony Awuley
  *
- * scans through higher layer and replaces any first encountered worse individual
  */
 public class Worst  extends Replacement{
 
 
-	/**
-	 * 
-	 */
+	/** */
 	private static final long serialVersionUID = 1;
 
 
-
 	public Worst() 
-	{
-
-	}
+	{ }
 
 
 	public String toString()
@@ -39,30 +36,17 @@ public class Worst  extends Replacement{
 		return "Worst Individual Replacement";
 	}
 
-
-
+    @Override
 	public void layerMigrations(ALPSLayers alps,Population current)
 	{
 		Population higherPop = null;
 		ArrayList<Individual> deleteList = new ArrayList<>();
 
-		//TournamentSelection t = new TournamentSelection();
-
-		//SelectionOperation selectionOperation = new TournamentSelection();
-
 		if (alps.index < (alps.layers.size() - 1)) 
 		{
 			for(int subpopulation=0;subpopulation<alps.layers.get(alps.index).evolutionState.population.subpops.length;subpopulation++)
 			{
-				/* try fetching pop size of subpopulation from parameter file
-				 * if this fails use population size of subpopulation 0
-
-				int size =  alps.layers.get(alps.index).parameterDatabase.
-						getIntWithDefault(new Parameter("pop.subpop."+subpopulation+".size"), null, 
-								alps.layers.get(alps.index).parameterDatabase.
-								getInt(new Parameter("pop.subpop.0.size"), null));
-				 */
-				/** total number of populations expected */
+				/* total number of populations expected */
 				int size = alps.layers.get(alps.index).evolutionState.
 						parameters.getInt(new Parameter(Initializer.P_POP).push(Population.P_SUBPOP).push(subpopulation+"").push(POP_SIZE),null);
 
@@ -112,8 +96,6 @@ public class Worst  extends Replacement{
 									alps.layers.get(alps.index + 1).evolutionState.population.subpops[subpopulation].individuals[worseIndividual] = 
 									(Individual) current.subpops[subpopulation].individuals[i].clone();
 
-							//alps.layers.get(alps.index + 1).getEvolution().getCurrentPopulation().
-							//        set(this.worseIndividual, current.get(i));
 							deleteList.add(current.subpops[subpopulation].individuals[i]);
 						}
 					}

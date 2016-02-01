@@ -91,6 +91,8 @@ import ec.EvolutionState;
  </table>
  * @author Sean Luke
  * @version 2.0 
+ * 
+ * Modified by Anthony Awuley to include basic ALPS statistics
  */
 
 public class ALPSShortStatistics extends Statistics

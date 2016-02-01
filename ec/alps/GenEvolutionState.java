@@ -21,21 +21,18 @@ import ec.util.Parameter;
 
 
 /**
- * Modified by
+ * Generational Evolution State for ALPS. extends EvolutionState from ECJ
+ * 
  * @author Anthony Awuley
- * @version 1.0
  */
 public class GenEvolutionState extends EvolutionState
 {
 
 	/** */
 	private static final long serialVersionUID = 1;
-	
-	//public ALPSReplacement replacement;
-	//public final static String P_REPLACEMENT = "alps.layer-replacement";
 
 	/**
-	 * Called for all ALPS layers
+	 * At setup, startFresh(Layer) is called to setup a new layer
 	 */
 	public void startFresh(Layer l) 
 	{
@@ -98,7 +95,6 @@ public class GenEvolutionState extends EvolutionState
 		
 		/** TODO Modify numGenerations and numEvaluations for ALPS  */
 		l.numGenerations = numGenerations;
-		//numGenerations = l.evaluation; //not needed
 
 		//begin initial setup with empty population population
 		Individual [] ind = new Individual[0];
@@ -115,7 +111,7 @@ public class GenEvolutionState extends EvolutionState
 
 
 	/**
-	 * 
+	 * After setup,
 	 */
 	public void startFresh() 
 	{

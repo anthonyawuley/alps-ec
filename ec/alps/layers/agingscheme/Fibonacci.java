@@ -1,14 +1,23 @@
 package ec.alps.layers.agingscheme;
 
 import java.util.ArrayList;
+
+import ec.alps.layers.AgingScheme;
 import ec.alps.layers.Layer;
 
 
+/**
+ * 
+ * Fibonacci: 1 2 3 5 8 13 21 34
+ * This values are multipled by the age-gap parameter to determine the maximum age per layer
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Fibonacci extends AgingScheme {
 
-	public Fibonacci() {
-		// TODO Auto-generated constructor stub
-	}
+	public Fibonacci() 
+	{ }
 	
 	public String toString()
 	{
@@ -22,7 +31,6 @@ public class Fibonacci extends AgingScheme {
 	    int second = 1;
 	    int sum;
 	    layers  = new ArrayList<>();
-	    //this.toString(" with an age gap of "+ ageGap +" and "+ ageLayers +" layers");
 	    
 		for(int i=0; i<AgingScheme.alpsAgeLayers;i++)
 		{

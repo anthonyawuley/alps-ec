@@ -1,8 +1,8 @@
+
 /**
+ * This package extends classes from ec/gp to include ALPS
  * 
- */
-/**
- * @author anthony
+ * @author Anthony Awuley
  *
  */
 package ec.alps.gp;

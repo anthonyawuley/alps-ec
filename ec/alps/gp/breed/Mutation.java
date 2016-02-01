@@ -12,6 +12,14 @@ import ec.gp.GPNodeBuilder;
 import ec.gp.GPTree;
 import ec.gp.koza.MutationPipeline;
 
+/**
+ * Extends MutationPipeline from ECJ to implement ageing of parents and offsprings used in mutation
+ * In ALPS. In ALPS, a parents age is incremented by 1 and an offspring takes the age of the oldest
+ * parent + 1
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Mutation extends MutationPipeline {
 
 	/**
@@ -20,14 +28,6 @@ public class Mutation extends MutationPipeline {
 	private static final long serialVersionUID = 1;
 
 	private final String SELECTION_PRESSURE = "selection-pressure";
-
-	/*
-	public MutationALPS() {
-		// TODO Auto-generated constructor stub
-	}*/
-
-
-
 
 
 	public int produce(final int min, 

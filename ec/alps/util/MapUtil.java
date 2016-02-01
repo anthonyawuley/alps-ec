@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ascending sort
+ * helpfull sources from 
  * http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
  * 
  * http://www.mkyong.com/java/how-to-sort-a-map-in-java/
  *
  * @author Anthony Awuley
- * @version 1.0
  */
 public class MapUtil {
 
@@ -65,20 +64,6 @@ public class MapUtil {
 				return result;
 	}
 
-
-	/*Java 8 Version
-	public static <K, V extends Comparable<? super V>> Map<K, V> 
-	    sortByValue8( Map<K, V> map )
-	{
-	     Map<K,V> result = new LinkedHashMap<>();
-	     Stream <Entry<K,V>> st = map.entrySet().stream();
-
-	     st.sorted(Comparator.comparing(e-> e.getValue()))
-	          .forEach(e->result.put(e.getKey(),e.getValue()));
-
-	     return result;
-	}
-	 */
 	
 	/**
 	 * sorted in ascending order
@@ -108,49 +93,6 @@ public class MapUtil {
 		}
 		return sortedMap;
 	}
- 
-	
-	/**
-	 * 
-	 * @param map
-	 */
-	public static void printMap(Map<String, Double> map) 
-	{
-		for (Map.Entry<String, Double> entry : map.entrySet()) 
-		{
-			System.out.println("[Key] : " + entry.getKey() 
-                                      + " [Value] : " + entry.getValue());
-		}
-	}
-	
-	
-	
-	public void test()
-	{
-		Map<String, Double> unsortMap = new HashMap<String, Double>();
-		unsortMap.put("z", 10.0);
-		unsortMap.put("b", 5.0);
-		unsortMap.put("a", 6.0);
-		unsortMap.put("c", 8.0);
-		unsortMap.put("d", 1.0);
-		unsortMap.put("e", 9.0);
-		unsortMap.put("y", 8.0);
-		unsortMap.put("n", 99.0);
-		unsortMap.put("j", 50.0);
-		unsortMap.put("m", 2.0);
-		unsortMap.put("f", 9.0);
- 
-		System.out.println("Unsort Map......");
-		printMap(unsortMap);
- 
-		System.out.println("\nSorted Map......");
-		Map<String, Double> sortedMap = sortByComparator(unsortMap);
-		printMap(sortedMap);
-		
-		System.out.println("Unsort Map......");
-		printMap(unsortMap);
-	}
-	
 
 
 }

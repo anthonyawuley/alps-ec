@@ -10,6 +10,21 @@ import ec.gp.GPNode;
 import ec.gp.GPTree;
 import ec.gp.koza.CrossoverPipeline;
 
+/**
+ * ALPS: AGE INCREMENT
+ * 
+ * Each generation in which an individual is used as a parent to create an offspring, its
+ * age is increased by 1 since its genetic material has been used in evolution in another generation
+ * ---Greg Hornby
+ * 
+ * Increase age of individuals used as parents :::
+ * 
+ * For example, the GP CrossoverPipeline asks for one Individual of each of its two children, 
+ * which must be genetic programming Individuals, performs subtree crossover on those Individuals, 
+ * then hands them to its parent. --  Sean Luke - ECJ Manual
+ * 
+ * @author Anthony Awuley
+ */
 public class Crossover extends CrossoverPipeline{
 
 	/** */
@@ -20,11 +35,6 @@ public class Crossover extends CrossoverPipeline{
 
 	private final String SELECTION_PRESSURE = "selection-pressure";
 
-	/**
-	public CrossoverALPS() {
-		//super.setup(final EvolutionState state, final Parameter base);
-	}
-	 **/
 
 	public int produce(final int min, 
 			final int max, 
@@ -145,21 +155,7 @@ public class Crossover extends CrossoverPipeline{
 
 			//System.out.println("System out println : "+parents.length); System.exit(0);
 
-			/**
-			 * ALPS: AGE INCREMENT
-			 * 
-			 * Each generation in which an individual is used as a parent to create an offspring, its
-			 * age is increased by 1 since its genetic material has been used in evolution in another generation
-			 * ---Greg Hornby
-			 * 
-			 * Increase age of individuals used as parents :::
-			 * 
-			 * For example, the GP CrossoverPipeline asks for one Individual of each of its two children, 
-			 * which must be genetic programming Individuals, performs subtree crossover on those Individuals, 
-			 * then hands them to its parent. --  Sean Luke - ECJ Manual
-			 * 
-			 * @author Anthony
-			 */
+			
 			for(int id=0;id<parents.length;id++)
 			{
 				if(state.generation != parents[id].generationCount/*!parents[k].parentFlag*/) 

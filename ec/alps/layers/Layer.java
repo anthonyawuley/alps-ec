@@ -4,37 +4,42 @@ import ec.EvolutionState;
 import ec.util.ParameterDatabase;
 
 
-
+/**
+ * Implements the LayerInterface and defines basic ALPS layer properties
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Layer implements LayerInterface {
-
+    /** */
 	private int maxAgeLayer;
+	 /** */
 	private boolean isBottomLayer = Boolean.FALSE;
+	 /** */
 	private boolean isActive = Boolean.FALSE;
+	 /** */
 	public ParameterDatabase parameterDatabase;
+	 /** */
 	public EvolutionState evolutionState;
 	/** 
 	 * This stores the number of generations required for a layer
 	 * It is the same as the number of default generaitons specified in the parameter file
 	 */
 	private int generations;
+	/**layer id */
 	private int layerId;
-	
 	/** 
 	 * This is initialized during setting up of layers 
 	 * It is incremented when a generation is evolved in a layer 
 	 */
 	public int layerGenerationalCount  = 1; //was 0;
-	/**
-	 * Keeps count of the number of evaluations in a layer
-	 */
+	/**  Keeps count of the number of evaluations in a layer */
 	public  int layerEvaluationCount   = 0; 
-	
 	/** The number of generations required per layer */
 	public int numGenerations          = 0;
-	
-	 /** "The evolution run has not quit --jst default*/
+	/** "The evolution run has not quit --jst default*/
     public int result                  = 2;
-    
+    /** */
 	public int layerCompleteGenerationCount = 0;
 	
 	/**
@@ -48,7 +53,9 @@ public class Layer implements LayerInterface {
 	 * for this layer
 	 */
 	public long evaluationTime;
-	
+	/** 
+	 * When set to true, ALPS evolution enters reinitialization mode when the bottom layer is called
+	 */
 	public boolean initializerFlag = true;
 	/**
 	 * used to count the number of individuals added to a higher layer
@@ -57,15 +64,15 @@ public class Layer implements LayerInterface {
 	 * @deprecated NO LONGER USED
 	 */
 	public int individualCount = 0;
+	/** */
 	public int evaluation;
+	/** */
 	public int currentJob = 0;
 	
-	
-	//public Map<String, Double>  nodeCountTerminalSet = new LinkedHashMap<String, Double>();
-	
+	/** */
 	public Layer() 
 	{}
-	
+	/** */
 	public void setup(){}
 
 
@@ -93,13 +100,6 @@ public class Layer implements LayerInterface {
 		this.isBottomLayer = status;
 	}
 
-	/**
-	@Override
-	public void tryMoveUp(int layer, Population pop) 
-	{
-		// TODO Auto-generated method stub
-		
-	} */
 
 	@Override
 	public int getMaxAge() 

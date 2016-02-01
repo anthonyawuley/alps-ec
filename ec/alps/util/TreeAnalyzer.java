@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import ec.EvolutionState;
 
 /**
- * 
+ * Perform basic Analysis of GP tree for node data
  * @author Anthony Awuley
  * @version 1.0
  */

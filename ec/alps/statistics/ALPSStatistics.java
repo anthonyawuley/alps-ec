@@ -11,7 +11,6 @@ import ec.alps.Engine;
 import ec.EvolutionState;
 import ec.alps.util.TreeAnalyzer;
 import ec.simple.SimpleProblemForm;
-import ec.simple.SimpleStatistics;
 import ec.steadystate.*;
 
 import java.io.IOException;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import ec.util.*;
 
 import java.io.File;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /* 
@@ -59,6 +57,8 @@ import java.util.Map;
  *
  * @author Sean Luke
  * @version 1.0 
+ * 
+ * Modified by Anthony Awuley to include basic ALPS statistics
  */
 
 public class ALPSStatistics extends Statistics implements SteadyStateStatisticsForm //, ec.eval.ProvidesBestSoFar

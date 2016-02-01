@@ -1,9 +1,3 @@
-/*
-  Copyright 2006 by Sean Luke
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
- */
-
 
 package ec.alps.vector.breed;
 
@@ -15,47 +9,24 @@ import ec.EvolutionState;
 import ec.gp.GPIndividual;
 import ec.util.*;
 
-/* 
- * VectorCrossoverPipeline.java
+
+
+/**
+ * Extends VectorCrossoverPipeline from ECJ to include age increment of parent and offspring individuals
  * 
- * Created: Tue Mar 13 15:03:12 EST 2001
- * By: Sean Luke
- */
-
-
-/**
- *
- VectorCrossoverPipeline is a BreedingPipeline which implements a simple default crossover
- for VectorIndividuals.  Normally it takes two individuals and returns two crossed-over 
- child individuals.  Optionally, it can take two individuals, cross them over, but throw
- away the second child (a one-child crossover).  VectorCrossoverPipeline works by calling
- defaultCrossover(...) on the first parent individual.
-
- <p><b>Typical Number of Individuals Produced Per <tt>produce(...)</tt> call</b><br>
- 2 * minimum typical number of individuals produced by each source, unless tossSecondParent
- is set, in which case it's simply the minimum typical number.
-
- <p><b>Number of Sources</b><br>
- 2
-
- <p><b>Parameters</b><br>
- <table>
- <tr><td valign=top><i>base</i>.<tt>toss</tt><br>
- <font size=-1>bool = <tt>true</tt> or <tt>false</tt> (default)</font>/td>
- <td valign=top>(after crossing over with the first new individual, should its second sibling individual be thrown away instead of adding it to the population?)</td></tr>
- </table>
-
- <p><b>Default Base</b><br>
- vector.xover
-
- * @author Sean Luke
- * @version 1.0
- */
-
-/**
- * Modified by
+ * ALPS: AGE INCREMENT
+ * 
+ * Each generation in which an individual is used as a parent to create an offspring, its
+ * age is increased by 1 since its genetic material has been used in evolution in another generation
+ * ---Greg Hornby
+ * 
+ * Increase age of individuals used as parents :::
+ * 
+ * For example, the GP CrossoverPipeline asks for one Individual of each of its two children, 
+ * which must be genetic programming Individuals, performs subtree crossover on those Individuals, 
+ * then hands them to its parent. --  Sean Luke - ECJ Manual
+ * 
  * @author Anthony Awuley
- * @version 1.0
  */
 public class VectorCrossover extends VectorCrossoverPipeline
 {
@@ -119,7 +90,7 @@ public class VectorCrossover extends VectorCrossoverPipeline
 						}
 					}
 
-					/** 
+					/*
 					 * the second instance of the loop has new individuals
 					 * maintain second individual and replace first with previously selected 
 					 * first parent parents[0] = alpsParents[0];
@@ -186,24 +157,6 @@ public class VectorCrossover extends VectorCrossoverPipeline
 
 			}
 
-
-
-
-			/**
-			 * ALPS: AGE INCREMENT
-			 * 
-			 * Each generation in which an individual is used as a parent to create an offspring, its
-			 * age is increased by 1 since its genetic material has been used in evolution in another generation
-			 * ---Greg Hornby
-			 * 
-			 * Increase age of individuals used as parents :::
-			 * 
-			 * For example, the GP CrossoverPipeline asks for one Individual of each of its two children, 
-			 * which must be genetic programming Individuals, performs subtree crossover on those Individuals, 
-			 * then hands them to its parent. --  Sean Luke - ECJ Manual
-			 * 
-			 * @author Anthony
-			 */
 			for(int id=0;id<parents.length;id++)
 			{
 				if(state.generation != parents[id].generationCount/*!parents[k].parentFlag*/) 
@@ -228,7 +181,7 @@ public class VectorCrossover extends VectorCrossoverPipeline
 
 			// add 'em to the population
 			inds[q] = parents[0];
-			/**
+			/*
 			 * ALPS: AGE INCREMENT
 			 * increase age of offsping age by oldest parent
 			 * 
@@ -241,19 +194,15 @@ public class VectorCrossover extends VectorCrossoverPipeline
 			 * 
 			 * @author anthony
 			 */
-			/**offspring gets age of oldest parent */
+			/*offspring gets age of oldest parent */
 			inds[q].age        = Math.max(parents[0].age, parents[1].age);
-			/**Get minimum evaluation for parent. the lowest evaluation count is the oldest parent */
+			/*Get minimum evaluation for parent. the lowest evaluation count is the oldest parent */
 			inds[q].evaluation = Math.min(parents[0].evaluation, parents[1].evaluation);
 			q++;
 			if (q<n+start && !tossSecondParent)
 			{
 				inds[q] = parents[1];
-				/**
-				 * ALPS: AGE INCREMENT
-				 * increase age of offsping by oldest parent
-				 * @author anthony
-				 */
+				
 				/**offspring gets age of oldest parent */
 				inds[q].age        = Math.max(parents[0].age, parents[1].age);
 				/**Get minimum evaluation for parent. the lowest evaluation count is the oldest parent */

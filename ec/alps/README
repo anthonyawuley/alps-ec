@@ -3,3 +3,16 @@ Brock University Computer Science Department
 Licensed under the Academic Free License version 3.0
 See the file "LICENSE" for more information
 
+
+DOING EVOLUTION
+---------------
+
+ec.alps.Engine
+
+This class is the entry point for ALPS (it contains the main() method), Loads all
+ALPS Properties and begins Evolution using either GenEvolutionState or SStateEvolutionState
+
+See tutorials in ec/app/alps/ for examples on setting up ALPS 
+
+see original README provided in home directory of ECJ for a detailed description of ECJ design 
+pattern

@@ -11,12 +11,17 @@ import ec.alps.layers.Replacement;
 import ec.alps.util.Operations;
 import ec.util.Parameter;
 
-
+/**
+ * In ReverseTournamentNearest replacement, when an old  individual from a lower layer is moving to a higher layer
+ * with a larger age limit, the tournament individual from the higher layer with the nearest fitness
+ * to the new individual is picked for replacement.
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class ReverseTournamentNearest extends Replacement{
 
-	/**
-	 * 
-	 */
+	/** */
 	private static final long serialVersionUID = 1;
 
 	public ReverseTournamentNearest() 
@@ -48,15 +53,8 @@ public class ReverseTournamentNearest extends Replacement{
 		{
 			for(int subpopulation=0;subpopulation<alps.layers.get(alps.index).evolutionState.population.subpops.length;subpopulation++)
 			{
-				/* try fetching pop size of subpopulation from parameter file
-				 * if this fails use population size of subpopulation 0
-
-				int size =  alps.layers.get(alps.index).parameterDatabase.
-						getIntWithDefault(new Parameter("pop.subpop."+subpopulation+".size"), null, 
-								alps.layers.get(alps.index).parameterDatabase.
-								getInt(new Parameter("pop.subpop.0.size"), null));
-				 */
-				/** total number of populations expected */
+				
+				/* total number of populations expected */
 				int size = alps.layers.get(alps.index).evolutionState.
 						parameters.getInt(new Parameter(Initializer.P_POP).push(Population.P_SUBPOP).push(subpopulation+"").push(POP_SIZE),null);
 
@@ -124,14 +122,7 @@ public class ReverseTournamentNearest extends Replacement{
 				//remove all individuals older than current layer
 				current.subpops[subpopulation].individuals = Operations.emptyPop(current.subpops[subpopulation].individuals,deleteList);
 
-				/*
-	        System.out.println("DeleteList "+ deleteList.size()+ "  Current "+alps.index +": "+current.subpops[subpopulation].individuals.length+
-	             " NextLayer "+(alps.index+1)+" :"+alps.layers.get(alps.index+1).evolutionState.population.subpops[subpopulation].individuals.length+
-	             " Generation: "+ alps.layers.get(alps.index).evolutionState.generation+
-	             " Max age layer: "+alps.layers.get(alps.index).getMaxAge()+""); //System.exit(0);
-				 */
 				deleteList.clear();
-
 
 				/* fill empty slots for maximum breeding 
 				if(Engine.always_breed_maximum_pop)

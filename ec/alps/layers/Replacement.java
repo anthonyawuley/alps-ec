@@ -10,19 +10,32 @@ import ec.EvolutionState;
 import ec.select.TournamentSelection;
 import ec.util.Parameter;
 
+/**
+ * 
+ * The ALPS strategy requires regular inter–layer migration for individuals that are older than the 
+ * allowed age limit for a layer. An individual’s age is generationally compared to the maximum allowed 
+ * age of its layer, and if it is older, an attempt is made to move the individual to a higher layer.
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public abstract class Replacement extends TournamentSelection {
 
-	/**
-	 * 
-	 */
+	/** */
 	private static final long serialVersionUID = 1L;
+	/** */
 	protected int worseIndividual;
+	/** */
 	protected int nearestIndividual;
+	/** */
 	protected int bestIndividual;
-
+	/** */
 	public final static String ALPS_LAYER_REPLACEMENT = "layer-replacement";
+	/** */
 	public final static String ALPS_TOURNAMENT_SIZE   = "tournament-size";
+	/** */
 	public final static String REPLACE_WEAKEST        = "replace-weakest";
+	/** */
 	public static final String POP_SIZE               = "size";
 
 	/**
@@ -72,14 +85,6 @@ public abstract class Replacement extends TournamentSelection {
 	{
 		return Engine.base().push(ALPS_LAYER_REPLACEMENT);
 	}
-
-	/**
-	 * @param alpsLayers
-	 * @param current
-	 * @return
-	 */
-	// public abstract Population performAgeLayerMovements(ALPSLayers
-	// alpsLayers, Population current);
 
 	/**
 	 * loop through highest layer to current layer attempt to move individuals

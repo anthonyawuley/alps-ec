@@ -12,8 +12,6 @@ alps    Age Layered Population Structure
 
 
 TUTORIAL CODE
-
-tutorial1	
-tutorial2
-tutorial3
-
+tutorial1: SteadyState Vector EC using ALPS
+tutorial2: Generational State ALPS GP 
+tutorial3: Generational State Vector EC using ALPS

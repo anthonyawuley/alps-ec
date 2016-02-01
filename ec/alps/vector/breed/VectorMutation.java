@@ -14,38 +14,21 @@ import ec.alps.Engine;
 import ec.EvolutionState;
 import ec.util.*;
 
-/* 
- * VectorMutationPipeline.java
+/**
+ * Extends VectorMutationPipeline from ECJ to include age increment of parent and offspring individuals
  * 
- * Created: Tue Mar 13 15:03:12 EST 2001
- * By: Sean Luke
- */
-
-
-/**
- *
- VectorMutationPipeline is a BreedingPipeline which implements a simple default Mutation
- for VectorIndividuals.  Normally it takes an individual and returns a mutated 
- child individual. VectorMutationPipeline works by calling defaultMutate(...) on the 
- parent individual.
-
- <p><b>Typical Number of Individuals Produced Per <tt>produce(...)</tt> call</b><br>
- (however many its source produces)
-
- <p><b>Number of Sources</b><br>
- 1
-
- <p><b>Default Base</b><br>
- vector.mutate (not that it matters)
-
- * @author Sean Luke
- * @version 1.0
- */
-
-/**
- * Modified by
+ * ALPS: AGE INCREMENT
+ * increase age of parent 
+ * 
+ * Each generation in which an individual is used as a parent to create an offspring its age is 
+ * increases by 1 since its genetic material has been used in evolution in another generation. 
+ * Even if an individual is selected to reproduce multiple times in one generation its age is 
+ * still only increased by 1 so that good individuals that reproduce a lot are not penalized for 
+ * being more fit than similarly aged individuals.  --- GREG Hornby
+ * 
+ * There's no need modifying evaluation count for individuals because its still the same
+ * 
  * @author Anthony Awuley
- * @version 1.0
  */
 public class VectorMutation extends VectorMutationPipeline
 {
@@ -107,20 +90,7 @@ public class VectorMutation extends VectorMutationPipeline
 		for(int q=start;q<n+start;q++)
 		{
 
-			/**
-			 * ALPS: AGE INCREMENT
-			 * increase age of parent 
-			 * 
-			 * Each generation in which an individual is used as a parent to create an offspring its age is 
-			 * increases by 1 since its genetic material has been used in evolution in another generation. 
-			 * Even if an individual is selected to reproduce multiple times in one generation its age is 
-			 * still only increased by 1 so that good individuals that reproduce a lot are not penalized for 
-			 * being more fit than similarly aged individuals.  --- GREG Hornby
-			 * 
-			 * There's no need modifying evaluation count for individuals because its still the same
-			 * 
-			 * @author Anthony
-			 */
+		
 			if(state.generation != inds[q].generationCount/*!parents[0].parentFlag*/) 
 			{
 				inds[q].age++;

@@ -1,9 +1,18 @@
 package ec.alps.layers.agingscheme;
 
 import java.util.ArrayList;
+
+import ec.alps.layers.AgingScheme;
 import ec.alps.layers.Layer;
 
-
+/**
+ * 
+ * Linear: 12345678
+ * This values are multipled by the age-gap parameter to determine the maximum age per layer
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Linear extends AgingScheme {
 
 	public Linear() 
@@ -27,7 +36,6 @@ public class Linear extends AgingScheme {
 			Layer layer = new Layer();
 			layer.setMaxAgeLayer((i+1)*AgingScheme.alpsAgeGap);
 			layer.setIsActive(Boolean.FALSE);
-			//layer.setGenerationalCount(0); //initialize generational count
 			layer.setId(i);
 			
 			if(i==0)

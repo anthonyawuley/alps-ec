@@ -11,18 +11,22 @@ import ec.alps.layers.Replacement;
 import ec.alps.util.Operations;
 import ec.util.Parameter;
 
-
+/**
+ * In Nearest replacement, when an old  individual from a lower layer is moving to a higher layer
+ * with a larger age limit, the  individual from the higher layer's population with the nearest fitness
+ * to the new individual is picked for replacement.
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Nearest extends Replacement{
 
 
-	/**
-	 * 
-	 */
+	/**  */
 	private static final long serialVersionUID = 1;
 
 	public Nearest() 
-	{
-	}
+	{}
 
 	public String toString()
 	{
@@ -34,21 +38,11 @@ public class Nearest extends Replacement{
 		Population higherPop = null;
 		ArrayList<Individual> deleteList = new ArrayList<>();
 
-
-
-
 		if (alps.index < (alps.layers.size() - 1)) 
 		{
 			for(int subpopulation=0;subpopulation<alps.layers.get(alps.index).evolutionState.population.subpops.length;subpopulation++)
 			{
-				/* try fetching pop size of subpopulation from parameter file
-				 * if this fails use population size of subpopulation 0
-
-				int size =  alps.layers.get(alps.index).parameterDatabase.
-						getIntWithDefault(new Parameter("pop.subpop."+subpopulation+".size"), null, 
-								alps.layers.get(alps.index).parameterDatabase.
-								getInt(new Parameter("pop.subpop.0.size"), null));
-				 */
+				
 				/** total number of populations expected */
 				int size = alps.layers.get(alps.index).evolutionState.
 						parameters.getInt(new Parameter(Initializer.P_POP).push(Population.P_SUBPOP).push(subpopulation+"").push(POP_SIZE),null);
@@ -73,8 +67,10 @@ public class Nearest extends Replacement{
 					 * Max for a layer = (alps.layers.get(alps.index).getMaxAge()-1)
 					 */
 					if (current.subpops[subpopulation].individuals[i].age >= (alps.layers.get(alps.index).getMaxAge())) 
-					{   //fill higher layer with individuals that fall within its age limit
-						//parameters.getIntWithDefault(new Parameter("jobs"), null, 1);
+					{   
+						/*fill higher layer with individuals that fall within its age limit
+						parameters.getIntWithDefault(new Parameter("jobs"), null, 1); */
+						
 						if (higherPop.subpops[subpopulation].individuals.length < size) 
 						{
 							/* activate layer if its open to accept individuals */
@@ -135,7 +131,7 @@ public class Nearest extends Replacement{
 
 		/* fill empty slots for maximum breeding */
 		if(Engine.always_breed_maximum_pop)
-			consolidatePopulation(alps,0);
+			   consolidatePopulation(alps,0);
 	}
 
 

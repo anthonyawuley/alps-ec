@@ -8,8 +8,8 @@ import ec.EvolutionState;
 import ec.Evolve;
 import ec.alps.fsalps.FSALPS;
 import ec.alps.fsalps.Roulette;
-import ec.alps.layers.agingscheme.AgingScheme;
 import ec.alps.layers.ALPSLayers;
+import ec.alps.layers.AgingScheme;
 import ec.alps.layers.Layer;
 import ec.util.MersenneTwisterFast;
 import ec.util.Output;
@@ -18,6 +18,9 @@ import ec.util.ParameterDatabase;
 import ec.util.Version;
 
 /**
+ * This class is the entry point for ALPS (it contains the main() method), Loads all
+ * ALPS Properties and begins Evolution using either GenEvolutionState or SStateEvolutionState
+ * This sets up all ALPS properties and begins ALPS evolution from the parameter file
  * 
  * @author Anthony Awuley
  * @version 1.0
@@ -26,13 +29,11 @@ public class Engine extends Evolve {
 
 	/** base(parent) alps parameter */
 	public final static String ALPS = "alps";
-
 	/** Returns the default base. */
 	public static final Parameter base() { return new Parameter(ALPS); }
-
 	/** */
 	public static ALPSLayers alps;
-
+	/** */
 	public  static int completeGenerationalCount = 0; //changed from 1
 	/** used in steady state evolution */
 	public  static int completeEvaluationCount   = 0;
@@ -42,7 +43,6 @@ public class Engine extends Evolve {
 	/** Should we muzzle stdout and stderr? 
 	 * @deprecated */
 	static final String P_MUZZLE = "muzzle";
-
 	/**
 	 * This is the same as the number of expected population in a layer 
 	 * this is modified during startFresh() in steady state 

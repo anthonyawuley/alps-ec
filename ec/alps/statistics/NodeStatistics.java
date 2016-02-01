@@ -61,7 +61,12 @@ import java.util.Map.Entry;
  * @author Sean Luke
  * @version 1.0 
  */
-
+/**
+ * Modified to include basic ALPS integration
+ * This prints node statistics and is used to print node usage/data of GP trees
+ * @author Anthony Awuley
+ *
+ */
 public class NodeStatistics extends Statistics implements SteadyStateStatisticsForm //, ec.eval.ProvidesBestSoFar
 {
 	/**
@@ -226,17 +231,6 @@ public class NodeStatistics extends Statistics implements SteadyStateStatisticsF
 				for (Entry<String, Double> entry : state.nodeCountTerminalSet.entrySet()) 
 					state.output.print(entry.getValue()+"\t",statisticslog);
 
-			/*
-			if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of generation" + 
-					(best_i[x].evaluated ? " " : " (evaluated flag not set): ") +
-					best_i[x].fitness.fitnessToStringForHumans());
-			// describe the winner if there is a description
-			if (doGeneration && doPerGenerationDescription) 
-			{
-				if (state.evaluator.p_problem instanceof SimpleProblemForm)
-					((SimpleProblemForm)(state.evaluator.p_problem.clone())).describe(state, best_i[x], x, 0, statisticslog);   
-			}
-			 */
 
 		}
 		state.output.println(" ",statisticslog);

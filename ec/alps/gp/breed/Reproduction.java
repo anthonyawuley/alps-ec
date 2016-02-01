@@ -4,20 +4,20 @@ import ec.EvolutionState;
 import ec.Individual;
 import ec.SelectionMethod;
 import ec.alps.Engine;
-import ec.EvolutionState;
 import ec.breed.ReproductionPipeline;
 
+/**
+ * Extends ReproductionPipeline from ECJ to include ageing property of parents and offsprings
+ * In ALPS. In ALPS, a parents age is incremented by 1 and an offspring takes the age of the oldest
+ * parent + 1
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Reproduction extends ReproductionPipeline{
 
-	/*
-	public ReproductionALPS() {
-		// TODO Auto-generated constructor stub
-	}*/
 	
-	
-    /**
-	 * 
-	 */
+    /** */
 	private static final long serialVersionUID = 1;
 	
 	private final String SELECTION_PRESSURE = "selection-pressure";
@@ -61,11 +61,7 @@ public class Reproduction extends ReproductionPipeline{
             if (mustClone || sources[0] instanceof SelectionMethod)
                 for(int q=start; q < n+start; q++)
                 {
-                	/**
-        			 * ALPS: AGE INCREMENT
-        			 * increase age of parents 
-        			 * @author Anthony
-        			 */
+                	
                 	if(state.generation != inds[q].generationCount/*!parents[0].parentFlag*/) 
          			{   //System.out.println("ANTHONY WAS HERE1! BEFORE:"+inds[q].age+"AFTER:"); System.exit(0);
                 		inds[q].age++;

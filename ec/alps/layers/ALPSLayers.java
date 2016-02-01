@@ -2,21 +2,31 @@ package ec.alps.layers;
 
 import java.util.ArrayList;
 
+/**
+ * This DS holds all evolving ALPS Layers. The top-level class iteratively
+ * sequences through the layers to determine order of evolution
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class ALPSLayers {
 	/**ArrayList of all running ALPS layers **/
 	public ArrayList<Layer> layers;
 	/**Points to the current active layer in ALPS */
 	public int index;
-	//public int evalCounter = 0; //keeps count of number of evaluations completed in a layer
-	//public int evaluations = 0; //keep count of number of evaluations in steady state
-
+	
+	
+	/** */
 	public ALPSLayers(ArrayList<Layer> l,int id) 
 	{
 		this.layers = l;
 		this.index  = id;
 	}
 
-	/** test method to dump individual ages to standard output*/
+	/** 
+	 * test method to dump individual ages to standard output
+	 * @deprecated
+	 */
 	public  void printAge()
 	{
 		System.out.println("\n Layer :" + this.index + 
@@ -28,7 +38,9 @@ public class ALPSLayers {
 		System.out.println("\n");
 	}
 	
-	/** test method to dump individual population size to standard output*/
+	/** test method to dump individual population size to standard output
+	 * @deprecated
+	 */
 	public  void printPopSize()
 	{
 		System.out.println("\nLayer :" + this.index + 

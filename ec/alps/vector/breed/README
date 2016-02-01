@@ -1,1 +1,4 @@
 See the README file in the parent package for information on this one.
+All classes are extended from the vector breed pipelines from ECJ
+In ALPS, the age of an individual used as a parent is incremented by 1
+whilst an offspring assuems the age of its oldest parent + 1

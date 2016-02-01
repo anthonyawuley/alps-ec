@@ -1,3 +1,9 @@
+/*
+  Copyright 2006 by Sean Luke
+  Licensed under the Academic Free License version 3.0
+  See the file "LICENSE" for more information
+ */
+
 package ec.alps;
 
 import java.util.HashMap;
@@ -15,9 +21,9 @@ import ec.util.Checkpoint;
 import ec.util.Parameter;
 
 /**
- * Modified by
+ * SteadyState Evolution State for ALPS. extends SteadyStateEvolutionState from ECJ
+ * 
  * @author Anthony Awuley
- * @version 1.0
  */
 
 public class SStateEvolutionState extends SteadyStateEvolutionState{
@@ -31,7 +37,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 
 
 	/**
-	 * 
+	 * used at initialization
 	 */
 	public void startFresh(Layer l) 
 	{
@@ -103,7 +109,7 @@ public class SStateEvolutionState extends SteadyStateEvolutionState{
 
 
 	/**
-	 * 
+	 * After initialization
 	 */
 	public void startFresh() 
 	{

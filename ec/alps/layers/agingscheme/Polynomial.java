@@ -1,17 +1,24 @@
 package ec.alps.layers.agingscheme;
 
 import java.util.ArrayList;
+
+import ec.alps.layers.AgingScheme;
 import ec.alps.layers.Layer;
 
 
-
+/**
+ * 
+ * n^2: 1 2 4 9 16 25 49 64
+ * This values are multipled by the age-gap parameter to determine the maximum age per layer
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class Polynomial  extends AgingScheme {
 
 	
 	public Polynomial() 
-	{
-		// TODO Auto-generated constructor stub
-	}
+	{ }
 	
 	public String toString()
 	{
