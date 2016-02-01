@@ -14,7 +14,7 @@ import ec.util.Parameter;
 /**
  * Modified to include basic ALPS integration
  * @author Sean Luke
- * @author Anthony Awuley to include basic ALPS statistics
+ * @author Anthony Awuley
  *
  */
 public class SStateShortStatistics extends Statistics implements SteadyStateStatisticsForm {
