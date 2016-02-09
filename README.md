@@ -1,12 +1,16 @@
+Copyright 2015 by Anthony Awuley 
+Brock University Computer Science Department
+Licensed under the Academic Free License version 3.0
+See the file "LICENSE" for more information
+
 The ALPS[Hornby,2006] strategy is a diversity–enhancing algorithm that works with algorithms 
 with elements of randomness in them . It uses an age–layered population and restricts breeding 
 and competition between individuals. ALPS ability to maintain diversity in its population is largely 
 due to regular introduction of individuals from different fitness basins and the novel control of 
 competition between individuals. 
 
-The implementation is based on the open source Evolutionary Computation system in Java
+The implementation is based on the version 22 of the open source Evolutionary Computation system in Java
 developed by Sean Luke [ECJ,V22]
-This was done using version 22 of the ECJ system.
 
 
 [Hornby,2006] Gregory Hornby. Alps: the age-layered population structure for reducing the problem of 
