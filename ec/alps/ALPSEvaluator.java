@@ -1,9 +1,3 @@
-/*
-  Copyright 2006 by Sean Luke
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
- */
-
 
 package ec.alps;
 import ec.*;
@@ -11,16 +5,6 @@ import ec.simple.SimpleEvaluator;
 import ec.simple.SimpleProblemForm;
 import ec.util.*;
 
-/* 
- * SimpleEvaluator.java
- * 
- * Created: Wed Aug 18 21:31:18 1999
- * By: Sean Luke
- */
-
-/* 
- * Modified by Anthony Awuley to for ALPS
- */
 
 /**
  * The SimpleEvaluator is a simple, non-coevolved generational evaluator which
@@ -28,8 +12,8 @@ import ec.util.*;
  * own problem space.  One Problem instance is cloned from p_problem for
  * each evaluating thread.  The Problem must implement SimpleProblemForm.
  *
- * @author Sean Luke
- * @author Anthony Awuley
+ * @author Anthony Awuley and Sean Luke
+ * @author 
  * @version 2.0 
  *
  * Thanks to Ralf Buschermohle <lobequadrat@googlemail.com> for early versions

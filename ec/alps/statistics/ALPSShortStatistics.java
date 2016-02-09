@@ -1,9 +1,3 @@
-/*
-  Copyright 2006 by Sean Luke
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
- */
-
 
 package ec.alps.statistics;
 import ec.*;
@@ -14,16 +8,6 @@ import ec.util.*;
 import ec.alps.Engine;
 import ec.EvolutionState;
 
-/* 
- * SimpleShortStatistics.java
- * 
- * Created: Tue Jun 19 15:08:29 EDT 2001
- * By: Sean Luke
- */
-
-/* 
- * Modified by Anthony Awuley for ALPS
- */
 
 /**
  *===================================================================================
@@ -94,8 +78,7 @@ import ec.EvolutionState;
  <td valign=top>(print information on a per-subpop basis as well as per-population?)</td></tr>
  </table>
  *
- * @author Sean Luke
- * @author Anthony Awuley
+ * @author Anthony Awuley and Sean Luke
  * @version 2.0 
  * 
  * Modified by Anthony Awuley to include basic ALPS statistics

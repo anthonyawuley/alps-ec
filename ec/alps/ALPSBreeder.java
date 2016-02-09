@@ -1,8 +1,3 @@
-/*
-  Copyright 2006 by Sean Luke
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
- */
 
 
 package ec.alps;
@@ -15,17 +10,7 @@ import ec.Population;
 import ec.simple.SimpleBreeder;
 import ec.util.*;
 
-/* 
- * SimpleBreeder.java
- * 
- * Created: Tue Aug 10 21:00:11 1999
- * By: Sean Luke
- * 
- */
 
-/* 
- * Modified by Anthony Awuley to for ALPS
- */
 
 /**
  * Breeds each subpopulation separately, with no inter-population exchange,
@@ -63,8 +48,7 @@ import ec.util.*;
  </table>
  *
  *
- * @author Sean Luke 
- * @author Anthony Awuley
+ * @author Anthony Awuley and Sean Luke 
  * @version 1.0 
  * 
  */

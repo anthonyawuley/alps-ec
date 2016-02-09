@@ -6,7 +6,6 @@ import ec.vector.breed.VectorCrossoverPipeline;
 import ec.*;
 import ec.alps.Engine;
 import ec.EvolutionState;
-import ec.gp.GPIndividual;
 import ec.util.*;
 
 

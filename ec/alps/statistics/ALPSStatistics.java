@@ -1,9 +1,3 @@
-/*
-  Copyright 2006 by Sean Luke
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
- */
-
 
 package ec.alps.statistics;
 import ec.*;
@@ -20,15 +14,7 @@ import ec.util.*;
 import java.io.File;
 import java.util.Map;
 
-/* 
- * SimpleStatistics.java
- * 
- * Created: Tue Aug 10 21:10:48 1999
- * By: Sean Luke
- */
-/* 
- * Modified by Anthony Awuley for ALPS
- */
+
 
 /**
  * A basic Statistics class suitable for simple problem applications.
@@ -57,9 +43,8 @@ import java.util.Map;
  <td valign=top>(the log for statistics)</td></tr>
  </table>
 
- *
- * @author Sean Luke
- * @author Anthony Awuley
+ * 
+ * @author Anthony Awuley and Sean Luke
  * @version 1.0 
  * 
  * Modified by Anthony Awuley to include basic ALPS statistics

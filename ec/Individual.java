@@ -73,7 +73,7 @@ import ec.util.*;
  *
  *
  * @author Sean Luke
- * Modified by Anthony Awuley for ALPS
+ * @author Anthony Awuley
  * @version 1.0
  */
 
@@ -135,6 +135,7 @@ public abstract class Individual implements Prototype, Comparable
 	 *  used to keep determine if an individual has been used as a parent in nth-generation
 	 *  0 was not used because this condition might fail in generation 0
 	 *  at subsequent generations, an individual used as a parent is assigned the generation number
+	 *  @deprecated
 	 * */
 	public int generationCount =  10000;
 

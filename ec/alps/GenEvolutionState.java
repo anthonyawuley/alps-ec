@@ -1,9 +1,3 @@
-/*
-  Copyright 2006 by Sean Luke
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
- */
-
 
 package ec.alps;
 import ec.*;
@@ -12,19 +6,11 @@ import ec.alps.layers.Replacement;
 import ec.util.Checkpoint;
 import ec.util.Parameter;
 
-/* 
- * SimpleEvolutionState.java
- * 
- * Created: Tue Aug 10 22:14:46 1999
- * By: Sean Luke
- */
-/* 
- * Modified by Anthony Awuley to for ALPS
- */
+
 
 /**
  * Generational Evolution State for ALPS. extends EvolutionState from ECJ
- * @author Anthony Awuley
+ * @author Anthony Awuley and Sean Luke
  */
 public class GenEvolutionState extends EvolutionState
 {
