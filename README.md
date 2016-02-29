@@ -25,7 +25,6 @@ premature convergence. In Mike Cattolico, editor, GECCO, pages 815–822. ACM, 2
 [ECJ,V22] S. Luke, G. Balan S. Paus Z. Skolicki E. Popovici J. Harrison J. Bassett R. Hubley, L. Panait and 
 A. Chhircop. Ecj: A java-based evolutionary computation research system, version 22, 06 2000-2015. 
 http://www.cs.gmu.edu/~eclab/projects/ecj/ [Online; Accessed: 2 April 2014].
-
 ____
 
 ## Start here for GA
@@ -52,7 +51,6 @@ only alps related changes are discussed. For full descrption of all related para
 * breed                   = ec.alps.ALPSBreeder
 * eval                    = ec.alps.ALPSEvaluator
 * stat                    = ec.alps.statistics.ALPSStatistics
-
 
 ### FUNCTION SETS
 * #We have one function set, of class GPFunctionSet
@@ -144,8 +142,35 @@ layer is always replaced
 
 ## SAMPLE OUTPUT
 
+ALPS GP with 6 Layers using Generational Replacement strategy
+<img src="http://greyintel.org/resources/img/works/gp/generationalPolynomial.png" height="212" width="462" alt="ALPS GP with 6 Layers using Generational Replacement strategy" />
 
+================
 
+ALPS  Vector Representation with 6 Layers Using Steady State strategy
+<img src="http://greyintel.org/resources/img/works/gp/steadyStatePolynomial.png" height="212" width="462" alt="ALPS  Vector Representation with 6 Layers Using Steady State strategy" />
+
+================
+
+Comparing performance plot of last layers of ALPS and Canonical GP
+<img src="http://greyintel.org/resources/img/works/gp/comparegp.png" height="212" width="462" alt="Comparing performance plot of last layers of ALPS and Canonical G" />
+
+================
+
+Comparing ALPS and Canonical Vector Representation using 6 layers
+<img src="http://greyintel.org/resources/img/works/alps/compare-replacement-strategy.png" height="212" width="462" alt="Comparing ALPS and Canonical Vector Representation using 6 layers" />
+
+================
+
+ALPS  Vector Representation with 6 Steady State Polynomical age layer
+<img src="http://greyintel.org/resources/img/works/alps/ga/gasspolynomial.png" height="212" width="462" alt="ALPS  Vector Representation with 6 Steady State Polynomical age layer" />
+
+================
+
+ALPS  Vector Representation Generational with Polynomical age layer
+<img src="http://greyintel.org/resources/img/works/alps/ga/gagenpolynomial.png" height="212" width="462" alt="ALPS  Vector Representation Generational with Polynomical age layer" />
+
+================
 
 
 
