@@ -7,7 +7,7 @@ import java.util.Map;
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.alps.fsalps.FSALPS;
-import ec.alps.fsalps.Roulette;
+import ec.fsalps.Roulette;
 import ec.alps.layers.ALPSLayers;
 import ec.alps.layers.AgingScheme;
 import ec.alps.layers.Layer;
