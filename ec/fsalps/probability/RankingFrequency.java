@@ -4,9 +4,18 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ec.alps.fsalps.Roulette;
+import ec.fsalps.Roulette;
 import ec.alps.util.MapUtil;
 
+/**
+ * Terminals with larger counts have bigger ranks. RankingFrequency divides the rank of a feature
+ * by the total ranks of all features in the GP population The ranks are then converted into probability values 
+ * Once again, probability changes when using this scheme is not as drastic as the normal frequency 
+ * and often gives a chance to terminals that are almost getting extinct from the GP system.
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class RankingFrequency extends Roulette{
 
 	
@@ -42,8 +51,7 @@ public class RankingFrequency extends Roulette{
 			else //set upper bound for other nodes by adding current frequency to total  
 				nodeEntry.add((double) (roulette.get(c-1).get(1) + (double) nodeEntry.get(0)));
 			c++; 
-			//System.out.println("::::"+ entry.getKey() + " VAL: "+ entry.getValue() + "--" + nodeEntry.get(1)); 
-
+			
 			roulette.add(nodeEntry);
 		}
 		return roulette;

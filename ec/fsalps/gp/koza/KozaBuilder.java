@@ -6,11 +6,8 @@
 
 
 package ec.fsalps.gp.koza;
-import ec.*;
 import ec.alps.Engine;
 import ec.EvolutionState;
-import ec.alps.fsalps.FSALPS;
-import ec.alps.fsalps.Roulette;
 import ec.gp.*;
 import ec.util.*;
 
@@ -38,7 +35,7 @@ import ec.util.*;
   <td valign=top>(largest "maximum" depth the builder may use for building a tree. 6 is the default.)</td></tr>
   </table>
 
-  @author Sean Luke
+  @author Anthony Awuley and Sean Luke
   @version 1.0 
  */
 

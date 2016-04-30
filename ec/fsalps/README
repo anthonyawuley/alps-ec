@@ -1,0 +1,33 @@
+Copyright 2015 by Anthony Awuley 
+Brock University Computer Science Department
+Licensed under the Academic Free License version 3.0
+See the file "LICENSE" for more information
+
+
+see project on http://www.cosc.brocku.ca/~bross/FSALPS/
+This research presents the FSALPS (Feature Selection Age Layered Population Structure) evolutionary algorithm. 
+FSALPS performs effective feature subset selection and classification of varied supervised learning tasks. 
+It is a modication of Hornby's ALPS algorithm, which is a renown meta-heuristic for overcoming the problem of 
+premature convergence in evolutionary algorithms, and for improving search in the fitness landscape. 
+FSALPS uses a novel frequency count system to rank features in the GP population based on evolved feature frequencies. 
+The ranked features are translated into probabilities, which are used to control evolutionary processes such as 
+terminal selection for the construction of GP trees/sub-trees. FSALPS continuously refines the feature subset 
+selection process while simultaneously evolving efficient classifiers through a non-converging evolutionary process 
+that favors selection of features with high discrimination of class labels. The research applies FSALPS an assortment 
+of high-dimensional classification datasets, including a hyperspectral image. Comparative experiments show 
+that ALPS and FSALPS dominated canonical GP in evolving smaller but efficient trees with less bloat expressions. 
+Furthermore, FSALPS significantly outperformed canonical GP and ALPS and some reported feature selection strategies 
+in related literature on dimensionality reduction. 
+
+DOING EVOLUTION
+---------------
+
+ec.alps.Engine
+
+This class is the entry point for FSALPS (it contains the main() method), Loads all
+ALPS/FSALPS Properties and begins Evolution using either GenEvolutionState or SStateEvolutionState
+
+See tutorials in ec/app/fsalps/tutorial4 for examples on setting up FSALPS 
+
+see original README provided in home directory of ECJ for a detailed description of ECJ design 
+pattern

@@ -3,8 +3,15 @@ package ec.fsalps.probability;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-import ec.alps.fsalps.Roulette;
-
+import ec.fsalps.Roulette;
+/**
+ * This requires direct conversion of terminal frequency distribution into terminal prob- abilities
+ * Two terminal sets (x and y) with a frequency count of 20 and 5 respectively will produce 
+ * probability values of 0.8 and 0.2 respectively.
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class NormalFrequency extends Roulette{
 
 	
@@ -33,8 +40,7 @@ public class NormalFrequency extends Roulette{
 			else //set upper bound for other nodes by adding current frequency to total  
 				nodeEntry.add((double) (roulette.get(c-1).get(1) + (double) nodeEntry.get(0)));
 			c++; 
-			//System.out.println("::::"+ entry.getKey() + " VAL: "+ entry.getValue() + "--" + nodeEntry.get(1)); 
-
+			
 			roulette.add(nodeEntry);
 		}
 		return roulette;

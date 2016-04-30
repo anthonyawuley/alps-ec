@@ -59,7 +59,7 @@ import java.util.*;
  </table>
 
  *
- * @author Sean Luke
+ * @author Anthony Awuley and Sean Luke
  * @version 1.0 
  */
 

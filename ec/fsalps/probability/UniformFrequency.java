@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ec.alps.fsalps.Roulette;
+import ec.fsalps.Roulette;
 
+/**
+ * Uniform frequency calculation requires the addition of the average frequency 
+ * of all terminals to the frequency count of each terminal 
+ * 
+ * @author Anthony Awuley
+ *
+ */
 public class UniformFrequency extends Roulette{
 
 	
@@ -62,12 +69,9 @@ public class UniformFrequency extends Roulette{
 	public Map<String, Double> computeUniformAverageFreq(Map<String, Double> mapcopy)
 	{
 		double average = totalFrequency(mapcopy)/(double)mapcopy.size();
-		//System.out.println("Total: "+ totalFrequency(mapcopy) + " SIZE:"+mapcopy.size());
-		for (Entry<String, Double> entry : mapcopy.entrySet()) {
-			//System.out.print("original " + entry.getValue() + " New: ");
-			mapcopy.put(entry.getKey(), entry.getValue() + average);
-		    //System.out.println(mapcopy.get(entry.getKey()) + "---------" + average);	
-		}
+		for (Entry<String, Double> entry : mapcopy.entrySet()) 
+			mapcopy.put(entry.getKey(), entry.getValue() + average);	
+		
 		return mapcopy;
 		
 	}

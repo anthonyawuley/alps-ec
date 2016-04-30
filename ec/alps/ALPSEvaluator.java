@@ -13,7 +13,6 @@ import ec.util.*;
  * each evaluating thread.  The Problem must implement SimpleProblemForm.
  *
  * @author Anthony Awuley and Sean Luke
- * @author 
  * @version 2.0 
  *
  * Thanks to Ralf Buschermohle <lobequadrat@googlemail.com> for early versions

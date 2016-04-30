@@ -33,7 +33,7 @@ import ec.util.Parameter;
  * This is your roulette wheel. Your random number between 0 and 1 is your spin. 
  * If the random number is 0.46, then the chosen item is item 3. If it's 0.92, then it's item 9.
  * 
- * @author anthony
+ * @author Anthony Awuley
  *
  */
 public abstract class Roulette {
