@@ -70,7 +70,6 @@ only alps related changes are discussed. For full descrption of all related para
 * breed                                 = ec.alps.ALPSBreeder
 * eval                                  = ec.alps.ALPSEvaluator
 * stat                                  = ec.alps.statistics.ALPSStatistics
-* #Begin ALPS configuration ==============================================================
 * alps.age-gap                           = 5
 * alps.number-of-layers                  = 5
 * alps.number-of-evaluations             = 2000
@@ -92,16 +91,12 @@ replacement strategy in higher layer. if false lower layer individual only repla
 if its fitness is better that of the higher layer tournament individual. if true, selected tournament individual from higher
 layer is always replaced
 * alps.layer-replacement.replace-weakest = true
-* #END================================================================================= 
-* #Begin GP parameters ================================================================
 * pop.subpop.0.species.pipe                        = ec.alps.gp.ALPSMultiBreedingPipeline
 * pop.subpop.0.species.pipe.num-sources            = 2
 * pop.subpop.0.species.pipe.source.0               = ec.alps.gp.breed.Crossover
 * -----
 * pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
 * pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
-* #END================================================================================= 
-
 
 
 ## SAMPLE OUTPUT
@@ -138,9 +133,7 @@ ALPS  Vector Representation Generational with Polynomical age layer
 
 
 
-### FSALPS
-
-## Configuration
+### FSALPS Configuration
 
 **Content of directory              = ../../../../fsalps/alps.params**
 
@@ -164,12 +157,7 @@ used to determine if frequency in last layer is used to generate probality selec
  Determine which frequency selection criteria is used for generating probability
 * alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency
 
-
- Point Mutation will use Tournament Selection, try only 1
- time, have a max depth of 17, and use KozaNodeSelector
- and GROW for building.  Also, Point Mutation uses a GrowBuilder
- by default, with a default of min-depth=max-depth=5
- as shown a ways below
+ Point Mutation will use Tournament Selection
 * gp.koza.mutate.source.0      = ec.select.TournamentSelection
 * gp.koza.mutate.ns.0          = ec.gp.koza.KozaNodeSelector
 * gp.koza.mutate.build.0       = ec.alps.fsalps.gp.koza.GrowBuilder
@@ -183,7 +171,7 @@ We set the default for HalfBuilder to be a ramp of 2--6, with a grow probability
 * gp.koza.half.growp           = 0.5
 
 
-FSALPS  - Feature evolution in Layers
+## FSALPS OUTPUT  - Feature evolution in Layers
 
 <img src="http://greyintel.org/resources/img/works/fsalps/freq/0.png" height="240" width="462" alt="FSALPS Layer 0" />
 Layer 0
