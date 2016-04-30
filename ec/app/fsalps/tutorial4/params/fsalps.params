@@ -1,0 +1,81 @@
+# Generational FSALPS GP TUTORIAL 4
+# Copyright 2015 by Anthony Awuley
+# Brock University - Computer Science Department
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0                = ../../../../gp/koza/koza.params
+
+
+#Begin ALPS configuration ===========================================================
+parent.1                = ../../../../alps/alps.params
+#END================================================================================= 
+
+
+
+#BEGIN FSALPS =======================================================================
+parent.2                = ../../../../alps/fsalps/fsalps.params
+#END FSALPS =========================================================================
+
+
+
+quit-on-run-complete    = false
+
+#jobs specifies the number of runs you would wish to perform
+state                   = ec.alps.GenEvolutionState
+finish                  = ec.simple.SimpleFinisher
+exch                    = ec.simple.SimpleExchanger
+breed                   = ec.alps.ALPSBreeder
+eval                    = ec.alps.ALPSEvaluator
+stat                    = ec.alps.statistics.ALPSStatistics
+init                    = ec.alps.fsalps.FSALPSGPInitializer
+pop                     = ec.Population
+jobs                    = 20
+pop.subpops             = 1
+pop.subpop.0.size       = 50
+select.tournament.size  = 3
+breed.elite.0           = 2
+breedthreads            = 1
+evalthreads             = 1
+seed.0                  = 1
+generations             = 500
+cross-validation-size   = 20
+
+
+#FUNCTION SETS=======================================================================
+ 
+# We have one function set, of class GPFunctionSet
+gp.fs.size         = 1
+gp.fs.0            = ec.alps.fsalps.FSALPSGPFunctionSet
+gp.fs.0.name       = f0
+
+# We have five functions in the function set.  They are:
+gp.fs.0.size               = 5
+gp.fs.0.func.0             = ec.app.fsalps.tutorial4.ts.X
+gp.fs.0.func.0.nc          = nc0
+gp.fs.0.func.1             = ec.app.fsalps.tutorial4.ts.Y
+gp.fs.0.func.1.nc          = nc0
+gp.fs.0.func.2             = ec.app.fsalps.tutorial4.fs.Add
+gp.fs.0.func.2.nc          = nc2
+gp.fs.0.func.3             = ec.app.fsalps.tutorial4.fs.Sub
+gp.fs.0.func.3.nc          = nc2
+gp.fs.0.func.4             = ec.app.fsalps.tutorial4.fs.Mul
+gp.fs.0.func.4.nc          = nc2
+
+eval.problem               = ec.app.fsalps.tutorial4.MultiValuedRegression
+eval.problem.data          = ec.app.fsalps.tutorial4.DoubleData
+
+stat.num-children           = 4
+stat.child.0                = ec.alps.statistics.ShortStatistics
+stat.child.0.gather-full    = true
+stat.child.0.file           = ../output/cmtrx.stats
+stat.child.1                = ec.alps.statistics.ALPSStatistics
+stat.child.1.silent.print   = true
+stat.child.1.file           = ../output/ss.stats
+stat.child.2                = ec.alps.statistics.NodeStatistics
+stat.child.2.silent.print   = true
+stat.child.2.file           = ../output/node.stats
+stat.child.3                = ec.alps.statistics.ALPSShortStatistics
+stat.child.3.gather-full    = true
+stat.child.3.silent.print   = true
+stat.child.3.file           = ../output/total.stats
