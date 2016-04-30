@@ -34,6 +34,7 @@ Three tutorials have been set up and can be found in the directories
 1. ec/app/alps/tutorial2/ 
 2. ec/app/alps/tutorial1/
 3. ec/app/alps/tutorial3/
+4. ec/app/fsalps/tutorial4/
 
 A brief introduction is given to setting up **1** and **2**.
 
@@ -135,7 +136,7 @@ ALPS  Vector Representation Generational with Polynomical age layer
 
 ### FSALPS Configuration
 
-**Content of directory              = ../../../../fsalps/alps.params**
+**Content of directory              = ../../../../fsalps/fsalps.params**
 
 * init                                  = ec.alps.fsalps.FSLPSGPInitializer
 
