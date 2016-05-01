@@ -99,40 +99,46 @@ layer is always replaced
 * pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation
 * pop.subpop.0.species.pipe.source.0.source.0      = ec.select.TournamentSelection
 
+### SAMPLE ALPS OUTPUT
 
-## SAMPLE OUTPUT
-
-ALPS GP with 6 Layers using Generational Replacement strategy
-<img src="http://greyintel.org/resources/img/works/gp/generationalPolynomial.png" height="212" width="462" alt="ALPS GP with 6 Layers using Generational Replacement strategy" />
-
-================
-
-ALPS  Vector Representation with 6 Layers Using Steady State strategy
-<img src="http://greyintel.org/resources/img/works/gp/steadyStatePolynomial.png" height="212" width="462" alt="ALPS  Vector Representation with 6 Layers Using Steady State strategy" />
-
-================
-
-Comparing performance plot of last layers of ALPS and Canonical GP
-<img src="http://greyintel.org/resources/img/works/gp/comparegp.png" height="212" width="462" alt="Comparing performance plot of last layers of ALPS and Canonical G" />
-
-================
-
-Comparing ALPS and Canonical Vector Representation using 6 layers
-<img src="http://greyintel.org/resources/img/works/alps/compare-replacement-strategy.png" height="212" width="462" alt="Comparing ALPS and Canonical Vector Representation using 6 layers" />
-
-================
-
-ALPS  Vector Representation with 6 Steady State Polynomical age layer
-<img src="http://greyintel.org/resources/img/works/alps/ga/gasspolynomial.png" height="212" width="462" alt="ALPS  Vector Representation with 6 Steady State Polynomical age layer" />
-
-================
-
-ALPS  Vector Representation Generational with Polynomical age layer
-<img src="http://greyintel.org/resources/img/works/alps/ga/gagenpolynomial.png" height="212" width="462" alt="ALPS  Vector Representation Generational with Polynomical age layer" />
+[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/ALPS)
 
 ================
 
 ================
+
+### FSALPS
+
+```c++
+  // Pseudocode for FSALPS
+
+  procedure FSALPS GEN()
+  AgeScheme ← SelectAgeingScheme() 
+  layers ← CreateLayers(AgeScheme)
+  i ← SequentialLayerSelection(layers) 
+  probVector ← InitialFeatureProbabilities() 
+  while not TerminationCondition() do
+      if BottomLayer(i) & TooOld(i) then 
+         probVector ← ComputeFeatureProbs()
+         j ← CreateRandomGenome(probVector)
+      else
+         if mutation then
+            j ← DoMutation(probVector) 
+         else
+            if crossover then
+               j ← DoCrossover()
+            end if 
+         end if
+      end if
+      offspringIndex ← SelectSlotNextGeneration(i) 
+      j ← CreateChild(offspringIndex) 
+      EvaluateChild(j)
+      TryMoveUp(i,j )
+  end while 
+  end procedure
+
+```
+
 
 ### FSALPS Configuration
 
@@ -171,32 +177,7 @@ We set the default for HalfBuilder to be a ramp of 2--6, with a grow probability
 * gp.koza.half.max-depth       = 6
 * gp.koza.half.growp           = 0.5
 
-
-## FSALPS OUTPUT  - Feature evolution in Layers
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/0.png" height="240" width="462" alt="FSALPS Layer 0" />
-Layer 0
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/2.png" height="240" width="462" alt="FSALPS Layer2" />
-Layer 2
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/4.png" height="240" width="462" alt="FSALPS Layer 4" />
-Layer 4
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/5.png" height="240" width="462" alt="FSALPS Layer 5" />
-Layer 5
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/6.png" height="240" width="462" alt="FSALPS Layer 6" />
-Layer 6
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/8.png" height="240" width="462" alt="FSALPS Layer 8" />
-Layer 8
-
-<img src="http://greyintel.org/resources/img/works/fsalps/freq/9.png" height="240" width="462" alt="FSALPS Layer 9" />
-Layer 9
-
+### SAMPLE FSALPS OUTPUT
+[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/FSALPS)
 
 ================
-
-
-
