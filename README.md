@@ -18,7 +18,6 @@ competition between individuals.
 The implementation is based on the version 22 of the open source Evolutionary Computation system in Java
 developed by Sean Luke [ECJ,V22]
 
-
 [Hornby,2006] Gregory Hornby. Alps: the age-layered population structure for reducing the problem of 
 premature convergence. In Mike Cattolico, editor, GECCO, pages 815–822. ACM, 2006.
 
@@ -46,13 +45,11 @@ A brief introduction is given to setting up **1** and **2**.
 ### SAMPLE ALPS OUTPUT
 [SAMPLE ALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/ALPS-Output)
 
-================
-
-================
+____
 
 ### FSALPS
 
-```c++
+```
   // Pseudocode for FSALPS
 
   procedure FSALPS GEN()
@@ -81,7 +78,6 @@ A brief introduction is given to setting up **1** and **2**.
   end procedure
 
 ```
-
 
 ### FSALPS Configuration
 [FSALPS CONFIGURATION](https://github.com/aawuley/alps-ec/wiki/FSALPS-Configuration)
