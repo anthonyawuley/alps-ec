@@ -101,7 +101,7 @@ layer is always replaced
 
 ### SAMPLE ALPS OUTPUT
 
-[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/ALPS)
+[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/ALPS-Output)
 
 ================
 
@@ -178,6 +178,6 @@ We set the default for HalfBuilder to be a ramp of 2--6, with a grow probability
 * gp.koza.half.growp           = 0.5
 
 ### SAMPLE FSALPS OUTPUT
-[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/FSALPS)
+[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/FSALPS-Output)
 
 ================
