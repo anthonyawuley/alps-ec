@@ -7,8 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -16,39 +15,34 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1 class="header">ALPS &amp; FSALPS ECJ</h1>
-        <p class="header">Integration of ALPS and FSALPS  into ECJ</p>
+        <h1>ALPS &amp; FSALPS ECJ</h1>
+        <p>Integration of ALPS and FSALPS  into ECJ</p>
+
+        <p class="view"><a href="https://github.com/aawuley/alps-ec">View the Project on GitHub <small>aawuley/alps-ec</small></a></p>
+
 
         <ul>
-          <li class="download"><a class="buttons" href="https://github.com/aawuley/alps-ec/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/aawuley/alps-ec/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/aawuley/alps-ec">View On GitHub</a></li>
+          <li><a href="https://github.com/aawuley/alps-ec/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/aawuley/alps-ec/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/aawuley/alps-ec">View On <strong>GitHub</strong></a></li>
         </ul>
-
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/aawuley">aawuley</a></p>
-
-
       </header>
       <section>
-        <h2>
-<a id="welcome-alps-and-fsalps-evolutionary-computation-in-java" class="anchor" href="#welcome-alps-and-fsalps-evolutionary-computation-in-java" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome ALPS and FSALPS Evolutionary Computation in Java!</h2>
+        <h1>
+<a id="welcome-alps-and-fsalps-ecj" class="anchor" href="#welcome-alps-and-fsalps-ecj" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome ALPS and FSALPS ECJ!</h1>
 
-<hr>
-
-<p>The system provides an  ALPS and FSALPS extension to the open so ECJ System</p>
+<p>The system provides an  ALPS extension to the open so ECJ System</p>
 
 <p>Copyright 2015 by Anthony Awuley 
 Brock University Computer Science Department
 Licensed under the Academic Free License version 3.0
 See the file "LICENSE" for more information</p>
 
-<blockquote>
 <p>The ALPS[Hornby,2006] strategy is a diversity–enhancing algorithm that works with algorithms 
 with elements of randomness in them . It uses an age–layered population and restricts breeding 
 and competition between individuals. ALPS ability to maintain diversity in its population is largely 
 due to regular introduction of individuals from different fitness basins and the novel control of 
 competition between individuals. </p>
-</blockquote>
 
 <p>The implementation is based on the version 22 of the open source Evolutionary Computation system in Java
 developed by Sean Luke [ECJ,V22]</p>
@@ -63,7 +57,7 @@ A. Chhircop. Ecj: A java-based evolutionary computation research system, version
 <hr>
 
 <h2>
-<a id="start-here-for-ga" class="anchor" href="#start-here-for-ga" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start here for GA</h2>
+<a id="alps-configuration" class="anchor" href="#alps-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ALPS CONFIGURATION</h2>
 
 <p>The parameter files are located in the directory  io/params/ and the main class is in ec.main.Run.
 Three tutorials have been set up and can be found in the directories</p>
@@ -77,177 +71,81 @@ Three tutorials have been set up and can be found in the directories</p>
 
 <p>A brief introduction is given to setting up <strong>1</strong> and <strong>2</strong>.</p>
 
-<h3>
-<a id="setting-up-alps-gp-see-ecappalpstutorial2paramstutorial2params" class="anchor" href="#setting-up-alps-gp-see-ecappalpstutorial2paramstutorial2params" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up ALPS GP (see ec/app/alps/tutorial2/params/tutorial2.params).</h3>
+<p><strong>Setting up ALPS GP (see ec/app/alps/tutorial2/params/tutorial2.params).</strong> </p>
 
-<blockquote>
-<p>only alps related changes are discussed. For full descrption of all related parameters, see tutorial4 of the <a href="https://cs.gmu.edu/%7Eeclab/projects/ecj/">ECJ system</a></p>
-</blockquote>
-
-<ul>
-<li>parent.0                = ../../../../gp/koza/koza.params</li>
-<li>#ALPS configuration </li>
-<li>parent.1                = ../../../../alps/alps.params</li>
-<li>quit-on-run-complete    = false</li>
-<li>#jobs specifies the number of runs you would wish to perform</li>
-<li>state                   = ec.alps.GenEvolutionState</li>
-<li>exch                    = ec.simple.SimpleExchanger</li>
-<li>breed                   = ec.alps.ALPSBreeder</li>
-<li>eval                    = ec.alps.ALPSEvaluator</li>
-<li>stat                    = ec.alps.statistics.ALPSStatistics</li>
-</ul>
+<p><a href="https://github.com/aawuley/alps-ec/wiki/ALPS-Configuration">ALPS CONFIGURATION</a></p>
 
 <h3>
-<a id="function-sets" class="anchor" href="#function-sets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FUNCTION SETS</h3>
+<a id="sample-alps-output" class="anchor" href="#sample-alps-output" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SAMPLE ALPS OUTPUT</h3>
 
-<ul>
-<li>
-<li>
-</ul>
+<p><a href="https://github.com/aawuley/alps-ec/wiki/ALPS-Output">SAMPLE ALPS OUTPUT</a></p>
 
-<h1></h1>
-
-<p><strong>Content of directory              = ../../../../alps/alps.params</strong></p>
+<hr>
 
 <h3>
-<a id="jobs-specifies-the-number-of-runs-you-would-wish-to-perform" class="anchor" href="#jobs-specifies-the-number-of-runs-you-would-wish-to-perform" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>jobs specifies the number of runs you would wish to perform</h3>
+<a id="fsalps" class="anchor" href="#fsalps" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FSALPS</h3>
 
-<ul>
-<li>state                                 = ec.alps.GenEvolutionState</li>
-<li>breed                                 = ec.alps.ALPSBreeder</li>
-<li>eval                                  = ec.alps.ALPSEvaluator</li>
-<li>stat                                  = ec.alps.statistics.ALPSStatistics</li>
-<li>alps.age-gap                           = 5</li>
-<li>alps.number-of-layers                  = 5</li>
-<li>alps.number-of-evaluations             = 2000</li>
-<li>alps.selection-pressure                = 0.8</li>
-<li>alps.tournament-size                   = 4</li>
-<li>alps.aging-scheme                      = ec.alps.layers.agingscheme.Polynomial</li>
-<li>alps.layer-replacement                 = ec.alps.layers.replacement.ReverseTournamentWorst</li>
-<li>alps.assign-max-parent-age             = true</li>
-</ul>
+<pre><code>  // Pseudocode for FSALPS
 
-<blockquote>
-<p>when using selection pressure, individual aging isnt uniform especially when parents are selected from lower layer. When some individuals are aged faster than others, a population will contain less than expected required number ECJ by default breeds a maximum of the number of populations contained in a population.</p>
+  procedure FSALPS GEN()
+  AgeScheme ← SelectAgeingScheme() 
+  layers ← CreateLayers(AgeScheme)
+  i ← SequentialLayerSelection(layers) 
+  probVector ← InitialFeatureProbabilities() 
+  while not TerminationCondition() do
+      if BottomLayer(i) &amp; TooOld(i) then 
+         probVector ← ComputeFeatureProbs()
+         j ← CreateRandomGenome(probVector)
+      else
+         if mutation then
+            j ← DoMutation(probVector) 
+         else
+            if crossover then
+               j ← DoCrossover()
+            end if 
+         end if
+      end if
+      offspringIndex ← SelectSlotNextGeneration(i) 
+      j ← CreateChild(offspringIndex) 
+      EvaluateChild(j)
+      TryMoveUp(i,j )
+  end while 
+  end procedure
 
-<ul>
-<li>alps.always-breed-maximum-population   = true</li>
-</ul>
-</blockquote>
-
-<p>when true, only individuals selected from breeding from current layer have their age increased
-else both both individuals coming from current and lower layer used as parents will have their age increased</p>
-
-<ul>
-<li>alps.age-only-current-layer            = true</li>
-</ul>
-
-<blockquote>
-<p>when moving old individuals from bottom layer to next higher layer, use this flag to determine
-replacement strategy in higher layer. if false lower layer individual only replace higher layer tournament individual
-if its fitness is better that of the higher layer tournament individual. if true, selected tournament individual from higher
-layer is always replaced</p>
-
-<ul>
-<li>alps.layer-replacement.replace-weakest = true</li>
-<li>pop.subpop.0.species.pipe                        = ec.alps.gp.ALPSMultiBreedingPipeline</li>
-<li>pop.subpop.0.species.pipe.source.0               = ec.alps.gp.breed.Crossover</li>
-<li>pop.subpop.0.species.pipe.source.1               = ec.alps.gp.breed.Mutation</li>
-</ul>
-</blockquote>
-
-<h2>
-<a id="sample-output" class="anchor" href="#sample-output" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SAMPLE OUTPUT</h2>
-
-<p>ALPS GP with 6 Layers using Generational Replacement strategy
-<img src="http://greyintel.org/resources/img/works/gp/generationalPolynomial.png" alt="ALPS GP with 6 Layers using Generational Replacement strategy"></p>
-
-<h1></h1>
-
-<p>Comparing performance plot of last layers of ALPS and Canonical GP
-<img src="http://greyintel.org/resources/img/works/gp/comparegp.png" alt="Comparing performance plot of last layers of ALPS and Canonical GP"></p>
-
-<p>ALPS  Vector Representation with 6 Steady State Polynomial age layer
-![ALPS  Vector Representation with 6 Steady State Polynomial age layer]<img src="http://greyintel.org/resources/img/works/alps/ga/gasspolynomial.png" alt="ALPS  Vector Representation with 6 Steady State Polynomial age layer"></p>
-
-<h1></h1>
-
-<p>ALPS  Vector Representation Generational with Polynomial age layer
-<img src="http://greyintel.org/resources/img/works/alps/ga/gagenpolynomial.png" alt="ALPS  Vector Representation Generational with Polynomial age layer"></p>
-
-<h1></h1>
+</code></pre>
 
 <h3>
 <a id="fsalps-configuration" class="anchor" href="#fsalps-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FSALPS Configuration</h3>
 
-<p><strong>Content of directory              = ../../../../fsalps/fsalps.params</strong></p>
+<p><a href="https://github.com/aawuley/alps-ec/wiki/FSALPS-Configuration">FSALPS CONFIGURATION</a></p>
 
-<ul>
-<li>init                                  = ec.alps.fsalps.FSLPSGPInitializer</li>
-</ul>
+<h3>
+<a id="sample-fsalps-output" class="anchor" href="#sample-fsalps-output" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SAMPLE FSALPS OUTPUT</h3>
 
-<p>use only default node probability</p>
+<p><a href="https://github.com/aawuley/alps-ec/wiki/FSALPS-Output">SAMPLE FSALPS OUTPUT</a></p>
 
-<ul>
-<li>alps.use-only-default-node-pr         = false</li>
-</ul>
-
-<p>used to determine if frequency in last layer is used to generate probality selection on a generational basis</p>
-
-<ul>
-<li>
-<p>alps.fsalps-gen-freq-count            = false</p>
-
-<p>when enabled, nodes are counted in all layers and converted
-to probability values used during mutation and tree initialization in bottom layer</p>
-</li>
-<li>
-<p>alps.fsalps-count-all-layers          = true</p>
-
-<p>Determine which frequency selection criteria is used for generating probability</p>
-</li>
-<li>
-<p>alps.fsalps.probability-selection     = ec.alps.fsalps.probability.NormalFrequency</p>
-
-<p>Point Mutation will use Tournament Selection</p>
-</li>
-<li>gp.koza.mutate.source.0      = ec.select.TournamentSelection</li>
-<li>gp.koza.mutate.ns.0          = ec.gp.koza.KozaNodeSelector</li>
-<li>gp.koza.mutate.build.0       = ec.alps.fsalps.gp.koza.GrowBuilder</li>
-</ul>
-
-<p>This is to ensure that the modified KozaBuilder and GrowBuilder in alps.gp.koza are used during tree initialization</p>
-
-<ul>
-<li>gp.tc.0.init                 = ec.alps.fsalps.gp.koza.HalfBuilder</li>
-</ul>
-
-<h2>
-<a id="fsalps-output----feature-evolution-in-layers" class="anchor" href="#fsalps-output----feature-evolution-in-layers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FSALPS OUTPUT  - Feature evolution in Layers</h2>
-
-<p><img src="http://greyintel.org/resources/img/works/fsalps/freq/0.png" alt="FSALPS Layer 0"></p>
-
-<p><img src="http://greyintel.org/resources/img/works/fsalps/freq/4.png" alt="FSALPS Layer 4"></p>
-
-<p><img src="http://greyintel.org/resources/img/works/fsalps/freq/6.png" alt="FSALPS Layer 6"></p>
-
-<p><img src="http://greyintel.org/resources/img/works/fsalps/freq/9.png" alt="FSALPS Layer 9"></p>
+<h1></h1>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>Anthony Awuley <a href="https://github.com/aawuley" class="user-mention">@aawuley</a></p>
+<p>ALPS &amp; FSALPS : Anthony Awuley <a href="https://github.com/aawuley" class="user-mention">@aawuley</a></p>
+
+<p><strong>ECJ : Sean Luke</strong></p>
 
 <h3>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>Having trouble with setting up? Check out our <a href="https://github.com/aawuley/alps-ec">documentation</a> or contact support.</p>
+<p>Having trouble with setting up ALPS &amp; FSALPS? Check out our <a href="https://github.com/aawuley/alps-ec">documentation</a> or <a href="http://anthonyawuley.com/contact">contact support</a></p>
+
+<p>For all ECJ related supports contact <a href="http://cs.gmu.edu/%7Eeclab/projects/ecj/">Sean Luke</a></p>
       </section>
       <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p>This project is maintained by <a href="https://github.com/aawuley">aawuley</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
