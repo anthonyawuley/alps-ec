@@ -1,5 +1,5 @@
 
-Welcome to Age Layered Population Structure (ALPS) and Feature Selection ALPS ECJ!
+Welcome to Age Layered Population Structure (ALPS) and Feature Selection ALPS (FSALPS) ECJ!
 ================
 
 The system provides anALPS extension to the open source ECJ System
