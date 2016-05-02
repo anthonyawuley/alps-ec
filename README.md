@@ -1,8 +1,8 @@
 
-Welcome ALPS and FSALPS ECJ!
+Welcome to Age Layered Population Structure (ALPS) and Feature Selection ALPS ECJ!
 ================
 
-The system provides an  ALPS extension to the open so ECJ System
+The system provides anALPS extension to the open source ECJ System
 
 Copyright 2015 by Anthony Awuley 
 Brock University Computer Science Department
@@ -48,6 +48,8 @@ A brief introduction is given to setting up **1** and **2**.
 ____
 
 ### FSALPS
+
+Feature Selection ALPS is a modification of Hornby's ALPS algorithm directed towards the selection of relevant terminals (features) in a GP tree. It uses a frequency counting system to rank the terminals. The ranked values are converted into probabilities and are used in the selection of terminals during construction of trees/sub-trees.
 
 ```
   // Pseudocode for FSALPS
