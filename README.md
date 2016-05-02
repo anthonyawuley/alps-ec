@@ -89,3 +89,15 @@ Feature Selection ALPS is a modification of Hornby's ALPS algorithm directed tow
 [SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/FSALPS-Output)
 
 ================
+
+### Authors and Contributors
+ALPS & FSALPS : Anthony Awuley @aawuley
+
+ECJ : Sean Luke
+
+### Support or Contact
+Having trouble with setting up ALPS & FSALPS? Check out our [documentation](https://github.com/aawuley/alps-ec) or [contact support](http://anthonyawuley.com/contact)
+
+Project page [Prof. Brian Ross](http://www.cosc.brocku.ca/~bross/FSALPS/)
+
+For all ECJ related supports contact [Sean Luke](http://cs.gmu.edu/~eclab/projects/ecj/)
