@@ -30,8 +30,8 @@ ____
 The parameter files are located in the directory  io/params/ and the main class is in ec.main.Run.
 Three tutorials have been set up and can be found in the directories
 
-1. ec/app/alps/tutorial2/ 
-2. ec/app/alps/tutorial1/
+1. ec/app/alps/tutorial1/ 
+2. ec/app/alps/tutorial2/
 3. ec/app/alps/tutorial3/
 4. ec/app/fsalps/tutorial4/
 
