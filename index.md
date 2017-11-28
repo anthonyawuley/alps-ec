@@ -39,11 +39,11 @@ A brief introduction is given to setting up **1** and **2**.
 
 **Setting up ALPS GP (see ec/app/alps/tutorial2/params/tutorial2.params).** 
 
-[ALPS CONFIGURATION](https://github.com/aawuley/alps-ec/wiki/ALPS-Configuration)
+[ALPS CONFIGURATION](https://github.com/anthonyawuley/alps-ec/wiki/ALPS-Configuration)
 
 
 ### SAMPLE ALPS OUTPUT
-[SAMPLE ALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/ALPS-Output)
+[SAMPLE ALPS OUTPUT](https://github.com/anthonyawuley/alps-ec/wiki/ALPS-Output)
 
 ____
 
@@ -82,11 +82,11 @@ Feature Selection ALPS is a modification of Hornby's ALPS algorithm directed tow
 ```
 
 ### FSALPS Configuration
-[FSALPS CONFIGURATION](https://github.com/aawuley/alps-ec/wiki/FSALPS-Configuration)
+[FSALPS CONFIGURATION](https://github.com/anthonyawuley/alps-ec/wiki/FSALPS-Configuration)
 
 
 ### SAMPLE FSALPS OUTPUT
-[SAMPLE FSALPS OUTPUT](https://github.com/aawuley/alps-ec/wiki/FSALPS-Output)
+[SAMPLE FSALPS OUTPUT](https://github.com/anthonyawuley/alps-ec/wiki/FSALPS-Output)
 
 ================
 
@@ -96,7 +96,7 @@ ALPS & FSALPS : Anthony Awuley @aawuley
 ECJ : Sean Luke
 
 ### Support or Contact
-Having trouble with setting up ALPS & FSALPS? Check out our [documentation](https://github.com/aawuley/alps-ec) or [contact support](http://anthonyawuley.com/contact)
+Having trouble with setting up ALPS & FSALPS? Check out our [documentation](https://github.com/anthonyawuley/alps-ec) or [contact support](http://anthonyawuley.com/contact)
 
 Project page [Prof. Brian Ross](http://www.cosc.brocku.ca/~bross/FSALPS/)
 
