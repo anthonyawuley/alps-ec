@@ -1,0 +1,8 @@
+title: ALPS & FSALPS ECJ
+description: Integration of ALPS and FSALPS  into ECJ
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
