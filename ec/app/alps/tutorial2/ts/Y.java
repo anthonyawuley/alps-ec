@@ -6,40 +6,43 @@
 
 
 package ec.app.alps.tutorial2.ts;
+
 import ec.*;
 import ec.app.alps.tutorial2.DoubleData;
 import ec.app.alps.tutorial2.MultiValuedRegression;
 import ec.gp.*;
 import ec.util.*;
 
-public class Y extends GPNode
-    {
-    public String toString() { return "y"; }
+public class Y extends GPNode {
+    public String toString() {
+        return "y";
+    }
 
-/*
-  public void checkConstraints(final EvolutionState state,
-  final int tree,
-  final GPIndividual typicalIndividual,
-  final Parameter individualBase)
-  {
-  super.checkConstraints(state,tree,typicalIndividual,individualBase);
-  if (children.length!=0)
-  state.output.error("Incorrect number of children for node " + 
-  toStringForError() + " at " +
-  individualBase);
-  }
-*/
-    public int expectedChildren() { return 0; }
+    /*
+      public void checkConstraints(final EvolutionState state,
+      final int tree,
+      final GPIndividual typicalIndividual,
+      final Parameter individualBase)
+      {
+      super.checkConstraints(state,tree,typicalIndividual,individualBase);
+      if (children.length!=0)
+      state.output.error("Incorrect number of children for node " +
+      toStringForError() + " at " +
+      individualBase);
+      }
+    */
+    public int expectedChildren() {
+        return 0;
+    }
 
     public void eval(final EvolutionState state,
-        final int thread,
-        final GPData input,
-        final ADFStack stack,
-        final GPIndividual individual,
-        final Problem problem)
-        {
-        DoubleData rd = ((DoubleData)(input));
-        rd.x = ((MultiValuedRegression)problem).currentY;
-        }
+                     final int thread,
+                     final GPData input,
+                     final ADFStack stack,
+                     final GPIndividual individual,
+                     final Problem problem) {
+        DoubleData rd = ((DoubleData) (input));
+        rd.x = ((MultiValuedRegression) problem).currentY;
     }
+}
 
