@@ -4,10 +4,10 @@
 # Licensed under the Academic Free License version 3.0
 # See the file "LICENSE" for more information
 
-parent.0                = ../../../../gp/koza/koza.params
+parent.0                = ../../../gp/koza/koza.params
 
 #Begin ALPS configuration ==============================================================
-parent.1                = ../../../../alps/alps.params
+parent.1                = ../../../alps/alps.params
 #END================================================================================= 
 
 quit-on-run-complete    = false
@@ -88,14 +88,14 @@ eval.problem.data          = ec.app.alps.tutorial2.DoubleData
 stat.num-children           = 4
 stat.child.0                = ec.alps.statistics.ShortStatistics
 stat.child.0.gather-full    = true
-stat.child.0.file           = ../output/cmtrx.stats
+stat.child.0.file           = output/cmtrx.stats
 stat.child.1                = ec.alps.statistics.ALPSStatistics
 stat.child.1.silent.print   = true
-stat.child.1.file           = ../output/ss.stats
+stat.child.1.file           = output/ss.stats
 stat.child.2                = ec.alps.statistics.NodeStatistics
 stat.child.2.silent.print   = true
-stat.child.2.file           = ../output/node.stats
-stat.child.3                = ec.alps.statistics.ALPSShortStatistics
+stat.child.2.file           = output/node.stats
+stat.child.3                = ec.alps.statistics.ShortStatistics
 stat.child.3.gather-full    = true
 stat.child.3.silent.print   = true
-stat.child.3.file           = ../output/total.stats
+stat.child.3.file           = output/total.stats

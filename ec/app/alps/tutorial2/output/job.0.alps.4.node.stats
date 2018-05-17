@@ -1,0 +1,27 @@
+9550 
+9712 
+9910 
+10060 
+10210 
+10360 
+10510 
+10660 
+10810 
+10960 
+11160 
+11360 
+11610 
+11860 
+12110 
+12360 
+12610 
+12860 
+13110 
+
+Best Individual of Run:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=0.0 Adjusted=1.0 Hits=10
+Tree 0:
+ (+ (- y (* (- y x) (* y x))) (+ (* y x) (*
+     y (* y x))))
