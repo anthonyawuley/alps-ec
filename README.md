@@ -2,6 +2,8 @@
 Welcome to Age Layered Population Structure (ALPS) and Feature Selection ALPS (FSALPS) ECJ!
 ================
 
+[![Join the chat at https://gitter.im/alps-ec/Lobby](https://badges.gitter.im/alps-ec/Lobby.svg)](https://gitter.im/alps-ec/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The system provides anALPS extension to the open source ECJ System
 
 Copyright 2015 by Anthony Awuley 
